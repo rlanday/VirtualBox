@@ -323,9 +323,23 @@ class ArmAstBase(object):
                 oChild.walk(fnCallback, oCallbackArg, fDepthFirst);
         return True;
 
+    def walk(self, fnCallback, oCallbackArg = None, fDepthFirst = True):
+        """ Walker. """
+        _ = fnCallback; _ = oCallbackArg; _ = fDepthFirst;
+        raise Exception('Not implemented by %s' % (type(self).__name__,));
+
     def isLeaf(self):
         """ Checks if this is a leaf node or not. """
         return False;
+
+    def containsNode(self, oNodeToFind):
+        """ Checks if oNodeToFind is part of this tree. """
+        dResult = {'ret': False,};
+        def callback(oNode, dResult):
+            if oNode == oNodeToFind:
+                dResult['ret'] = True;
+        self.walk(callback, dResult);
+        return dResult['ret'];
 
     #
     # Convenience matching routines, matching node type and type specific value.
@@ -405,6 +419,14 @@ class ArmAstBase(object):
         """
         # This is overridden by ArmAstFunction.
         _ = sFunctionName; _ = aoArgMatches;
+        return False;
+
+    def isMatchingField(self, sField, sName, sState = 'AArch64'):
+        """
+        Checks if this is a field access node for the given field and register.
+        A sField of None will match any field.  The other two arguments must be strings.
+        """
+        _ = sField; _ = sName; _ = sState;
         return False;
 
 
@@ -1022,7 +1044,10 @@ class ArmAstSquareOp(ArmAstBase):
         return None;
 
     def toStringEx(self, sLang = None, cchMaxWidth = 120):
-        return '%s[%s]' % (self.oVar.toStringEx(sLang, cchMaxWidth),
+        sVar  = self.oVar.toStringEx(sLang, cchMaxWidth);
+        if not isinstance(self.oVar, (ArmAstIdentifier, ArmAstField,)):
+            sVar = '(%s)' % (sVar);
+        return '%s<%s>' % (sVar,
                            ','.join([oValue.toStringEx(sLang, cchMaxWidth) for oValue in self.aoValues]),);
 
     def toCExpr(self, oHelper):
@@ -1183,7 +1208,7 @@ class ArmAstFunctionCallBase(ArmAstBase):
     def toStringEx(self, sLang = None, cchMaxWidth = 120):
         asArgs   = [oArg.toStringEx(sLang, max(cchMaxWidth - len(self.sName) - 1, 60)) for oArg in self.aoArgs];
         sArgList = ', '.join(asArgs);
-        if '\n' in sArgList:
+        if '\n' in sArgList or len(self.sName) + len(sArgList) + 2 > cchMaxWidth:
             sNlIndent = '\n' + ' ' * (len(self.sName) + 1);
             sArgList  = '';
             for i, sArg in enumerate(asArgs):
@@ -1632,6 +1657,14 @@ class ArmAstField(ArmAstLeafBase):
     def getWidth(self, oHelper):
         (_, cBitsWidth) = oHelper.getFieldInfo(self.sField, self.sName, self.sState);
         return cBitsWidth;
+
+    def isMatchingField(self, sField, sName, sState = 'AArch64'):
+        return (    (   sField is None
+                     or self.sField == sField)
+                and self.sName  == sName
+                and self.sState == sState
+                and self.sSlices is None
+                and self.sInstance is None);
 
 
 class ArmAstRegisterType(ArmAstLeafBase):

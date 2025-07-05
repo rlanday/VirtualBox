@@ -167,7 +167,7 @@ IEM_RAISE_PROTOS(iemRaiseInstructionAbortTlbPermision,
 #define IEM_CIMPL_SYSREG_INSTR_ESSENCE_IS_WRITE(a_uInstrEssence)    RT_BOOL((a_uInstrEssence) & RT_BIT_32(24))
 #define IEM_CIMPL_SYSREG_INSTR_ESSENCE_IS_READ(a_uInstrEssence)     (!((a_uInstrEssence) & RT_BIT_32(24)))
 
-VBOXSTRICTRC iemRaiseSystemAccessTrap(PVMCPU pVCpu, uint32_t uAccessCode, uint32_t uInstrEssence) RT_NOEXCEPT;
+VBOXSTRICTRC iemRaiseSystemAccessTrap(PVMCPU pVCpu, uint32_t uEl, uint32_t uInstrEssence) RT_NOEXCEPT;
 VBOXSTRICTRC iemRaiseSystemAccessTrapSve(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;
 VBOXSTRICTRC iemRaiseSystemAccessTrapSme(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;
 VBOXSTRICTRC iemRaiseSystemAccessTrapAdvSimdFpAccessA64(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;

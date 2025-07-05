@@ -475,6 +475,7 @@ g_dRegToCpumCtx = {
     ## @todo 'AArch64.PMSELR_EL0':  ( '.u64', ), - FEAT_PMUv3 / ARMv8.0; not sure if zero is a passable value here...
     ## @todo 'AArch64.PMUACR_EL1':  ( '.u64', ), - FEAT_PMUv3p9; not sure if zero is a passable value here...
     ## @todo 'AArch64.SCR_EL3':     ( '.u64', ), - we don't do EL3, so some stuff isn't eliminated properly...
+    'AArch64.SCR_EL3':          ( 0, ), # CNTPCTSS_EL0 and others accesses it w/o HaveEL(EL3). ## @todo EL3
     ## @todo 'AArch64.SPMSELR_EL0': ( '.u64', ), - FEAT_SPMU / ARMv8.8
     ## @todo 'AArch64.TRCIDR0':     ( '.u64', ), - FEAT_ETE / ARMv9.0
     ## @todo 'AArch64.TRCIDR2':     ( '.u64', ), - FEAT_ETE / ARMv9.0
@@ -1355,21 +1356,120 @@ class SysRegGeneratorBase(object):
         oInfo.cIncompleteNodes += 1;
         return True;
 
+    def checkCConversion(self, oInfo, oNode):
+        """
+        Update the completion status and other statistics.
+        Returns True if completely converted, False if not.
+
+        Note! Can be used on sub-trees by supplying a root node other than oInfo.oCode.
+        """
+        oInfo.cIncompleteNodes  = 0;
+        oInfo.cGstFeatsRefs     = 0;
+        oInfo.cInstrEssenceRefs = 0;
+        oNode.walk(self.checkCConversionCallback, oInfo);
+        return oInfo.cIncompleteNodes == 0;
+
     def morphCodeToC(self, oInfo):
         """ Morphs the accessor code and assigns the result to self.oCode """
         assert oInfo.oCode is None;
-        oInfo.oCode = self.transformCodePass2(oInfo, self.transformCodePass1(oInfo, oInfo.oAccessor.oAccess.clone()));
+        oInfo.oCode = self.transformCodePass0(oInfo, oInfo.oAccessor.oAccess.clone());
+        oInfo.oCode = self.transformCodePass1(oInfo, oInfo.oCode);
+        oInfo.oCode = self.transformCodePass2(oInfo, oInfo.oCode);
 
         # Add a return statement if necessary.
         if not oInfo.oCode.doAllPathsReturn():
             oInfo.oCode = ArmAstStatementList([oInfo.oCode, ArmAstReturn(ArmAstCppExpr('VINF_SUCCESS')),]);
 
         # Update the completion status and other statistics.
-        oInfo.cIncompleteNodes  = 0;
-        oInfo.cGstFeatsRefs     = 0;
-        oInfo.cInstrEssenceRefs = 0;
-        oInfo.oCode.walk(self.checkCConversionCallback, oInfo);
+        self.checkCConversion(oInfo, oInfo.oCode);
         return True;
+
+
+    #
+    # Pass 0 - Resolve troublesome stuff before expand and eliminate anything.
+    #
+
+    def transformCodePass0Callback(self, oNode, fEliminationAllowed, oInfo, aoStack):
+        """
+        Callback for pass 0: Disambiguation of CNTHCTL_EL2.EL1PCTEN and others.
+        """
+
+        #
+        # CNTHCTL_EL2.EL1PCTEN which can either be bit 0 or bit 10 depending on
+        # whether ELIsInHost(EL2).  The specification of CNTPCT_EL0 __seems__ to
+        # be checking the context and then referencing a field, probably
+        # expecting the field to be picked depending on the context.  Sigh.
+        #   - At EL0: EL2Enabled()    && !ELIsInHost(EL2)           && AArch64.CNTHCTL_EL2.EL1PCTEN == '0'
+        #   - At EL0: ELIsInHost(EL2) && AArch64.HCR_EL2.TGE == '0' && AArch64.CNTHCTL_EL2.EL1PCTEN == '0'
+        #   - At EL1: EL2Enabled()                                  && AArch64.CNTHCTL_EL2.EL1PCTEN == '0'
+        #
+        if oNode.isMatchingField('EL1PCTEN', 'CNTHCTL_EL2', 'AArch64'):
+            # The first stack level is usually where we find the list of 'PSTATE.EL == ELx'
+            # conditions.  Locate the relevant one and get our EL value.
+            idxEl = -1;
+            for oStackNode in aoStack:
+                if isinstance(oStackNode, ArmAstIfList):
+                    for idxIfStmt, oIfStmt in enumerate(oStackNode.aoIfStatements):
+                        if oIfStmt.containsNode(oNode):
+                            oIfCond = oStackNode.aoIfConditions[idxIfStmt];
+                            if (    isinstance(oIfCond, ArmAstBinaryOp)
+                                and oIfCond.sOp == '=='
+                                and oIfCond.oLeft.isMatchingDotAtom('PSTATE', 'EL')):
+                                idxEl = self.kdELxToNum.get(oIfCond.oRight.getIdentifierName(), -1);
+                                if idxEl < 0: raise Exception('Unexpected EL value: %s' % (oIfCond.toString(),));
+                                break;
+            if idxEl < 0: raise Exception('Unable to determine EL for "%s" in %s' % (oNode.toString(), aoStack,));
+
+            # ELIsInHost(ELx) cannot be true at EL1 or at EL3, so the field is at bit 0.
+            if idxEl in (1, 3):
+                oNode.sField = 'EL1PCTEN_AT_00';
+                return oNode;
+
+            # At EL0 and EL2 we have to look for ELIsInHost in sibiling BinaryOp
+            # node.  Go up the stack till we encounter the if-list node and locate
+            # the condition oNode belongs to (tedious).
+            oIfListNode = None;
+            for oStack in reversed(aoStack):
+                if isinstance(oStack, ArmAstIfList):
+                    oIfListNode = oStack;
+                    break;
+            if not oIfListNode:
+                raise Exception('No if-list node on stack: %s' % (aoStack,));
+
+            oIfCond = None;
+            for oCurIfCond in oIfListNode.aoIfConditions:
+                if oCurIfCond.containsNode(oNode):
+                    oIfCond = oCurIfCond;
+                    break;
+            if not oIfCond:
+                raise Exception('Node "%s" not found in any of the if-list conditions: %s'
+                                % (oNode.toString(), oIfListNode.toString(),));
+
+            # This is a bit weird, but it's easier to do the rest of the work
+            # on a string representation of the expression.
+            sIfCond = oIfCond.toStringEx(sLang = 'C', cchMaxWidth = 999999);
+            if sIfCond.find('||') >= 0:
+                raise Exception('Unexpectedly complicated condition: %s' % (sIfCond,));
+            offInHost = sIfCond.find('ELIsInHost(EL');
+            if offInHost < 0 or sIfCond[offInHost + 13] not in ('2', '0'):
+                raise Exception('Unable to resolve ambigious CNTHCTL_EL2.EL1PCTEN access: %s' % (sIfCond,));
+
+            if offInHost == 0 or sIfCond[offInHost - 1] == ' ':
+                oNode.sField = 'EL1PCTEN_AT_10';
+                return oNode;
+            if sIfCond[offInHost - 1] == '!':
+                oNode.sField = 'EL1PCTEN_AT_00';
+                return oNode;
+
+            _ = fEliminationAllowed; _ = oInfo; _ = aoStack;
+            raise Exception('Unable to resolve ambigious CNTHCTL_EL2.EL1PCTEN access: %s' % (sIfCond,));
+
+        return oNode;
+
+    def transformCodePass0(self, oInfo, oCode):
+        """ Code transformation pass 1: Field disambiguation. """
+        return oCode.transform(self.transformCodePass0Callback, True, oInfo, []);
+
 
     #
     # Pass 1 - Expanding calls & code elimination.
@@ -1411,10 +1511,10 @@ class SysRegGeneratorBase(object):
                 ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_VHE')]),
                 ArmAstFunction('EL2Enabled', []),
                 ArmAstBinaryOp(ArmAstUnaryOp('!', ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_E2H0')])),
-                               '||', ArmAstField('E2H', 'HCR_EL2')),
+                               '||', ArmAstBinaryOp(ArmAstField('E2H', 'HCR_EL2'), '!=', ArmAstInteger(0))),
             ]);
             if oNode.aoArgs[0].isMatchingIdentifier('EL0'):
-                return ArmAstBinaryOp(oCommon, '&&', ArmAstField('TGE', 'HCR_EL2'));
+                return ArmAstBinaryOp(oCommon, '&&', ArmAstBinaryOp(ArmAstField('TGE', 'HCR_EL2'), '!=', ArmAstInteger(0)));
             return oCommon;
         if oNode.aoArgs[0].isMatchingIdentifier('EL3') or oNode.aoArgs[0].isMatchingIdentifier('EL1'):
             return ArmAstBool(False); # Only EL0 and EL2 can be in hosted. mode.
@@ -1722,9 +1822,12 @@ class SysRegGeneratorBase(object):
 
         aoFields = oReg.daoFields.get(sField); # List[ArmFieldsBase]
         if not aoFields:
-            oXcpt = Exception('%s: Field "%s" not found in register "%s"' % (sWhatFor, sField, sRegisterName,));
-            if fWarnOnly: return self.warnXcpt(oXcpt, (None, None, None));
-            raise oXcpt;
+            if sField in ('EL1PCTEN_AT_00', 'EL1PCTEN_AT_10') and sRegisterName == 'CNTHCTL_EL2': # HACK ALERT! See pass 0.
+                aoFields = [spec.ArmFieldsField(None, [spec.ArmRange(int(sField[-2:]), 1),], sField),];
+            else:
+                oXcpt = Exception('%s: Field "%s" not found in register "%s"' % (sWhatFor, sField, sRegisterName,));
+                if fWarnOnly: return self.warnXcpt(oXcpt, (None, None, None));
+                raise oXcpt;
 
         tCpumCtxInfo = g_dRegToCpumCtx.get('%s.%s' % (sState, sRegisterName));
         if tCpumCtxInfo:
@@ -1874,26 +1977,58 @@ class SysRegGeneratorBase(object):
                 return ArmAstInteger(0, cBits);
         raise Exception('Unexpected: %s' % (oNode,));
 
-    def transformCodePass2_ZeroExtend(self, oNode):
-        """ Pass 2: Eliminate ZeroExtend(value, bits). """
+    def transformCodePass2_ZeroExtend(self, oNode, oInfo):
+        """ Pass 2: Eliminate ZeroExtend(value<x:y>, bits). """
         if len(oNode.aoArgs) == 2:
             cBits = oNode.aoArgs[1].getIntegerOrValue();
-            if cBits is not None and 0 < cBits <= 64:
-                #oValue = oNode.aoArgs[0];
-                #if isinstance(oValue, (ArmAstInteger,)):
-                #return ArmAstInteger(0, cBits);
-                return oNode; ## @todo fix this.
+            if cBits is not None and cBits in (64, 32):
+                oValue = oNode.aoArgs[0];
+                if isinstance(oValue, ArmAstSquareOp):
+                    if len(oValue.aoValues) == 1 and isinstance(oValue.aoValues[0], ArmAstSlice):
+                        iFrom  = oValue.aoValues[0].oFrom.getIntegerOrValue();
+                        iTo    = oValue.aoValues[0].oTo.getIntegerOrValue();
+                        if iFrom is not None and iTo is not None and 0 <= iTo < iFrom < 63:
+                            if self.checkCConversion(oInfo, oValue.oVar):
+                                sValueExpr = oValue.oVar.toStringEx(sLang = 'C', cchMaxWidth = 99999);
+                                if iTo == 0 and iFrom == 31:
+                                    if cBits == 64:
+                                        return ArmAstCppExpr('(uint64_t)(uint32_t)(%s)' % (sValueExpr,));
+                                    if cBits == 32:
+                                        return ArmAstCppExpr('(uint32_t)(%s)' % (sValueExpr,));
+                                if iTo > 0:
+                                    sValueExpr = '((%s) >> %u)' % (sValueExpr, iTo);
+                                iFrom -= iTo;
+                                if iFrom == 31:
+                                    sValueExpr = '(uint32_t)(%s)' % (sValueExpr,);
+                                    if cBits == 64:
+                                        sValueExpr = '(uint64_t)%s' % (sValueExpr,);
+                                else:
+                                    sValueExpr = '((%s) & UINT%u_C(%#x)' % (sValueExpr, cBits, (1 << (iFrom + 1)) - 1,);
+                                return ArmAstCppExpr(sValueExpr, cBitsWidth = cBits);
+                            return oNode;
         raise Exception('Unexpected: %s' % (oNode,));
 
     def transformCodePass2_SignExtend(self, oNode):
-        """ Pass 2: Eliminate SignExtend(value, bits). """
+        """ Pass 2: Eliminate SignExtend(value<x:y>, bits). """
         if len(oNode.aoArgs) == 2:
             cBits = oNode.aoArgs[1].getIntegerOrValue();
-            if cBits is not None and 0 < cBits <= 64:
-                #oValue = oNode.aoArgs[0]; AST.SquareOp
-                #if isinstance(oValue, (ArmAstInteger,)):
-                #return ArmAstInteger(0, cBits);
-                return oNode; ## @todo fix this.
+            if cBits is not None and cBits in (64, 32):
+                oValue = oNode.aoArgs[0];
+                if isinstance(oValue, ArmAstSquareOp):
+                    if len(oValue.aoValues) == 1 and isinstance(oValue.aoValues[0], ArmAstSlice):
+                        iFrom  = oValue.aoValues[0].oFrom.getIntegerOrValue();
+                        iTo    = oValue.aoValues[0].oTo.getIntegerOrValue();
+                        if iFrom is not None and iTo is not None and 0 <= iTo < iFrom < 63:
+                            if isinstance(oValue.oVar, (ArmAstCppExpr,)):
+                                sValueExpr = oValue.oVar.toStringEx(sLang = 'C', cchMaxWidth = 99999);
+                                if iTo == 0 and iFrom == 31:
+                                    if cBits == 64:
+                                        return ArmAstCppExpr('(int64_t)(int32_t)(%s)' % (sValueExpr,));
+                                    if cBits == 32:
+                                        return ArmAstCppExpr('(int32_t)(%s)' % (sValueExpr,));
+                                return ArmAstCppExpr('((int%u_t)((%s) << %d) >> %d)'
+                                                     % (cBits, sValueExpr, cBits - iFrom - 1, cBits - iFrom - 1 + iTo, ),
+                                                     cBitsWidth = cBits);
         raise Exception('Unexpected: %s' % (oNode,));
 
 
@@ -2427,7 +2562,10 @@ class SysRegGeneratorBase(object):
             # Zeros.  Don't convert in concats as we want to handle those specially.
             if oNode.sName == 'Zeros' and (not aoStack or not isinstance(aoStack[-1], ArmAstConcat)):
                 return self.transformCodePass2_Zeros(oNode);
-
+            if oNode.sName == 'ZeroExtend':
+                return self.transformCodePass2_ZeroExtend(oNode, oInfo);
+            if oNode.sName == 'SignExtend':
+                return self.transformCodePass2_SignExtend(oNode);
 
         elif isinstance(oNode, ArmAstBinaryOp):
             # PSTATE.EL == EL0 and similar:
