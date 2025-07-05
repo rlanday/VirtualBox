@@ -3440,9 +3440,11 @@ static SVGACBStatus vmsvgaR3CmdBufDCPreempt(PPDMDEVINS pDevIns, PVMSVGAR3STATE p
  */
 #define VMSVGA_INC_CMD_SIZE_BREAK(a_cbMore) \
      if (1) { \
-          cbCmd += (a_cbMore); \
-          ASSERT_GUEST_MSG_STMT_BREAK(cbRemain >= cbCmd, ("size=%#x remain=%#zx\n", cbCmd, (size_t)cbRemain), CBstatus = SVGA_CB_STATUS_COMMAND_ERROR); \
+          ASSERT_GUEST_MSG_STMT_BREAK(cbRemain >= cbCmd && cbRemain - cbCmd >= (a_cbMore), \
+              ("size=%#x more=%#zx remain=%#x\n", cbCmd, (size_t)(a_cbMore), cbRemain), \
+              CBstatus = SVGA_CB_STATUS_COMMAND_ERROR); \
           RT_UNTRUSTED_VALIDATED_FENCE(); \
+          cbCmd += (a_cbMore); \
      } else do {} while (0)
 
 
@@ -4013,11 +4015,14 @@ static SVGACBStatus vmsvgaR3CmdBufProcessCommands(PPDMDEVINS pDevIns, PVGASTATE 
                 /* The size of this command is specified by the guest and depends on capabilities. */
                 SVGAFifoCmdDefineScreen *pCmd = (SVGAFifoCmdDefineScreen *)&pu8Cmd[cbCmd];
                 VMSVGA_INC_CMD_SIZE_BREAK(sizeof(pCmd->screen.structSize));
-                ASSERT_GUEST_STMT_BREAK(pCmd->screen.structSize < pThis->svga.cbFIFO, CBstatus = SVGA_CB_STATUS_COMMAND_ERROR);
-                RT_UNTRUSTED_VALIDATED_FENCE();
 
-                VMSVGA_INC_CMD_SIZE_BREAK(RT_MAX(sizeof(pCmd->screen.structSize), pCmd->screen.structSize) - sizeof(pCmd->screen.structSize));
-                vmsvgaR3CmdDefineScreen(pThis, pThisCC, pCmd);
+                uint32_t const structSize = RT_MAX(sizeof(pCmd->screen.structSize), pCmd->screen.structSize);
+                VMSVGA_INC_CMD_SIZE_BREAK(structSize - sizeof(pCmd->screen.structSize));
+
+                SVGAFifoCmdDefineScreen cmd;
+                RT_ZERO(cmd);
+                memcpy(&cmd, pCmd, RT_MIN(structSize, sizeof(cmd)));
+                vmsvgaR3CmdDefineScreen(pThis, pThisCC, &cmd);
                 break;
             }
 
