@@ -1774,6 +1774,25 @@ int vmsvgaR3ChangeMode(PVGASTATE pThis, PVGASTATECC pThisCC)
 
 int vmsvgaR3UpdateScreen(PVGASTATECC pThisCC, VMSVGASCREENOBJECT *pScreen, int x, int y, int w, int h)
 {
+    /* The update rectangle should be within the screen dimensions. */
+    SVGASignedRect screenRect;
+    screenRect.left   = 0;
+    screenRect.top    = 0;
+    screenRect.right  = (int32)pScreen->cWidth;
+    screenRect.bottom = (int32)pScreen->cHeight;
+
+    SVGASignedRect clipRect;
+    clipRect.left = (int32)x;
+    clipRect.top  = (int32)y;
+    clipRect.right  = (int32)(x + w);
+    clipRect.bottom = (int32)(y + h);
+    vmsvgaR3ClipRect(&screenRect, &clipRect);
+
+    x = clipRect.left;
+    y = clipRect.top;
+    w = clipRect.right - clipRect.left;
+    h = clipRect.bottom - clipRect.top;
+
     ASSERT_GUEST_LOGREL_MSG_RETURN(w > 0 && h > 0,
                                    ("vmsvgaR3UpdateScreen: screen %d (%d,%d) %dx%d: Invalid height and/or width supplied.\n",
                                    pScreen->idScreen, x, y, w, h),

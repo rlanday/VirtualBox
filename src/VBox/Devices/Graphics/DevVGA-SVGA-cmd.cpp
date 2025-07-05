@@ -1108,16 +1108,17 @@ static void vmsvgaR3RectCopy(PVGASTATECC pThisCC, VMSVGASCREENOBJECT const *pScr
      * corresponding to the current display mode.
      */
     uint32_t const  cbPixel = RT_ALIGN(pScreen->cBpp, 8) / 8;
-    uint32_t const  cbScanline = pScreen->cbPitch ? pScreen->cbPitch : width * cbPixel;
+    uint32_t const  cbScanline = pScreen->cbPitch ? pScreen->cbPitch : pScreen->cWidth * cbPixel;
     uint8_t const   *pSrc;
     uint8_t         *pDst;
     unsigned const  cbRectWidth = width * cbPixel;
-    unsigned        uMaxOffset;
+    uint64_t        uMaxOffset;
 
-    uMaxOffset = (RT_MAX(srcY, dstY) + height) * cbScanline + (RT_MAX(srcX, dstX) + width) * cbPixel;
-    if (uMaxOffset >= cbFrameBuffer)
+    uMaxOffset = (RT_MAX(srcY, dstY) + (uint64_t)height - 1) * cbScanline
+               + (RT_MAX(srcX, dstX) + (uint64_t)width) * cbPixel;
+    if (uMaxOffset > cbFrameBuffer)
     {
-        Log(("Max offset (%u) too big for framebuffer (%u bytes), ignoring!\n", uMaxOffset, cbFrameBuffer));
+        Log(("Max offset (%RU64) too big for framebuffer (%u bytes), ignoring!\n", uMaxOffset, cbFrameBuffer));
         return; /* Just don't listen to a bad guest. */
     }
 
@@ -7333,6 +7334,9 @@ void vmsvgaR3CmdRectCopy(PVGASTATE pThis, PVGASTATECC pThisCC, SVGAFifoCmdRectCo
     ASSERT_GUEST_RETURN_VOID(pCmd->destY < pThis->svga.u32MaxHeight);
     ASSERT_GUEST_RETURN_VOID(pCmd->height < pThis->svga.u32MaxHeight);
 
+    /* "Perform a rectangular DMA transfer from one area of the GFB to
+     *  another, and copy the result to any screens which intersect it."
+     */
     vmsvgaR3RectCopy(pThisCC, pScreen, pCmd->srcX, pCmd->srcY, pCmd->destX, pCmd->destY,
                      pCmd->width, pCmd->height, pThis->vram_size);
     vmsvgaR3UpdateScreen(pThisCC, pScreen, pCmd->destX, pCmd->destY, pCmd->width, pCmd->height);
