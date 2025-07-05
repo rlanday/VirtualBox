@@ -32,6 +32,8 @@ SPDX-License-Identifier: GPL-3.0-only
 """
 __version__ = "$Revision$"
 
+# pylint: disable=too-many-lines
+
 # Standard python imports.
 import argparse;
 import collections;
@@ -1494,14 +1496,29 @@ class SysRegGeneratorBase(object):
 
     def transformCodePass1_HaveEL(self, oNode):
         """ Pass 1: HaveEL(ELx) - Translate it into the corresponding feature checks. """
-        if oNode.aoArgs[0].isMatchingIdentifier('EL3'):
-            return ArmAstBool(False); # EL3 is not implemented.
-            #return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL3')]); ## @todo EL3
-        if oNode.aoArgs[0].isMatchingIdentifier('EL2'):
-            return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL2')]);
-        if oNode.aoArgs[0].isMatchingIdentifier('EL1') or oNode.aoArgs[0].isMatchingIdentifier('EL0'):
-            return ArmAstBool(True); # EL0 and EL1 are mandatory.
+        if len(oNode.aoArgs) == 1:
+            if oNode.aoArgs[0].isMatchingIdentifier('EL3'):
+                return ArmAstBool(False); # EL3 is not implemented.
+                #return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL3')]); ## @todo EL3
+            if oNode.aoArgs[0].isMatchingIdentifier('EL2'):
+                return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL2')]);
+            if oNode.aoArgs[0].isMatchingIdentifier('EL1') or oNode.aoArgs[0].isMatchingIdentifier('EL0'):
+                return ArmAstBool(True); # EL0 and EL1 are mandatory.
         raise Exception('Unexpected HaveEL call: %s' % (oNode.toString(),));
+
+    def transformCodePass1_HaveAArch32EL(self, oNode):
+        """ Pass 1: HaveAArch32EL(ELx) - Translate into corresponding feature checks. """
+        if len(oNode.aoArgs) == 1:
+            if oNode.aoArgs[0].isMatchingIdentifier('EL3'):
+                return ArmAstBool(False); # EL3 is not implemented.
+                #return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_AA32EL3')]); ## @todo EL3
+            if oNode.aoArgs[0].isMatchingIdentifier('EL2'):
+                return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_AA32EL2')]);
+            if oNode.aoArgs[0].isMatchingIdentifier('EL1'):
+                return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_AA32EL1')]);
+            if oNode.aoArgs[0].isMatchingIdentifier('EL0'):
+                return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_AA32EL0')]);
+        raise Exception('Unexpected HaveAArch32EL call: %s' % (oNode.toString(),));
 
     def transformCodePass1_ELIsInHost(self, oNode):
         """ Pass 1: ELIsInHost(ELx) - Translate this into appropriate AST. """
@@ -1551,6 +1568,31 @@ class SysRegGeneratorBase(object):
             if oNode.aoArgs[0].sName == 'SS_NonSecure':
                 # Without EL3, everything is non-secure.
                 return ArmAstBool(True);
+        raise Exception('Unexpected: %s' % (oNode.toString(),));
+
+    def transformCodePass1_IsHighestEL(self, oNode):
+        """ Pass 1: IsHighestEL(ELx). """
+        ## @todo EL3
+        if len(oNode.aoArgs) == 1:
+            if isinstance(oNode.aoArgs[0], ArmAstIdentifier):
+                # EL1 is the higest if we don't have EL2.
+                if oNode.aoArgs[0].sName == 'EL1':
+                    return ArmAstUnaryOp('!', ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL2')]));
+                # EL2 is the higest if we have EL2.
+                if oNode.aoArgs[0].sName == 'EL2':
+                    return ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL2')]);
+                # Neither EL0 nor EL3 can be the highest, as EL0 and EL1 are mandator and we don't implement EL3.
+                if oNode.aoArgs[0].sName in ('EL0', 'EL3'):
+                    return ArmAstBool(False);
+            elif oNode.aoArgs[0].isMatchingDotAtom('PSTATE', 'EL'):
+                return ArmAstBinaryOp(ArmAstBinaryOp(ArmAstFunction('IsFeatureImplemented', [ArmAstIdentifier('FEAT_EL2')]),
+                                                     '&&',
+                                                     ArmAstBinaryOp(oNode.aoArgs[0], '==', ArmAstIdentifier('EL2'))),
+                                      '||',
+                                      ArmAstBinaryOp(ArmAstUnaryOp('!', ArmAstFunction('IsFeatureImplemented',
+                                                                                       [ArmAstIdentifier('FEAT_EL2')])),
+                                                     '&&',
+                                                     ArmAstBinaryOp(oNode.aoArgs[0], '==', ArmAstIdentifier('EL1'))));
         raise Exception('Unexpected: %s' % (oNode.toString(),));
 
     kasImpDefBoolRetTrue = (
@@ -1738,12 +1780,16 @@ class SysRegGeneratorBase(object):
                 return self.transformCodePass1_HaveAArch64();
             if oNode.sName == 'HaveEL':
                 return self.transformCodePass1_HaveEL(oNode);
+            if oNode.sName == 'HaveAArch32EL':
+                return self.transformCodePass1(oInfo, self.transformCodePass1_HaveAArch32EL(oNode));
             if oNode.sName == 'ELIsInHost':
                 return self.transformCodePass1(oInfo, self.transformCodePass1_ELIsInHost(oNode));
             if oNode.sName == 'IsFeatureImplemented':
                 return self.transformCodePass1_IsFeatureImplemented(oNode);
             if oNode.sName == 'IsCurrentSecurityState':
                 return self.transformCodePass1_IsCurrentSecurityState(oNode);
+            if oNode.sName == 'IsHighestEL':
+                return self.transformCodePass1_IsHighestEL(oNode);
             if oNode.sName == 'ImpDefBool':
                 return self.transformCodePass1_ImpDefBool(oNode);
 
