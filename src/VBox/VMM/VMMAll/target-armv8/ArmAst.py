@@ -1897,7 +1897,6 @@ class ArmAstNop(ArmAstStatementBase):
         return True;
 
 
-
 class ArmAstAssignment(ArmAstStatementBase):
     """ We classify assignments as statements. """
 
@@ -2093,7 +2092,7 @@ class ArmAstIfList(ArmAstStatementBase):
             oIfStmt = self.aoIfStatements[i];
             if isinstance(oIfStmt, ArmAstStatementBase):
                 asStmts = oIfStmt.toStringList(sNextIndent, sLang, cchNextMaxWidth);
-                if sLang == 'C' and len(asStmts) != 1:
+                if sLang == 'C' and isinstance(oIfStmt, (ArmAstStatementList, ArmAstIfList)):
                     asLines.append(sIndent + '{');
                     asLines.extend(asStmts);
                     asLines.append(sIndent + '}');
@@ -2112,7 +2111,7 @@ class ArmAstIfList(ArmAstStatementBase):
                 cchNextMaxWidth = cchMaxWidth; # Trick.
             if isinstance(self.oElseStatement, ArmAstStatementBase):
                 asStmts = self.oElseStatement.toStringList(sNextIndent, sLang, cchNextMaxWidth);
-                if sLang == 'C' and len(asStmts) != 1 and fNeedElse:
+                if sLang == 'C' and isinstance(self.oElseStatement, (ArmAstStatementList, ArmAstIfList)) and fNeedElse:
                     asLines.append(sIndent + '{');
                     asLines.extend(asStmts);
                     asLines.append(sIndent + '}');
@@ -2289,36 +2288,4 @@ class ArmAstCppCall(ArmAstFunctionCallBase, ArmAstCppExprBase):
     def getWidth(self, oHelper):
         _ = oHelper;
         return self.cBitsWidth;
-
-
-class ArmAstCppStmt(ArmAstStatementBase):
-    """ C++ AST statement node. """
-    def __init__(self, *asStmts):
-        ArmAstStatementBase.__init__(self, 'C++ Statement');
-        self.asStmts = list(asStmts);
-
-    def clone(self):
-        return ArmAstCppStmt(*self.asStmts);
-
-    def isSame(self, oOther):
-        if isinstance(oOther, ArmAstCppStmt):
-            if len(self.asStmts) == len(oOther.asStmts):
-                for i, sMyStmt in enumerate(self.asStmts):
-                    if sMyStmt != oOther.asStmts[i]:
-                        return False;
-                return True;
-        return False;
-
-    def walk(self, fnCallback, oCallbackArg = None, fDepthFirst = True):
-        return self._walker(fnCallback, oCallbackArg, fDepthFirst);
-
-    def transform(self, fnCallback, fEliminationAllowed, oCallbackArg, aoStack):
-        return fnCallback(self, fEliminationAllowed, oCallbackArg, aoStack);
-
-    def toStringList(self, sIndent = '', sLang = None, cchMaxWidth = 120):
-        _ = sLang; _ = cchMaxWidth;
-        return [ sIndent + sStmt for sStmt in self.asStmts ];
-
-    def isLeaf(self):
-        return True;
 

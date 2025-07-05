@@ -3228,6 +3228,18 @@ DECLINLINE(uint64_t) iemGetEffSctlrMaskEl2(PVMCPU pVCpu, const CPUMFEATURESARMV8
     return 0;
 }
 
+
+/**
+ * Gets GCSCR_EL1/2/3.EXLOCKEN corresponding to PSTATE.EL.
+ */
+DECLINLINE(bool) iemGetCurrentExlockEn(PVMCPU pVCpu, const CPUMFEATURESARMV8 * const pGstFeats)
+{
+    /** @todo implement FEAT_GCS */
+    Assert(!pGstFeats->fGcs);
+    RT_NOREF(pVCpu, pGstFeats);
+    return false;
+}
+
 /** @} */
 
 #endif /* !VMM_INCLUDED_SRC_VMMAll_target_armv8_IEMInline_armv8_h */

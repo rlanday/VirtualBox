@@ -172,6 +172,7 @@ VBOXSTRICTRC iemRaiseSystemAccessTrapSve(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT
 VBOXSTRICTRC iemRaiseSystemAccessTrapSme(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;
 VBOXSTRICTRC iemRaiseSystemAccessTrapAdvSimdFpAccessA64(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;
 VBOXSTRICTRC iemRaiseSystemAccessTrapUnknown(PVMCPU pVCpu, uint32_t uEl) RT_NOEXCEPT;
+VBOXSTRICTRC iemRaiseExlockException(PVMCPU pVCpu) RT_NOEXCEPT;
 
 IEM_CIMPL_PROTO_0(iemCImplRaiseInvalidOpcode);
 

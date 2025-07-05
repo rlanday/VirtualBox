@@ -53,7 +53,6 @@ from ArmAst import ArmAstConcat;
 from ArmAst import ArmAstCppExpr;
 from ArmAst import ArmAstCppExprBase;
 from ArmAst import ArmAstCppCall;
-from ArmAst import ArmAstCppStmt;
 from ArmAst import ArmAstDotAtom;
 from ArmAst import ArmAstField;
 from ArmAst import ArmAstFunction;
@@ -1351,7 +1350,7 @@ class SysRegGeneratorBase(object):
                 oInfo.cGstFeatsRefs     += 1;
             return True;
 
-        elif isinstance(oNode, (ArmAstBool, ArmAstCppExprBase, ArmAstCppStmt, ArmAstIfList, ArmAstInteger, ArmAstUnaryOp,
+        elif isinstance(oNode, (ArmAstBool, ArmAstCppExprBase, ArmAstIfList, ArmAstInteger, ArmAstUnaryOp,
                                 ArmAstAssignment, ArmAstStatementList, self.VBoxAstCppConcat)):
             return True;
 
@@ -1999,6 +1998,13 @@ class SysRegGeneratorBase(object):
                                  cBitsWidth = 64);
         raise Exception('Unexpected: %s' % (oNode,));
 
+    def transformCodePass2_GetCurrentEXLOCKEN(self, oNode): # pylint: disable=invalid-name
+        """ Pass 2: GetCurrentEXLOCKEN() -> helper call. """
+        if len(oNode.aoArgs) == 0:
+            return ArmAstCppCall('iemGetCurrentExlockEn', [ ArmAstCppExpr('pVCpu'), ArmAstCppExpr('pGstFeats'), ],
+                                 cBitsWidth = 1);
+        raise Exception('Unexpected: %s' % (oNode,));
+
     def transformCodePass2_PhysicalCountInt(self, oNode):
         """ Pass 2: Translate PhysicalCountInt(). """
         if len(oNode.aoArgs) == 0:
@@ -2583,6 +2589,8 @@ class SysRegGeneratorBase(object):
             # Undefined() -> return iemRaiseUndefined(pVCpu);
             if oNode.isMatchingFunctionCall('Undefined'):
                 return ArmAstReturn(ArmAstCppCall('iemRaiseUndefined', [ArmAstCppExpr('pVCpu')]));
+            if oNode.isMatchingFunctionCall('EXLOCKException'):
+                return ArmAstReturn(ArmAstCppCall('iemRaiseExlockException', [ArmAstCppExpr('pVCpu')]));
 
             # IsFeatureImplemented(FEAT_xxxx) -> pGstFeat->fXxxx:
             if oNode.sName == 'IsFeatureImplemented':
@@ -2597,6 +2605,9 @@ class SysRegGeneratorBase(object):
                 return self.transformCodePass2_EffectiveSCTLRMASK_EL1(oNode);
             if oNode.sName == 'EffectiveSCTLRMASK_EL2':
                 return self.transformCodePass2_EffectiveSCTLRMASK_EL1(oNode);
+
+            if oNode.sName == 'GetCurrentEXLOCKEN':
+                 return self.transformCodePass2_GetCurrentEXLOCKEN(oNode);
 
             if oNode.sName == 'PhysicalCountInt':
                 return self.transformCodePass2_PhysicalCountInt(oNode);
