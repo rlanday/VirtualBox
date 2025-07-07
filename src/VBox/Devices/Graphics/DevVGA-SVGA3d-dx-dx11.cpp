@@ -73,8 +73,6 @@
  * another ID3D11Device. This synchronization of access to shared resources kills performance actually.
  */
 
-/* A single staging ID3D11Buffer is used for uploading data to other buffers. */
-//#define DX_COMMON_STAGING_BUFFER
 /* Always flush after submitting a draw call for debugging. */
 //#define DX_FLUSH_AFTER_DRAW
 
@@ -106,11 +104,6 @@ typedef struct DXDEVICE
 
     ID3D11VideoDevice          *pVideoDevice;
     ID3D11VideoContext         *pVideoContext;
-#ifdef DX_COMMON_STAGING_BUFFER
-    /* Staging buffer for transfer to surface buffers. */
-    ID3D11Buffer              *pStagingBuffer;         /* The staging buffer resource. */
-    uint32_t                   cbStagingBuffer;        /* Current size of the staging buffer resource. */
-#endif
 
     D3D11BLITTER               Blitter;                /* Blits one texture to another. */
 } DXDEVICE;
@@ -195,9 +188,7 @@ typedef struct VMSVGA3DBACKENDSURFACE
         ID3D11Texture1D    *pTexture1D;
         ID3D11Texture2D    *pTexture2D;
         ID3D11Texture3D    *pTexture3D;
-#ifndef DX_COMMON_STAGING_BUFFER
         ID3D11Buffer       *pBuffer;
-#endif
     } dynamic;
 
     /* For reading the texture content. */
@@ -207,9 +198,7 @@ typedef struct VMSVGA3DBACKENDSURFACE
         ID3D11Texture1D    *pTexture1D;
         ID3D11Texture2D    *pTexture2D;
         ID3D11Texture3D    *pTexture3D;
-#ifndef DX_COMMON_STAGING_BUFFER
         ID3D11Buffer       *pBuffer;
-#endif
     } staging;
 
     /* Render target views, depth stencil views and shader resource views created for this texture or buffer. */
@@ -1480,10 +1469,6 @@ static void dxDeviceDestroy(PVMSVGA3DBACKEND pBackend, DXDEVICE *pDevice)
 
     BlitRelease(&pDevice->Blitter);
 
-#ifdef DX_COMMON_STAGING_BUFFER
-    D3D_RELEASE(pDevice->pStagingBuffer);
-#endif
-
     D3D_RELEASE(pDevice->pVideoDevice);
     D3D_RELEASE(pDevice->pVideoContext);
 
@@ -2578,99 +2563,7 @@ static bool dxIsDepthStencilFormat(DXGI_FORMAT dxgiFormat)
 }
 
 
-#if 0
-static int vmsvga3dBackSurfaceCreateBuffer(PVGASTATECC pThisCC, PVMSVGA3DDXCONTEXT pDXContext, PVMSVGA3DSURFACE pSurface)
-{
-    DXDEVICE *pDevice = dxDeviceGet(pThisCC->svga.p3dState);
-    AssertReturn(pDevice->pDevice, VERR_INVALID_STATE);
-
-    /* Buffers should be created as such. */
-    AssertReturn(RT_BOOL(pSurface->f.surfaceFlags & (  SVGA3D_SURFACE_HINT_INDEXBUFFER
-                                                     | SVGA3D_SURFACE_HINT_VERTEXBUFFER
-                                                     | SVGA3D_SURFACE_BIND_VERTEX_BUFFER
-                                                     | SVGA3D_SURFACE_BIND_INDEX_BUFFER
-                        )), VERR_INVALID_PARAMETER);
-
-    if (pSurface->pBackendSurface != NULL)
-    {
-        AssertFailed(); /** @todo Should the function not be used like that? */
-        vmsvga3dBackSurfaceDestroy(pThisCC, false, pSurface);
-    }
-
-    PVMSVGA3DMIPMAPLEVEL pMipLevel;
-    int rc = vmsvga3dMipmapLevel(pSurface, 0, 0, &pMipLevel);
-    AssertRCReturn(rc, rc);
-
-    PVMSVGA3DBACKENDSURFACE pBackendSurface;
-    rc = dxBackendSurfaceAlloc(&pBackendSurface);
-    AssertRCReturn(rc, rc);
-
-    LogFunc(("sid = %u, size = %u\n", pSurface->id, pMipLevel->cbSurface));
-
-    /* Upload the current data, if any. */
-    D3D11_SUBRESOURCE_DATA *pInitialData = NULL;
-    D3D11_SUBRESOURCE_DATA initialData;
-    if (pMipLevel->pSurfaceData)
-    {
-        initialData.pSysMem          = pMipLevel->pSurfaceData;
-        initialData.SysMemPitch      = pMipLevel->cbSurface;
-        initialData.SysMemSlicePitch = pMipLevel->cbSurface;
-
-        pInitialData = &initialData;
-    }
-
-    D3D11_BUFFER_DESC bd;
-    RT_ZERO(bd);
-    bd.ByteWidth = pMipLevel->cbSurface;
-    bd.Usage     = D3D11_USAGE_DEFAULT;
-    bd.BindFlags = dxBindFlags(pSurface->f.surfaceFlags);
-
-    HRESULT hr = pDevice->pDevice->CreateBuffer(&bd, pInitialData, &pBackendSurface->u.pBuffer);
-    Assert(SUCCEEDED(hr));
-#ifndef DX_COMMON_STAGING_BUFFER
-    if (SUCCEEDED(hr))
-    {
-        /* Map-able Buffer. */
-        bd.Usage          = D3D11_USAGE_DYNAMIC;
-        bd.BindFlags      = D3D11_BIND_SHADER_RESOURCE; /* Have to specify a supported flag, otherwise E_INVALIDARG will be returned. */
-        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        hr = pDevice->pDevice->CreateBuffer(&bd, pInitialData, &pBackendSurface->dynamic.pBuffer);
-        Assert(SUCCEEDED(hr));
-    }
-
-    if (SUCCEEDED(hr))
-    {
-        /* Staging texture. */
-        bd.Usage          = D3D11_USAGE_STAGING;
-        bd.BindFlags      = 0; /* No flags allowed. */
-        bd.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
-        hr = pDevice->pDevice->CreateBuffer(&bd, pInitialData, &pBackendSurface->staging.pBuffer);
-        Assert(SUCCEEDED(hr));
-    }
-#endif
-
-    if (SUCCEEDED(hr))
-    {
-        /*
-         * Success.
-         */
-        pBackendSurface->enmResType = VMSVGA3D_RESTYPE_BUFFER;
-        pBackendSurface->enmDxgiFormat = DXGI_FORMAT_UNKNOWN;
-        pSurface->pBackendSurface = pBackendSurface;
-        return VINF_SUCCESS;
-    }
-
-    /* Failure. */
-    D3D_RELEASE(pBackendSurface->u.pBuffer);
-#ifndef DX_COMMON_STAGING_BUFFER
-    D3D_RELEASE(pBackendSurface->dynamic.pBuffer);
-    D3D_RELEASE(pBackendSurface->staging.pBuffer);
-#endif
-    RTMemFree(pBackendSurface);
-    return VERR_NO_MEMORY;
-}
-#endif
-
+/** @todo Use vmsvga3dBackSurfaceCreateResource instead */
 static int vmsvga3dBackSurfaceCreateSoBuffer(PVGASTATECC pThisCC, PVMSVGA3DSURFACE pSurface)
 {
     DXDEVICE *pDevice = dxDeviceGet(pThisCC->svga.p3dState);
@@ -2699,7 +2592,6 @@ static int vmsvga3dBackSurfaceCreateSoBuffer(PVGASTATECC pThisCC, PVMSVGA3DSURFA
     bd.StructureByteStride = 0;
 
     HRESULT hr = pDevice->pDevice->CreateBuffer(&bd, 0, &pBackendSurface->u.pBuffer);
-#ifndef DX_COMMON_STAGING_BUFFER
     if (SUCCEEDED(hr))
     {
         /* Map-able Buffer. */
@@ -2719,7 +2611,6 @@ static int vmsvga3dBackSurfaceCreateSoBuffer(PVGASTATECC pThisCC, PVMSVGA3DSURFA
         hr = pDevice->pDevice->CreateBuffer(&bd, 0, &pBackendSurface->staging.pBuffer);
         Assert(SUCCEEDED(hr));
     }
-#endif
 
     if (SUCCEEDED(hr))
     {
@@ -2734,81 +2625,11 @@ static int vmsvga3dBackSurfaceCreateSoBuffer(PVGASTATECC pThisCC, PVMSVGA3DSURFA
 
     /* Failure. */
     D3D_RELEASE(pBackendSurface->u.pBuffer);
-#ifndef DX_COMMON_STAGING_BUFFER
     D3D_RELEASE(pBackendSurface->dynamic.pBuffer);
     D3D_RELEASE(pBackendSurface->staging.pBuffer);
-#endif
     RTMemFree(pBackendSurface);
     return VERR_NO_MEMORY;
 }
-
-#if 0
-static int vmsvga3dBackSurfaceCreateConstantBuffer(PVGASTATECC pThisCC, PVMSVGA3DDXCONTEXT pDXContext, PVMSVGA3DSURFACE pSurface, uint32_t offsetInBytes, uint32_t sizeInBytes)
-{
-    DXDEVICE *pDevice = dxDeviceGet(pThisCC->svga.p3dState);
-    AssertReturn(pDevice->pDevice, VERR_INVALID_STATE);
-
-    /* Buffers should be created as such. */
-    AssertReturn(RT_BOOL(pSurface->f.surfaceFlags & ( SVGA3D_SURFACE_BIND_CONSTANT_BUFFER)), VERR_INVALID_PARAMETER);
-
-    if (pSurface->pBackendSurface != NULL)
-    {
-        AssertFailed(); /** @todo Should the function not be used like that? */
-        vmsvga3dBackSurfaceDestroy(pThisCC, false, pSurface);
-    }
-
-    PVMSVGA3DMIPMAPLEVEL pMipLevel;
-    int rc = vmsvga3dMipmapLevel(pSurface, 0, 0, &pMipLevel);
-    AssertRCReturn(rc, rc);
-
-    ASSERT_GUEST_RETURN(   offsetInBytes < pMipLevel->cbSurface
-                        && sizeInBytes <= pMipLevel->cbSurface - offsetInBytes, VERR_INVALID_PARAMETER);
-
-    PVMSVGA3DBACKENDSURFACE pBackendSurface;
-    rc = dxBackendSurfaceAlloc(&pBackendSurface);
-    AssertRCReturn(rc, rc);
-
-    /* Upload the current data, if any. */
-    D3D11_SUBRESOURCE_DATA *pInitialData = NULL;
-    D3D11_SUBRESOURCE_DATA initialData;
-    if (pMipLevel->pSurfaceData)
-    {
-        initialData.pSysMem          = (uint8_t *)pMipLevel->pSurfaceData + offsetInBytes;
-        initialData.SysMemPitch      = pMipLevel->cbSurface;
-        initialData.SysMemSlicePitch = pMipLevel->cbSurface;
-
-        pInitialData = &initialData;
-
-        // Log(("%.*Rhxd\n", sizeInBytes, initialData.pSysMem));
-    }
-
-    D3D11_BUFFER_DESC bd;
-    RT_ZERO(bd);
-    bd.ByteWidth           = sizeInBytes;
-    bd.Usage               = D3D11_USAGE_DYNAMIC;
-    bd.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
-    bd.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE;
-    bd.MiscFlags           = 0;
-    bd.StructureByteStride = 0;
-
-    HRESULT hr = pDevice->pDevice->CreateBuffer(&bd, pInitialData, &pBackendSurface->u.pBuffer);
-    if (SUCCEEDED(hr))
-    {
-        /*
-         * Success.
-         */
-        pBackendSurface->enmResType = VMSVGA3D_RESTYPE_BUFFER;
-        pBackendSurface->enmDxgiFormat = DXGI_FORMAT_UNKNOWN;
-        pSurface->pBackendSurface = pBackendSurface;
-        return VINF_SUCCESS;
-    }
-
-    /* Failure. */
-    D3D_RELEASE(pBackendSurface->u.pBuffer);
-    RTMemFree(pBackendSurface);
-    return VERR_NO_MEMORY;
-}
-#endif
 
 
 static HRESULT dxCreateTexture(DXDEVICE *pDXDevice, PVMSVGA3DSURFACE pSurface, bool fIntermediate,
@@ -3188,45 +3009,6 @@ static int dxEnsureResource(PVGASTATECC pThisCC, uint32_t sid,
     *ppResource  = pResource;
     return VINF_SUCCESS;
 }
-
-
-#ifdef DX_COMMON_STAGING_BUFFER
-static int dxStagingBufferRealloc(DXDEVICE *pDXDevice, uint32_t cbRequiredSize)
-{
-    AssertReturn(cbRequiredSize < SVGA3D_MAX_SURFACE_MEM_SIZE, VERR_INVALID_PARAMETER);
-
-    if (RT_LIKELY(cbRequiredSize <= pDXDevice->cbStagingBuffer))
-        return VINF_SUCCESS;
-
-    D3D_RELEASE(pDXDevice->pStagingBuffer);
-
-    uint32_t const cbAlloc = RT_ALIGN_32(cbRequiredSize, _64K);
-
-    D3D11_SUBRESOURCE_DATA *pInitialData = NULL;
-    D3D11_BUFFER_DESC bd;
-    RT_ZERO(bd);
-    bd.ByteWidth           = cbAlloc;
-    bd.Usage               = D3D11_USAGE_STAGING;
-    //bd.BindFlags         = 0; /* No bind flags are allowed for staging resources. */
-    bd.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
-
-    int rc = VINF_SUCCESS;
-    ID3D11Buffer *pBuffer;
-    HRESULT hr = pDXDevice->pDevice->CreateBuffer(&bd, pInitialData, &pBuffer);
-    if (SUCCEEDED(hr))
-    {
-        pDXDevice->pStagingBuffer = pBuffer;
-        pDXDevice->cbStagingBuffer = cbAlloc;
-    }
-    else
-    {
-        pDXDevice->cbStagingBuffer = 0;
-        rc = VERR_NO_MEMORY;
-    }
-
-    return rc;
-}
-#endif
 
 
 static DECLCALLBACK(int) vmsvga3dBackInit(PPDMDEVINS pDevIns, PVGASTATE pThis, PVGASTATECC pThisCC)
@@ -5184,10 +4966,8 @@ static DECLCALLBACK(void) vmsvga3dBackSurfaceDestroy(PVGASTATECC pThisCC, bool f
     }
     else if (pBackendSurface->enmResType == VMSVGA3D_RESTYPE_BUFFER)
     {
-#ifndef DX_COMMON_STAGING_BUFFER
         D3D_RELEASE(pBackendSurface->staging.pBuffer);
         D3D_RELEASE(pBackendSurface->dynamic.pBuffer);
-#endif
         D3D_RELEASE(pBackendSurface->u.pBuffer);
     }
     else
@@ -7176,44 +6956,6 @@ static int dxReadBuffer(DXDEVICE *pDevice, ID3D11Buffer *pBuffer, UINT Offset, U
     *ppvData = pvData;
     *pcbData = Bytes;
 
-#ifdef DX_COMMON_STAGING_BUFFER
-    int rc = dxStagingBufferRealloc(pDevice, Bytes);
-    if (RT_SUCCESS(rc))
-    {
-        /* Copy 'Bytes' bytes starting at 'Offset' from the buffer to the start of staging buffer. */
-        ID3D11Resource *pDstResource = pDevice->pStagingBuffer;
-        UINT DstSubresource = 0;
-        UINT DstX = 0;
-        UINT DstY = 0;
-        UINT DstZ = 0;
-        ID3D11Resource *pSrcResource = pBuffer;
-        UINT SrcSubresource = 0;
-        D3D11_BOX SrcBox;
-        SrcBox.left   = Offset;
-        SrcBox.top    = 0;
-        SrcBox.front  = 0;
-        SrcBox.right  = Offset + Bytes;
-        SrcBox.bottom = 1;
-        SrcBox.back   = 1;
-        pDevice->pImmediateContext->CopySubresourceRegion(pDstResource, DstSubresource, DstX, DstY, DstZ,
-                                                          pSrcResource, SrcSubresource, &SrcBox);
-
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-        UINT const Subresource = 0; /* Buffers have only one subresource. */
-        HRESULT hr = pDevice->pImmediateContext->Map(pDevice->pStagingBuffer, Subresource,
-                                                     D3D11_MAP_READ, /* MapFlags =  */ 0, &mappedResource);
-        if (SUCCEEDED(hr))
-        {
-            memcpy(pvData, mappedResource.pData, Bytes);
-
-            /* Unmap the staging buffer. */
-            pDevice->pImmediateContext->Unmap(pDevice->pStagingBuffer, Subresource);
-        }
-        else
-            AssertFailedStmt(rc = VERR_NOT_SUPPORTED);
-
-    }
-#else
     D3D11_SUBRESOURCE_DATA *pInitialData = NULL;
     D3D11_BUFFER_DESC bd;
     RT_ZERO(bd);
@@ -7265,7 +7007,6 @@ static int dxReadBuffer(DXDEVICE *pDevice, ID3D11Buffer *pBuffer, UINT Offset, U
     {
         rc = VERR_NO_MEMORY;
     }
-#endif
 
     if (RT_FAILURE(rc))
     {
