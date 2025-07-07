@@ -131,7 +131,7 @@ private:
     class TaskOPC;
     class TaskCloud;
 
-    struct Data;            // opaque, defined in ApplianceImpl.cpp
+    struct Data;            // opaque, defined in ApplianceImplPrivate.h
     Data *m;
 
     enum SetUpProgressMode { ImportFile, ImportS3, WriteFile, WriteS3, ExportCloud, ImportCloud };
@@ -259,17 +259,18 @@ private:
     HRESULT i_exportCloudImpl(TaskCloud *pTask);
     HRESULT i_writeFSImpl(TaskOVF *pTask, AutoWriteLockBase &writeLock, RTVFSFSSTREAM hVfsFssDst);
     HRESULT i_writeBufferToFile(RTVFSFSSTREAM hVfsFssDst, const char *pszFilename, const void *pvContent, size_t cbContent);
+    HRESULT i_writeNvramFileToIoStream(Utf8Str strNvramSrcPath, Utf8Str strNvramDstFile, RTVFSFSSTREAM hVfsFssDst);
 
     struct XMLStack;
 
     void i_buildXML(AutoWriteLockBase& writeLock,
                     xml::Document &doc,
                     XMLStack &stack,
-                    const Utf8Str &strPath,
                     ovf::OVFVersion_T enFormat);
     void i_buildXMLForOneVirtualSystem(AutoWriteLockBase& writeLock,
                                        xml::ElementNode &elmToAddVirtualSystemsTo,
                                        std::list<xml::ElementNode*> *pllElementsWithUuidAttributes,
+                                       uint32_t &ulFile,
                                        ComObjPtr<VirtualSystemDescription> &vsdescThis,
                                        ovf::OVFVersion_T enFormat,
                                        XMLStack &stack);
