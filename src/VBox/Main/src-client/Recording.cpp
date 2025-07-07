@@ -898,10 +898,15 @@ void RecordingContext::reset(void)
  */
 int RecordingContext::startInternal(void)
 {
-    if (m_enmState == RECORDINGSTS_STARTED)
-        return VINF_SUCCESS;
+    lock();
 
-    Assert(m_enmState == RECORDINGSTS_CREATED);
+    if (m_enmState == RECORDINGSTS_STARTED)
+    {
+        unlock();
+        return VINF_SUCCESS;
+    }
+
+    AssertReturnStmt(m_enmState == RECORDINGSTS_CREATED, unlock(), VERR_WRONG_ORDER);
 
     LogRel2(("Recording: Starting ...\n"));
 
@@ -922,11 +927,34 @@ int RecordingContext::startInternal(void)
 
     if (RT_SUCCESS(vrc))
     {
-        LogRel(("Recording: Started\n"));
+        RecordingStreams::const_iterator itStream = m_vecStreams.begin();
+        while (itStream != m_vecStreams.end())
+        {
+            unlock();
+
+            int vrc2 = (*itStream)->Start();
+            if (RT_FAILURE(vrc2))
+            {
+                LogRel(("Recording: Failed to start stream #%RU32 (%Rrc)\n", (*itStream)->GetID(), vrc2));
+                if (RT_SUCCESS(vrc))
+                    vrc = vrc2;
+            }
+
+            lock();
+            /* Keep going. */
+            ++itStream;
+        }
+
+        if (RT_FAILURE(vrc))
+            LogRel(("Recording: Warning: One or more stream failed to start\n"));
+
+        LogRel2(("Recording: Started\n"));
         m_enmState  = RECORDINGSTS_STARTED;
     }
     else
         LogRel(("Recording: Failed to start (%Rrc)\n", vrc));
+
+    unlock();
 
     return vrc;
 }
@@ -935,6 +963,8 @@ int RecordingContext::startInternal(void)
  * Stops a recording context by telling the worker thread to stop and finalizing its operation.
  *
  * @returns VBox status code.
+ *
+ * @note    Takes the lock.
  */
 int RecordingContext::stopInternal(void)
 {
@@ -943,11 +973,39 @@ int RecordingContext::stopInternal(void)
 
     LogRel2(("Recording: Stopping ...\n"));
 
+    lock();
+
+    int vrc;
+
+    RecordingStreams::const_iterator itStream = m_vecStreams.begin();
+    while (itStream != m_vecStreams.end())
+    {
+        unlock();
+
+        int vrc2 = (*itStream)->Stop();
+        if (RT_FAILURE(vrc2))
+        {
+            LogRel(("Recording: Failed to stop stream #%RU32 (%Rrc)\n", (*itStream)->GetID(), vrc2));
+            if (RT_SUCCESS(vrc))
+                vrc = vrc2;
+        }
+
+        lock();
+
+        /* Keep going. */
+        ++itStream;
+    }
+
+    if (RT_FAILURE(vrc))
+        LogRel(("Recording: Warning: One or more stream failed to stop\n"));
+
+    unlock();
+
     /* Set shutdown indicator. */
     ASMAtomicWriteBool(&m_fShutdown, true);
 
     /* Signal the thread and wait for it to shut down. */
-    int vrc = threadNotify();
+    vrc = threadNotify();
     if (RT_SUCCESS(vrc))
         vrc = RTThreadWait(m_Thread, RT_MS_30SEC /* 30s timeout */, NULL);
 
@@ -984,8 +1042,12 @@ void RecordingContext::destroyInternal(void)
         return;
     }
 
+    unlock();
+
     int vrc = stopInternal();
     AssertRCReturnVoid(vrc);
+
+    lock();
 
     vrc = RTSemEventDestroy(m_WaitEvent);
     AssertRCReturnVoid(vrc);
@@ -1112,6 +1174,8 @@ size_t RecordingContext::GetStreamCount(void) const
  * @param   ptrConsole          Pointer to console object this context is bound to (weak pointer).
  * @param   Settings            Reference to recording settings to use for creation.
  * @param   pProgress           Progress object returned on success.
+ *
+ * @note    This does not actually start the recording -- use Start() for this.
  */
 int RecordingContext::Create(Console *ptrConsole, const settings::Recording &Settings, ComPtr<IProgress> &pProgress)
 {

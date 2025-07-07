@@ -331,10 +331,7 @@ DECLINLINE(void) recordingVideoFrameBlitRawAlpha(PRECORDINGVIDEOFRAME pFrame, ui
 
     Assert(enmFmt == RECORDINGPIXELFMT_BRGA32);
     Assert(pFrame->Info.enmPixelFmt == enmFmt);
-    Assert(pFrame->Info.uBPP == uSrcBPP);
-
-    Assert(uSrcBPP / 8 == 4); /* BGRA, 32-bit, must hold. */
-    Assert(pFrame->Info.uBPP / 8 == 4); /* Ditto. */
+    Assert(pFrame->Info.uBPP % 8 == 0);
 
     uint32_t uDstWidth  = pFrame->Info.uWidth;
     uint32_t uDstHeight = pFrame->Info.uHeight;

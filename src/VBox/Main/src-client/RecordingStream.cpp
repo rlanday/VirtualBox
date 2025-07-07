@@ -200,7 +200,8 @@ int RecordingStream::iterateInternal(uint64_t msTimestamp)
 {
     AssertReturn(!RTCritSectIsOwner(&m_CritSect), VERR_WRONG_ORDER);
 
-    if (!m_fEnabled)
+    if (   m_enmState != RECORDINGSTREAMSTATE_STARTED
+        && m_enmState != RECORDINGSTREAMSTATE_STOPPING)
         return VINF_SUCCESS;
 
     int vrc;
@@ -218,7 +219,7 @@ int RecordingStream::iterateInternal(uint64_t msTimestamp)
     {
         case VINF_RECORDING_LIMIT_REACHED:
         {
-            m_fEnabled = false;
+            m_enmState = RECORDINGSTREAMSTATE_STOPPED;
 
             int vrc2 = m_pCtx->onLimitReached(m_uScreenID, VINF_SUCCESS /* vrc */);
             AssertRC(vrc2);
@@ -241,7 +242,7 @@ int RecordingStream::iterateInternal(uint64_t msTimestamp)
  */
 bool RecordingStream::IsLimitReached(uint64_t msTimestamp) const
 {
-    if (!m_fEnabled)
+    if (m_enmState != RECORDINGSTREAMSTATE_STARTED)
         return true;
 
     return isLimitReachedInternal(msTimestamp);
@@ -255,7 +256,9 @@ bool RecordingStream::IsLimitReached(uint64_t msTimestamp) const
  */
 bool RecordingStream::IsFeatureEnabled(RecordingFeature_T enmFeature) const
 {
-    return m_fEnabled && m_ScreenSettings.isFeatureEnabled(enmFeature);
+    return (   (   m_enmState == RECORDINGSTREAMSTATE_STARTED
+                || m_enmState == RECORDINGSTREAMSTATE_PAUSED)
+            && m_ScreenSettings.isFeatureEnabled(enmFeature));
 }
 
 /**
@@ -507,6 +510,7 @@ int RecordingStream::ThreadMain(int rcWait, uint64_t msTimestamp, RecordingBlock
  * Adds a recording frame to be fed to the encoder.
  *
  * @returns VBox status code.
+ * @retval  VWRN_RECORDING_ENCODING_SKIPPED if the frame isn't accepted at that given point in time.
  * @param   pFrame              Recording frame to add.
  *                              Ownership of the frame will be transferred to the encoder on success then.
  *                              Must be free'd by the caller on failure.
@@ -516,11 +520,21 @@ int RecordingStream::ThreadMain(int rcWait, uint64_t msTimestamp, RecordingBlock
  */
 int RecordingStream::addFrame(PRECORDINGFRAME pFrame, uint64_t msTimestamp)
 {
-    LogFlowFuncEnter();
+    LogFlowFunc(("type=%#x, ts=%RU64, tsStartMs=%RU64\n", pFrame->enmType, pFrame->msTimestamp, m_tsStartMs));
 
     int vrc;
 
     Assert(pFrame->msTimestamp == msTimestamp); /* Sanity. */
+
+    /* Set starting timestamp as soon as the first screen change frame arrives.
+     * That way the picture will be in a consistent state. Ignore anything else before that.
+     * We don't want to have any blank content in the encoded file. */
+    if (!m_tsStartMs)
+    {
+        if (pFrame->enmType != RECORDINGFRAME_TYPE_SCREEN_CHANGE)
+            return VWRN_RECORDING_ENCODING_SKIPPED;
+        m_tsStartMs = RTTimeMilliTS();
+    }
 
     try
     {
@@ -595,7 +609,14 @@ int RecordingStream::addFrame(PRECORDINGFRAME pFrame, uint64_t msTimestamp)
  */
 int RecordingStream::SendAudioFrame(const void *pvData, size_t cbData, uint64_t msTimestamp)
 {
-    AssertPtrReturn(m_pCtx, VERR_WRONG_ORDER);
+#ifdef DEBUG
+    lock();
+
+    AssertPtrReturn(pvData, VERR_INVALID_POINTER);
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_STARTED, unlock(), VERR_WRONG_ORDER);
+
+    unlock();
+#endif
 
     /* As audio data is common across all streams, re-route this to the recording context, where
      * the data is being encoded and stored in the common blocks queue. */
@@ -609,11 +630,19 @@ int RecordingStream::SendAudioFrame(const void *pvData, size_t cbData, uint64_t 
  * @param   idCursor            Cursor ID. Currently unused and always set to 0.
  * @param   pPos                Cursor information to send.
  * @param   msTimestamp         Timestamp (PTS, in ms).
+ *
+ * @thread  EMT
  */
 int RecordingStream::SendCursorPos(uint8_t idCursor, PRECORDINGPOS pPos, uint64_t msTimestamp)
 {
     RT_NOREF(idCursor);
+
+#ifdef DEBUG
+    lock();
     AssertPtrReturn(pPos, VERR_INVALID_POINTER);
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_STARTED, unlock(), VERR_WRONG_ORDER);
+    unlock();
+#endif
 
     int vrc = iterateInternal(msTimestamp);
     if (vrc != VINF_SUCCESS) /* Can return VINF_RECORDING_LIMIT_REACHED. */
@@ -649,8 +678,13 @@ int RecordingStream::SendCursorPos(uint8_t idCursor, PRECORDINGPOS pPos, uint64_
 int RecordingStream::SendCursorShape(uint8_t idCursor, PRECORDINGVIDEOFRAME pShape, uint64_t msTimestamp)
 {
     RT_NOREF(idCursor);
+
+#ifdef DEBUG
+    lock();
     AssertPtrReturn(pShape, VERR_INVALID_POINTER);
-    AssertPtrReturn(m_pCtx, VERR_WRONG_ORDER);
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_STARTED, unlock(), VERR_WRONG_ORDER);
+    unlock();
+#endif
 
     int vrc = iterateInternal(msTimestamp);
     if (vrc != VINF_SUCCESS) /* Can return VINF_RECORDING_LIMIT_REACHED. */
@@ -698,8 +732,12 @@ int RecordingStream::SendCursorShape(uint8_t idCursor, PRECORDINGVIDEOFRAME pSha
  */
 int RecordingStream::SendVideoFrame(PRECORDINGVIDEOFRAME pVideoFrame, uint64_t msTimestamp)
 {
+#ifdef DEBUG
+    lock();
     AssertPtrReturn(pVideoFrame, VERR_INVALID_POINTER);
-    AssertPtrReturn(m_pCtx, VERR_WRONG_ORDER);
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_STARTED, unlock(), VERR_WRONG_ORDER);
+    unlock();
+#endif
 
     int vrc = iterateInternal(msTimestamp);
     if (vrc != VINF_SUCCESS) /* Can return VINF_RECORDING_LIMIT_REACHED. */
@@ -750,28 +788,42 @@ int RecordingStream::SendVideoFrame(PRECORDINGVIDEOFRAME pVideoFrame, uint64_t m
  * @param   pInfo               Recording screen info to use.
  * @param   msTimestamp         Timestamp (PTS, in ms).
  * @param   fForce              Set to \c true to force a change, otherwise to \c false.
+ *
+ * @thread  EMT
  */
 int RecordingStream::SendScreenChange(PRECORDINGSURFACEINFO pInfo, uint64_t msTimestamp, bool fForce /* = false */)
 {
+#ifdef DEBUG
+    lock();
     AssertPtrReturn(pInfo, VERR_INVALID_POINTER);
-
-    if (   !pInfo->uWidth
-        || !pInfo->uHeight)
-        return VINF_SUCCESS;
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_STARTED, unlock(), VERR_WRONG_ORDER);
+    unlock();
+#endif
 
     RT_NOREF(fForce);
 
-    LogRel(("Recording: Size of screen #%RU32 changed to %RU32x%RU32 (%RU8 BPP)\n",
-            m_uScreenID, pInfo->uWidth, pInfo->uHeight, pInfo->uBPP));
-
     lock();
+
+    /* Fend off screen change requests which match the current screen info we already have. */
+    if (   m_Video.ScreenInfo.uWidth  == pInfo->uWidth
+        && m_Video.ScreenInfo.uHeight == pInfo->uHeight
+        && m_Video.ScreenInfo.uBPP    == pInfo->uBPP)
+    {
+        unlock();
+        return VINF_SUCCESS;
+    }
+
+    m_Video.ScreenInfo = *pInfo;
+
+    LogRel(("Recording: Screen size of stream #%RU32 changed to %RU32x%RU32 (%RU8 BPP)\n",
+            m_uScreenID, m_Video.ScreenInfo.uWidth, m_Video.ScreenInfo.uHeight, m_Video.ScreenInfo.uBPP));
 
     PRECORDINGFRAME pFrame = (PRECORDINGFRAME)RTMemAlloc(sizeof(RECORDINGFRAME));
     AssertPtrReturn(pFrame, VERR_NO_MEMORY);
     pFrame->enmType      = RECORDINGFRAME_TYPE_SCREEN_CHANGE;
     pFrame->msTimestamp  = msTimestamp;
 
-    pFrame->u.ScreenInfo = *pInfo;
+    pFrame->u.ScreenInfo = m_Video.ScreenInfo;
 
     int vrc = addFrame(pFrame, msTimestamp);
 
@@ -782,12 +834,62 @@ int RecordingStream::SendScreenChange(PRECORDINGSURFACEINFO pInfo, uint64_t msTi
 }
 
 /**
+ * Starts an initialized recording stream.
+ *
+ * @returns VBox status code.
+ *
+ * @thread  EMT
+ */
+int RecordingStream::Start(void)
+{
+    lock();
+
+    AssertReturnStmt(m_enmState == RECORDINGSTREAMSTATE_INITIALIZED, unlock(), VERR_WRONG_ORDER);
+
+    int vrc = 0;
+
+    LogRel(("Recording: Starting to record stream #%RU32\n", m_uScreenID));
+    m_enmState = RECORDINGSTREAMSTATE_STARTED;
+
+    unlock();
+
+    return vrc;
+}
+
+/**
+ * Stops an started or paused recording stream.
+ *
+ * @returns VBox status code.
+ *
+ * @thread  EMT
+ */
+int RecordingStream::Stop(void)
+{
+    lock();
+
+    AssertReturnStmt(   m_enmState == RECORDINGSTREAMSTATE_STARTED
+                     || m_enmState == RECORDINGSTREAMSTATE_PAUSED, unlock(), VERR_WRONG_ORDER);
+
+    int vrc = 0;
+
+    LogRel(("Recording: Stopping to record stream #%RU32\n", m_uScreenID));
+    m_enmState = RECORDINGSTREAMSTATE_STOPPING;
+
+    unlock();
+
+    return vrc;
+}
+
+/**
  * Initializes a recording stream.
  *
  * @returns VBox status code.
  * @param   pCtx                Pointer to recording context.
  * @param   uScreen             Screen number to use for this recording stream.
  * @param   Settings            Recording screen configuration to use for initialization.
+ *
+ * @note    This does not start the stream. Use Start() for this.
+ * @thread  EMT
  */
 int RecordingStream::Init(RecordingContext *pCtx, uint32_t uScreen, const settings::RecordingScreen &Settings)
 {
@@ -817,8 +919,9 @@ int RecordingStream::initInternal(RecordingContext *pCtx, uint32_t uScreen,
     m_pCodecAudio    = m_pCtx->GetCodecAudio();
 #endif
     m_ScreenSettings = screenSettings;
-
     settings::RecordingScreen *pSettings = &m_ScreenSettings;
+
+    RT_ZERO(m_Video.ScreenInfo);
 
     int vrc = RTCritSectInit(&m_CritSect);
     if (RT_FAILURE(vrc))
@@ -965,9 +1068,6 @@ int RecordingStream::initInternal(RecordingContext *pCtx, uint32_t uScreen,
     if (RT_SUCCESS(vrc))
     {
         m_enmState  = RECORDINGSTREAMSTATE_INITIALIZED;
-        m_fEnabled  = true;
-        m_tsStartMs = RTTimeMilliTS();
-
         return VINF_SUCCESS;
     }
 
@@ -1102,7 +1202,6 @@ int RecordingStream::uninitInternal(void)
         m_hReqPool = NIL_RTREQPOOL;
 
         m_enmState = RECORDINGSTREAMSTATE_UNINITIALIZED;
-        m_fEnabled = false;
     }
 
 #ifdef VBOX_WITH_STATISTICS
@@ -1198,21 +1297,9 @@ int RecordingStream::initVideo(const settings::RecordingScreen &screenSettings)
     Callbacks.pvUser       = this;
     Callbacks.pfnWriteData = RecordingStream::codecWriteDataCallback;
 
-    RECORDINGSURFACEINFO ScreenInfo;
-    RT_ZERO(ScreenInfo);
-    ScreenInfo.uWidth        = screenSettings.Video.ulWidth;
-    ScreenInfo.uHeight       = screenSettings.Video.ulHeight;
-    ScreenInfo.uBPP          = 32; /* We always start with 32 bit. */
-    ScreenInfo.enmPixelFmt   = RECORDINGPIXELFMT_BRGA32 /* Only format we support right now */;
-    ScreenInfo.uBytesPerLine = screenSettings.Video.ulWidth * (ScreenInfo.uBPP / 8);
-
-    int vrc = SendScreenChange(&ScreenInfo, true /* fForce */);
+    int vrc = recordingCodecCreateVideo(pCodec, screenSettings.Video.enmCodec);
     if (RT_SUCCESS(vrc))
-    {
-        vrc = recordingCodecCreateVideo(pCodec, screenSettings.Video.enmCodec);
-        if (RT_SUCCESS(vrc))
-            vrc = recordingCodecInit(pCodec, &Callbacks, screenSettings);
-    }
+        vrc = recordingCodecInit(pCodec, &Callbacks, screenSettings);
 
     if (RT_FAILURE(vrc))
         LogRel(("Recording: Initializing video codec failed with %Rrc\n", vrc));

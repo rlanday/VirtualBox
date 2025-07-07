@@ -2174,31 +2174,30 @@ int Display::i_recordingScreenChanged(unsigned uScreenId, const DISPLAYFBINFO *p
 {
     RecordingContext *pCtx = Recording.pCtx;
 
-    Log2Func(("uScreenId=%u, w=%u, h=%u, bpp=%u\n", uScreenId, pFBInfo->w, pFBInfo->h, pFBInfo->u16BitsPerPixel));
+    Log2Func(("uScreenId=%u, VRAM=%p, w=%u, h=%u, bpp=%u, disabled=%RTbool\n",
+              uScreenId, pFBInfo->pu8FramebufferVRAM, pFBInfo->w, pFBInfo->h, pFBInfo->u16BitsPerPixel, pFBInfo->fDisabled));
 
     if (   !pCtx->IsFeatureEnabled(uScreenId, RecordingFeature_Video)
-        || !pFBInfo->pu8FramebufferVRAM)
-    {
-        /* Skip recording this screen. */
+        /* Skip disabled framebuffers or blank screens.
+         * Also will happen on VM restore when starting recording automatically. */
+        || !pFBInfo->pu8FramebufferVRAM
+        ||  pFBInfo->fDisabled)
         return VINF_SUCCESS;
-    }
 
     if (uScreenId == 0xFFFFFFFF /* SVGA_ID_INVALID -- The old register interface is single screen only */)
         uScreenId = VBOX_VIDEO_PRIMARY_SCREEN;
 
     AssertReturn(uScreenId < mcMonitors, VERR_INVALID_PARAMETER);
-    AssertReturn(pFBInfo->w, VERR_INVALID_PARAMETER);
-    AssertReturn(pFBInfo->h, VERR_INVALID_PARAMETER);
-    AssertReturn(pFBInfo->u16BitsPerPixel && pFBInfo->u16BitsPerPixel % 8 == 0, VERR_INVALID_PARAMETER);
-    AssertReturn(pFBInfo->u32LineSize, VERR_INVALID_PARAMETER);
 
     i_updateDeviceCursorCapabilities();
 
     RECORDINGSURFACEINFO ScreenInfo;
-    ScreenInfo.uWidth      = pFBInfo->w;
-    ScreenInfo.uHeight     = pFBInfo->h;
-    ScreenInfo.uBPP        = pFBInfo->u16BitsPerPixel;
-    ScreenInfo.enmPixelFmt = RECORDINGPIXELFMT_BRGA32; /** @todo Does this apply everywhere? */
+    ScreenInfo.uWidth        = pFBInfo->w;
+    ScreenInfo.uHeight       = pFBInfo->h;
+    /* We always operate with BRGA32 internally. */
+    ScreenInfo.uBPP          = 32;
+    ScreenInfo.uBytesPerLine = pFBInfo->w * 4 /* Bytes */;
+    ScreenInfo.enmPixelFmt   = RECORDINGPIXELFMT_BRGA32;
 
     uint64_t const tsNowMs = pCtx->GetCurrentPTS();
 
