@@ -975,7 +975,7 @@ int RecordingContext::stopInternal(void)
 
     lock();
 
-    int vrc;
+    int vrc = VINF_SUCCESS;
 
     RecordingStreams::const_iterator itStream = m_vecStreams.begin();
     while (itStream != m_vecStreams.end())
