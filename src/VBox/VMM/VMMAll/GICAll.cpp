@@ -923,15 +923,6 @@ static void gicReDistReadLpiPendingBitmapFromMem(PPDMDEVINS pDevIns, PVMCPU pVCp
 }
 
 
-DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
-{
-    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
-    RT_NOREF4(pDevIns, pVCpu, uIntId, fAsserted);
-    AssertMsgFailed(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
-}
-
-
-
 /**
  * Updates the internal IRQ state and sets or clears the appropriate force action
  * flags.
@@ -2906,6 +2897,32 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
 }
 
 
+DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
+{
+    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
+    Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
+
+    /*
+     * LPIs are always non-secure group 1 interrupts with edge-triggered behavior.
+     * LPIs do -not- have an active state and thus don't require explicit deactivation.
+     * See ARM GIC spec. 1.2.1 "Interrupt Types".
+     */
+    PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+
+    Assert(GIC_IS_INTR_LPI(pGicDev, uIntId));
+    uint16_t const idxIntr = uIntId - GIC_INTID_RANGE_LPI_START;
+    Assert(idxIntr < sizeof(pGicCpu->bmLpiPending) * 8);
+
+    if (fAsserted)
+        ASMBitSet(&pGicCpu->bmLpiPending, idxIntr);
+    else
+        ASMBitClear(&pGicCpu->bmLpiPending, idxIntr);
+
+    gicReDistUpdateIrqState(pGicDev, pVCpu);
+}
+
+
 /**
  * @interface_method_impl{PDMGICBACKEND,pfnSendMsi}
  */
@@ -2929,10 +2946,7 @@ DECL_HIDDEN_CALLBACK(int) gicSendMsi(PVMCC pVM, PCIBDF uBusDevFn, PCMSIMSG pMsi,
     STAM_COUNTER_INC(&pGicDev->StatSetLpi);
 
     gitsSetLpi(pDevIns, &pGicDev->Gits, uDevId, uEventId, true /* fAsserted */);
-
-    AssertMsgFailed(("uBusDevFn=%#RX32 (%RTbool) Msi.Addr=%#RX64 Msi.Data=%#RX32\n", uBusDevFn, PCIBDF_IS_VALID(uBusDevFn),
-                     pMsi->Addr.u64, pMsi->Data.u32));
-    return VERR_NOT_IMPLEMENTED;
+    return VINF_SUCCESS;
 }
 
 
