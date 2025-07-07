@@ -1683,6 +1683,9 @@ static int vmsvgaR3TransferSurfaceLevel(PVGASTATECC pThisCC,
 
     PVMSVGAR3STATE const pSvgaR3State = pThisCC->svga.pSvgaR3State;
 
+    if (vmsvga3dIsEntireImage(pThisCC, pImage, pBox))
+        pBox = NULL;
+
     VMSVGA3D_SURFACE_MAP enmMapType;
     if (enmTransfer == SVGA3D_WRITE_HOST_VRAM)
         enmMapType = pBox
@@ -1694,7 +1697,7 @@ static int vmsvgaR3TransferSurfaceLevel(PVGASTATECC pThisCC,
         AssertFailedReturn(VERR_INVALID_PARAMETER);
 
     VMSVGA3D_MAPPED_SURFACE map;
-    int rc = vmsvga3dSurfaceMap(pThisCC, pImage, pBox, enmMapType, &map);
+    int rc = vmsvga3dSurfaceMap(pThisCC, pImage, pBox, enmMapType, VMSVGA3D_MAP_F_NONE, &map);
     if (RT_SUCCESS(rc))
     {
         /* Copy mapped surface <-> MOB. */
@@ -3347,14 +3350,14 @@ static int vmsvga3dCmdDXBufferCopy(PVGASTATECC pThisCC, uint32_t idDXContext, SV
      * Map the source buffer.
      */
     VMSVGA3D_MAPPED_SURFACE mapBufferSrc;
-    rc = vmsvga3dSurfaceMap(pThisCC, &imageBufferSrc, NULL, VMSVGA3D_SURFACE_MAP_READ, &mapBufferSrc);
+    rc = vmsvga3dSurfaceMap(pThisCC, &imageBufferSrc, NULL, VMSVGA3D_SURFACE_MAP_READ, VMSVGA3D_MAP_F_NONE, &mapBufferSrc);
     if (RT_SUCCESS(rc))
     {
         /*
          * Map the destination buffer.
          */
         VMSVGA3D_MAPPED_SURFACE mapBufferDest;
-        rc = vmsvga3dSurfaceMap(pThisCC, &imageBufferDest, NULL, VMSVGA3D_SURFACE_MAP_WRITE, &mapBufferDest);
+        rc = vmsvga3dSurfaceMap(pThisCC, &imageBufferDest, NULL, VMSVGA3D_SURFACE_MAP_WRITE, VMSVGA3D_MAP_F_NONE, &mapBufferDest);
         if (RT_SUCCESS(rc))
         {
             /*
@@ -3421,14 +3424,15 @@ static int vmsvga3dCmdDXTransferFromBuffer(PVGASTATECC pThisCC, SVGA3dCmdDXTrans
      * Map the buffer.
      */
     VMSVGA3D_MAPPED_SURFACE mapBuffer;
-    rc = vmsvga3dSurfaceMap(pThisCC, &imageBuffer, NULL, VMSVGA3D_SURFACE_MAP_READ, &mapBuffer);
+    rc = vmsvga3dSurfaceMap(pThisCC, &imageBuffer, NULL, VMSVGA3D_SURFACE_MAP_READ, VMSVGA3D_MAP_F_NONE, &mapBuffer);
     if (RT_SUCCESS(rc))
     {
         /*
          * Map the surface.
          */
         VMSVGA3D_MAPPED_SURFACE mapSurface;
-        rc = vmsvga3dSurfaceMap(pThisCC, &imageSurface, &pCmd->destBox, VMSVGA3D_SURFACE_MAP_WRITE, &mapSurface);
+        rc = vmsvga3dSurfaceMap(pThisCC, &imageSurface, &pCmd->destBox, VMSVGA3D_SURFACE_MAP_WRITE_DISCARD,
+            VMSVGA3D_MAP_F_DYNAMIC_INTERMEDIATE | VMSVGA3D_MAP_F_EXACT_REGION, &mapSurface);
         if (RT_SUCCESS(rc))
         {
             /*

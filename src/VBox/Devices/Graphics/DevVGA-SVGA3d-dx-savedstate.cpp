@@ -349,7 +349,7 @@ static int vmsvga3dDXSaveSurface(PCPDMDEVHLPR3 pHlp, PVGASTATECC pThisCC, PSSMHA
                 AssertRCReturn(rc, rc);
 
                 VMSVGA3D_MAPPED_SURFACE map;
-                rc = vmsvga3dSurfaceMap(pThisCC, &image, NULL, VMSVGA3D_SURFACE_MAP_READ, &map);
+                rc = vmsvga3dSurfaceMap(pThisCC, &image, NULL, VMSVGA3D_SURFACE_MAP_READ, VMSVGA3D_MAP_F_NONE, &map);
                 if (RT_SUCCESS(rc))
                 {
                     /* Save mapped surface data. */
