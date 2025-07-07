@@ -21527,11 +21527,16 @@
  */
 
 /* MSR  {<systemreg> | S<op0>_<op1>_<Cn>_<Cm>_<op2>}, <Xt> (fff00000/d5100000) */
-//#define IEM_INSTR_IMPL_A64__MSR_SR_systemmove(Rt, op2, CRm, CRn, op1, o0)
-
+#define IEM_INSTR_IMPL_A64__MSR_SR_systemmove(Rt, op2, CRm, CRn, op1, o0) \
+    IEM_MC_CALL_CIMPL_2(IEM_CIMPL_F_MODE | IEM_CIMPL_F_CHECK_IRQ_BEFORE_AND_AFTER | IEM_CIMPL_F_XCPT, \
+                        0 /** @todo any sysregs we may be shadowing... */, \
+                        iemCImplA64_msr, ARMV8_AARCH64_SYSREG_ID_CREATE(2 | o0, op1, CRn, CRm, op2), Rt)
 
 /* MRS  <Xt>, {<systemreg> | S<op0>_<op1>_<Cn>_<Cm>_<op2>} (fff00000/d5300000) */
-//#define IEM_INSTR_IMPL_A64__MRS_RS_systemmove(Rt, op2, CRm, CRn, op1, o0)
+#define IEM_INSTR_IMPL_A64__MRS_RS_systemmove(Rt, op2, CRm, CRn, op1, o0) \
+    IEM_MC_CALL_CIMPL_2(IEM_CIMPL_F_CHECK_IRQ_BEFORE_AND_AFTER | IEM_CIMPL_F_XCPT, \
+                        RT_BIT_64(kIemNativeGstReg_GprFirst + Rt), \
+                        iemCImplA64_mrs, ARMV8_AARCH64_SYSREG_ID_CREATE(2 | o0, op1, CRn, CRm, op2), Rt)
 
 
 

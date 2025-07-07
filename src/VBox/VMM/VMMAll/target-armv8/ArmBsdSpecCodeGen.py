@@ -1379,7 +1379,11 @@ class SysRegGeneratorBase(object):
 
         # Add a return statement if necessary.
         if not oInfo.oCode.doAllPathsReturn():
-            oInfo.oCode = ArmAstStatementList([oInfo.oCode, ArmAstReturn(ArmAstCppExpr('VINF_SUCCESS')),]);
+            oInfo.oCode = ArmAstStatementList([
+                oInfo.oCode,
+                ArmAstReturn(ArmAstCppExpr('iemRegPc%sIncAndFinishingClearingFlags(pVCpu, VINF_SUCCESS)'
+                                           % ('A64' if self.isA64Instruction() else 'A32',), 32)),
+            ]);
 
         # Update the completion status and other statistics.
         self.checkCConversion(oInfo, oInfo.oCode);
@@ -2607,7 +2611,7 @@ class SysRegGeneratorBase(object):
                 return self.transformCodePass2_EffectiveSCTLRMASK_EL1(oNode);
 
             if oNode.sName == 'GetCurrentEXLOCKEN':
-                 return self.transformCodePass2_GetCurrentEXLOCKEN(oNode);
+                return self.transformCodePass2_GetCurrentEXLOCKEN(oNode);
 
             if oNode.sName == 'PhysicalCountInt':
                 return self.transformCodePass2_PhysicalCountInt(oNode);
@@ -2925,7 +2929,7 @@ class SysRegGeneratorA64MsrReg(SysRegGeneratorBase):
         # Return statements w/o a value are NOP branches, make them return VINF_SUCCESS.
         elif isinstance(oNode, ArmAstReturn):
             if not oNode.oValue:
-                return ArmAstReturn(ArmAstCppExpr('VINF_SUCCESS', 32));
+                return ArmAstReturn(ArmAstCppExpr('iemRegPcA64IncAndFinishingClearingFlags(pVCpu, VINF_SUCCESS)', 32));
 
         return super().transformCodePass2Callback(oNode, fEliminationAllowed, oInfo, aoStack);
 
