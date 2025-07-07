@@ -601,49 +601,6 @@ DECLHIDDEN(int) cpumR3LoadDoneTarget(PVM pVM, PSSMHANDLE pSSM)
     return VINF_SUCCESS;
 }
 
-/**
- * Formats the PSTATE value into mnemonics.
- *
- * @param   pszPState   Where to write the mnemonics. (Assumes sufficient buffer space.)
- * @param   fPState     The PSTATE value with both guest hardware and VBox
- *                      internal bits included.
- */
-static void cpumR3InfoFormatPState(char *pszPState, uint32_t fPState)
-{
-    /*
-     * Format the flags.
-     */
-    static const struct
-    {
-        const char *pszSet; const char *pszClear; uint32_t fFlag;
-    }   s_aFlags[] =
-    {
-        { "SP", "nSP", ARMV8_SPSR_EL2_AARCH64_SP },
-        { "M4", "nM4", ARMV8_SPSR_EL2_AARCH64_M4 },
-        { "T",  "nT",  ARMV8_SPSR_EL2_AARCH64_T  },
-        { "nF", "F",   ARMV8_SPSR_EL2_AARCH64_F  },
-        { "nI", "I",   ARMV8_SPSR_EL2_AARCH64_I  },
-        { "nA", "A",   ARMV8_SPSR_EL2_AARCH64_A  },
-        { "nD", "D",   ARMV8_SPSR_EL2_AARCH64_D  },
-        { "V",  "nV",  ARMV8_SPSR_EL2_AARCH64_V  },
-        { "C",  "nC",  ARMV8_SPSR_EL2_AARCH64_C  },
-        { "Z",  "nZ",  ARMV8_SPSR_EL2_AARCH64_Z  },
-        { "N",  "nN",  ARMV8_SPSR_EL2_AARCH64_N  },
-    };
-    char *psz = pszPState;
-    for (unsigned i = 0; i < RT_ELEMENTS(s_aFlags); i++)
-    {
-        const char *pszAdd = s_aFlags[i].fFlag & fPState ? s_aFlags[i].pszSet : s_aFlags[i].pszClear;
-        if (pszAdd)
-        {
-            strcpy(psz, pszAdd);
-            psz += strlen(pszAdd);
-            *psz++ = ' ';
-        }
-    }
-    psz[-1] = '\0';
-}
-
 
 DECLHIDDEN(void) cpumR3InfoOneTarget(PVM pVM, PCVMCPU pVCpu, PCDBGFINFOHLP pHlp, CPUMDUMPTYPE enmType)
 {
@@ -653,8 +610,8 @@ DECLHIDDEN(void) cpumR3InfoOneTarget(PVM pVM, PCVMCPU pVCpu, PCDBGFINFOHLP pHlp,
     /*
      * Format the PSTATE.
      */
-    char szPState[80];
-    cpumR3InfoFormatPState(&szPState[0], pCtx->fPState);
+    char szPState[160];
+    DBGFR3RegFormatArmV8PState(szPState, pCtx->fPState);
 
     /*
      * Format the registers.

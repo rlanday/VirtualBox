@@ -714,7 +714,6 @@ DECLHIDDEN(void)    cpumR3CpuIdInfoVerboseCompareListU64(PCPUMCPUIDINFOSTATE pTh
 
 int                 cpumR3DbGetCpuInfo(const char *pszName, PCPUMINFO pInfo);
 #  ifdef VBOX_VMM_TARGET_X86
-DECLHIDDEN(void)    cpumR3InfoFormatFlagsX86(char *pszEFlags, uint32_t efl);
 int                 cpumR3MsrRangesInsert(PVM pVM, PCPUMMSRRANGE *ppaMsrRanges, uint32_t *pcMsrRanges, PCCPUMMSRRANGE pNewRange);
 DECLHIDDEN(int)     cpumR3MsrReconcileWithCpuId(PVM pVM, bool fForceFlushCmd, bool fForceSpecCtrl);
 int                 cpumR3MsrApplyFudge(PVM pVM);
