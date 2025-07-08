@@ -1083,8 +1083,8 @@ int RecordingStream::initInternal(RecordingContext *pCtx, uint32_t uScreen,
          ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessAudio,
                                              STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
                                              "Profiling the processing function (audio).", "/Main/Recording/Stream%RU32/ProfileFnProcessAudio", uScreen);
-    }
 # endif
+    }
 #endif
 
     if (RT_SUCCESS(vrc))
