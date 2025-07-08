@@ -406,10 +406,10 @@ DECL_FORCE_INLINE(uint64_t) iemGRegFetchU64(PVMCPUCC pVCpu, uint8_t iReg, bool f
  *
  * @param   pVCpu   The cross context virtual CPU structure of the calling thread.
  * @param   iReg    The register.
- * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  * @param   uValue  The value to store.
+ * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  */
-DECL_FORCE_INLINE(void) iemGRegStoreU8(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, uint8_t uValue) RT_NOEXCEPT
+DECL_FORCE_INLINE(void) iemGRegStoreU8(PVMCPUCC pVCpu, uint8_t iReg, uint8_t uValue, bool fSp = false) RT_NOEXCEPT
 {
     Assert(iReg < 32);
     if (iReg < 31)
@@ -425,10 +425,10 @@ DECL_FORCE_INLINE(void) iemGRegStoreU8(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, u
  *
  * @param   pVCpu   The cross context virtual CPU structure of the calling thread.
  * @param   iReg    The register.
- * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  * @param   uValue  The value to store.
+ * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  */
-DECL_FORCE_INLINE(void) iemGRegStoreU16(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, uint16_t uValue) RT_NOEXCEPT
+DECL_FORCE_INLINE(void) iemGRegStoreU16(PVMCPUCC pVCpu, uint8_t iReg, uint16_t uValue, bool fSp = false) RT_NOEXCEPT
 {
     Assert(iReg < 32);
     if (iReg < 31)
@@ -444,10 +444,10 @@ DECL_FORCE_INLINE(void) iemGRegStoreU16(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, 
  *
  * @param   pVCpu   The cross context virtual CPU structure of the calling thread.
  * @param   iReg    The register.
- * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  * @param   uValue  The value to store.
+ * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  */
-DECL_FORCE_INLINE(void) iemGRegStoreU32(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, uint32_t uValue) RT_NOEXCEPT
+DECL_FORCE_INLINE(void) iemGRegStoreU32(PVMCPUCC pVCpu, uint8_t iReg, uint32_t uValue, bool fSp = false) RT_NOEXCEPT
 {
     Assert(iReg < 32);
     if (iReg < 31)
@@ -462,10 +462,10 @@ DECL_FORCE_INLINE(void) iemGRegStoreU32(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, 
  *
  * @param   pVCpu   The cross context virtual CPU structure of the calling thread.
  * @param   iReg    The register.
- * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  * @param   uValue  The value to store.
+ * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  */
-DECL_FORCE_INLINE(void) iemGRegStoreU64(PVMCPUCC pVCpu, uint8_t iReg, bool fSp, uint64_t uValue) RT_NOEXCEPT
+DECL_FORCE_INLINE(void) iemGRegStoreU64(PVMCPUCC pVCpu, uint8_t iReg, uint64_t uValue, bool fSp = false) RT_NOEXCEPT
 {
     Assert(iReg < 32);
     if (iReg < 31)

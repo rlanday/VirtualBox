@@ -1026,6 +1026,8 @@ typedef const ARMV8SPSREL2 *PCXARMV8SPSREL2;
 #define ARMV8_SPSR_EL2_AARCH64_RSVD_32_63           (UINT64_C(0xffffffe000000000))
 /** Checks whether the given SPSR value contains a AARCH64 execution state. */
 #define ARMV8_SPSR_EL2_IS_AARCH64_STATE(a_Spsr)     (!((a_Spsr) & ARMV8_SPSR_EL2_AARCH64_M4))
+/** AArch64 conditional flag mask. */
+#define ARMV8_SPSR_EL2_AARCH64_NZCV                 UINT64_C(0x00000000f0000000)
 /** @} */
 
 /** @name Aarch64 Exception levels

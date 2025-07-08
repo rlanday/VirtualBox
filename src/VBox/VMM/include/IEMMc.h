@@ -137,9 +137,9 @@
 
 /** @todo these zero-extends the result, which can be a bit confusing for
  *        IEM_MC_STORE_GREG_I32... */
-#define IEM_MC_STORE_GREG_U32(a_iGReg, a_u32Value)      *iemGRegRefU64(pVCpu, (a_iGReg)) = (uint32_t)(a_u32Value) /* clear high bits. */
+#define IEM_MC_STORE_GREG_U32(a_iGReg, a_u32Value)      iemGRegStoreU32(pVCpu, (a_iGReg), (uint32_t)(a_u32Value)) /* clear high bits. */
 #define IEM_MC_STORE_GREG_I32(a_iGReg, a_i32Value)      *iemGRegRefU64(pVCpu, (a_iGReg)) = (uint32_t)(a_i32Value) /* clear high bits. */
-#define IEM_MC_STORE_GREG_U64(a_iGReg, a_u64Value)      *iemGRegRefU64(pVCpu, (a_iGReg)) = (a_u64Value)
+#define IEM_MC_STORE_GREG_U64(a_iGReg, a_u64Value)      iemGRegStoreU64(pVCpu, (a_iGReg), (a_u64Value))
 #define IEM_MC_STORE_GREG_I64(a_iGReg, a_i64Value)      *iemGRegRefI64(pVCpu, (a_iGReg)) = (a_i64Value)
 #define IEM_MC_STORE_GREG_U32_CONST                     IEM_MC_STORE_GREG_U32
 #define IEM_MC_STORE_GREG_U64_CONST                     IEM_MC_STORE_GREG_U64
@@ -175,6 +175,8 @@
         *pu64Reg = (uint32_t)((uint32_t)*pu64Reg + (a_u32Value)); \
     } while (0)
 #define IEM_MC_ADD_GREG_U64(a_iGReg, a_u64Value)        *iemGRegRefU64(pVCpu, (a_iGReg)) += (a_u64Value)
+#define IEM_MC_ADD_LOCAL_U32(a_u32Value, a_u32Const)    do { (a_u32Value) += (a_u32Const); } while (0)
+#define IEM_MC_ADD_LOCAL_U64(a_u64Value, a_u64Const)    do { (a_u64Value) += (a_u64Const); } while (0)
 
 #define IEM_MC_SUB_GREG_U32(a_iGReg, a_u8Const) \
     do { /* Clears the high 32 bits of the register. */ \
@@ -182,7 +184,8 @@
         *pu64Reg = (uint32_t)((uint32_t)*pu64Reg - (a_u8Const)); \
     } while (0)
 #define IEM_MC_SUB_GREG_U64(a_iGReg, a_u8Const)          *iemGRegRefU64(pVCpu, (a_iGReg)) -= (a_u8Const)
-#define IEM_MC_SUB_LOCAL_U16(a_u16Value, a_u16Const)     do { (a_u16Value) -= a_u16Const; } while (0)
+#define IEM_MC_SUB_LOCAL_U32(a_u32Value, a_u32Const)    do { (a_u32Value) -= (a_u32Const); } while (0)
+#define IEM_MC_SUB_LOCAL_U64(a_u64Value, a_u64Const)    do { (a_u64Value) -= (a_u64Const); } while (0)
 
 #define IEM_MC_ADD_GREG_U8_TO_LOCAL(a_u8Value, a_iGReg)    do { (a_u8Value)  += iemGRegFetchU8( pVCpu, (a_iGReg)); } while (0)
 #define IEM_MC_ADD_GREG_U16_TO_LOCAL(a_u16Value, a_iGReg)  do { (a_u16Value) += iemGRegFetchU16(pVCpu, (a_iGReg)); } while (0)
@@ -215,9 +218,17 @@
 #define IEM_MC_SHL_LOCAL_S32(a_i32Local, a_cShift)      do { (a_i32Local) <<= (a_cShift);  } while (0)
 #define IEM_MC_SHL_LOCAL_S64(a_i64Local, a_cShift)      do { (a_i64Local) <<= (a_cShift);  } while (0)
 
+
+#define IEM_MC_ADD_2LOCS_U32(a_u32Value, a_u32Addend)   do { (a_u32Value) += a_u32Addend; } while (0)
+#define IEM_MC_ADD_2LOCS_U64(a_u64Value, a_u64Addend)   do { (a_u64Value) += a_u64Addend; } while (0)
+
+#define IEM_MC_SUB_2LOCS_U32(a_u32Value, a_u32Subtrahend) do { (a_u32Value) -= a_u32Subtrahend; } while (0)
+#define IEM_MC_SUB_2LOCS_U64(a_u64Value, a_u64Subtrahend) do { (a_u64Value) -= a_u64Subtrahend; } while (0)
+
 #define IEM_MC_AND_2LOCS_U32(a_u32Local, a_u32Mask)     do { (a_u32Local) &= (a_u32Mask); } while (0)
 
 #define IEM_MC_OR_2LOCS_U32(a_u32Local, a_u32Mask)      do { (a_u32Local) |= (a_u32Mask); } while (0)
+
 
 #define IEM_MC_AND_GREG_U32(a_iGReg, a_u32Value) \
     do {  /* Clears the high 32 bits of the register. */ \

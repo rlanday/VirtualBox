@@ -116,7 +116,14 @@
  */
 
 /* ADD  <Wd|WSP>, <Wn|WSP>, #<imm>{, <shift>} (ff800000/11000000) */
-//#define IEM_INSTR_IMPL_A64__ADD_32_addsub_imm(Rd, Rn, imm12, sh)
+#define IEM_INSTR_IMPL_A64__ADD_32_addsub_imm(Rd, Rn, imm12, sh) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint32_t, uTmp); \
+    IEM_MC_FETCH_GREG_SP_U32(uTmp, Rn); \
+    IEM_MC_ADD_LOCAL_U32(uTmp, !sh ? imm12 : imm12 << 12); \
+    IEM_MC_STORE_GREG_SP_U32(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* ADDS  <Wd>, <Wn|WSP>, #<imm>{, <shift>} (ff800000/31000000) */
@@ -124,7 +131,14 @@
 
 
 /* SUB  <Wd|WSP>, <Wn|WSP>, #<imm>{, <shift>} (ff800000/51000000) */
-//#define IEM_INSTR_IMPL_A64__SUB_32_addsub_imm(Rd, Rn, imm12, sh)
+#define IEM_INSTR_IMPL_A64__SUB_32_addsub_imm(Rd, Rn, imm12, sh) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint32_t, uTmp); \
+    IEM_MC_FETCH_GREG_SP_U32(uTmp, Rn); \
+    IEM_MC_SUB_LOCAL_U32(uTmp, !sh ? imm12 : imm12 << 12); \
+    IEM_MC_STORE_GREG_SP_U32(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* SUBS  <Wd>, <Wn|WSP>, #<imm>{, <shift>} (ff800000/71000000) */
@@ -132,7 +146,14 @@
 
 
 /* ADD  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>} (ff800000/91000000) */
-//#define IEM_INSTR_IMPL_A64__ADD_64_addsub_imm(Rd, Rn, imm12, sh)
+#define IEM_INSTR_IMPL_A64__ADD_64_addsub_imm(Rd, Rn, imm12, sh) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint64_t, uTmp); \
+    IEM_MC_FETCH_GREG_SP_U64(uTmp, Rn); \
+    IEM_MC_ADD_LOCAL_U64(uTmp, !sh ? imm12 : imm12 << 12); \
+    IEM_MC_STORE_GREG_SP_U64(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* ADDS  <Xd>, <Xn|SP>, #<imm>{, <shift>} (ff800000/b1000000) */
@@ -140,11 +161,27 @@
 
 
 /* SUB  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>} (ff800000/d1000000) */
-//#define IEM_INSTR_IMPL_A64__SUB_64_addsub_imm(Rd, Rn, imm12, sh)
+#define IEM_INSTR_IMPL_A64__SUB_64_addsub_imm(Rd, Rn, imm12, sh) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint64_t, uTmp); \
+    IEM_MC_FETCH_GREG_SP_U64(uTmp, Rn); \
+    IEM_MC_SUB_LOCAL_U64(uTmp, !sh ? imm12 : imm12 << 12); \
+    IEM_MC_STORE_GREG_SP_U64(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* SUBS  <Xd>, <Xn|SP>, #<imm>{, <shift>} (ff800000/f1000000) */
-//#define IEM_INSTR_IMPL_A64__SUBS_64S_addsub_imm(Rd, Rn, imm12, sh)
+#define IEM_INSTR_IMPL_A64__SUBS_64S_addsub_imm(Rd, Rn, imm12, sh) \
+    IEM_MC_BEGIN(0, IEM_CIMPL_F_STATUS_FLAGS); \
+    IEM_MC_LOCAL(uint64_t, uMinuend); \
+    IEM_MC_FETCH_GREG_SP_U64(uMinuend, Rn); \
+    IEM_MC_LOCAL(uint64_t, uDifference); \
+    IEM_MC_LOCAL_CONST(uint64_t, uSubtrahend, !sh ? imm12 : imm12 << 12); \
+    IEM_MC_A64_SUBS_U64(uDifference, uMinuend, uSubtrahend); \
+    IEM_MC_STORE_GREG_U64(Rd, uDifference); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 
