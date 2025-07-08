@@ -284,6 +284,7 @@ VMM_INT_DECL(void) PDMIoApicSendMsi(PVMCC pVM, PCIBDF uBusDevFn, PCMSIMSG pMsi, 
      */
     /** @todo Figure out why device ID 0 is being used? Is it because the device
      *        maybe behind the PCI-to-PCI bridge? */
+    NOREF(uBusDevFn);
     PCPDMGICBACKEND pGic = &pVM->pdm.s.Ic.u.armv8.GicBackend;
     if (pGic->pfnSendMsi)
         pGic->pfnSendMsi(pVM, 0 /* uBusDevFn */, pMsi, uTagSrc);
