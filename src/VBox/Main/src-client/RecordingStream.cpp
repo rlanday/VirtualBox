@@ -361,7 +361,9 @@ int RecordingStream::process(RecordingBlockSet &streamBlockSet, RecordingBlockMa
             /* Release the block from the block list so that the housekeeping can handle it later. */
             (*itBlockInList)->Release();
 
-            STAM_COUNTER_INC(&m_STAM.cFramesEncoded);
+            STAM_COUNTER_DEC(&m_STAM.cVideoFramesToEncode);
+            STAM_COUNTER_INC(&m_STAM.cVideoFramesEncoded);
+            STAM_COUNTER_INC(&m_STAM.cVideoFramesHousekeeping);
         }
 
         /* Move block set to housekeeping set. */
@@ -447,11 +449,22 @@ DECLCALLBACK(void) RecordingStream::doHousekeepingCallback(RecordingStream *pThi
 {
     RT_NOREF(pThis);
 
-    LogFunc(("Running housekeeping ...\n"));
+#ifdef DEBUG
+    size_t const cFrames = pSet->Map.size();
+    LogFunc(("Running housekeeping (%zu frames)...\n", cFrames));
+#endif
 
     pSet->Clear();
 
     LogFunc(("Running housekeeping done\n"));
+
+#ifdef DEBUG
+    Assert(pSet->Map.size() == 0);
+    for (size_t i = 0; i < cFrames; i++)
+        STAM_COUNTER_DEC(&pThis->m_STAM.cVideoFramesHousekeeping); /** @todo No STAM_COUNTER_[REMOVE|SUBTRACT], gah! */
+    LogFunc(("Running housekeeping done\n"));
+#endif
+
 }
 
 /**
@@ -544,7 +557,8 @@ int RecordingStream::addFrame(PRECORDINGFRAME pFrame, uint64_t msTimestamp)
         pBlock->cbData = sizeof(RECORDINGFRAME);
         pBlock->AddRef();
 
-        STAM_COUNTER_INC(&m_STAM.cFramesAdded);
+        STAM_COUNTER_INC(&m_STAM.cVideoFramesAdded);
+        STAM_COUNTER_INC(&m_STAM.cVideoFramesToEncode);
 #if 0
         RecordingUtilsDbgLogFrame(pFrame);
 
@@ -1047,22 +1061,30 @@ int RecordingStream::initInternal(RecordingContext *pCtx, uint32_t uScreen,
     Console::SafeVMPtrQuiet ptrVM(m_pCtx->m_pConsole);
     if (ptrVM.isOk())
     {
-        ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cFramesAdded,
-                                            STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
-                                            "Total recording frames added.", "/Main/Recording/Stream%RU32/FramesAdded", uScreen);
-        ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cFramesEncoded,
-                                            STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
-                                            "Total recording frames encoded.", "/Main/Recording/Stream%RU32/FramesEncoded", uScreen);
-        ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessTotal,
-                                            STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
-                                            "Profiling the processing function (total).", "/Main/Recording/Stream%RU32/ProfileFnProcessTotal", uScreen);
-        ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessVideo,
-                                            STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
-                                            "Profiling the processing function (video).", "/Main/Recording/Stream%RU32/ProfileFnProcessVideo", uScreen);
-        ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessAudio,
-                                            STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
-                                            "Profiling the processing function (audio).", "/Main/Recording/Stream%RU32/ProfileFnProcessAudio", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cVideoFramesAdded,
+                                             STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
+                                             "Total video frames added.", "/Main/Recording/Stream%RU32/VideoFramesAdded", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cVideoFramesToEncode,
+                                             STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
+                                             "Current video frames (pending) to encode.", "/Main/Recording/Stream%RU32/VideoFramesToEncode", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cVideoFramesEncoded,
+                                             STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
+                                             "Total video frames encoded.", "/Main/Recording/Stream%RU32/VideoFramesEncoded", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.cVideoFramesHousekeeping,
+                                             STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_COUNT,
+                                             "Current video frames in housekeeping queue.", "/Main/Recording/Stream%RU32/VideoFramesHousekeeping", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessTotal,
+                                             STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
+                                             "Profiling the processing function (audio + video).", "/Main/Recording/Stream%RU32/ProfileFnProcessTotal", uScreen);
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessVideo,
+                                             STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
+                                             "Profiling the processing function (video).", "/Main/Recording/Stream%RU32/ProfileFnProcessVideo", uScreen);
+# ifdef VBOX_WITH_AUDIO_RECORDING
+         ptrVM.vtable()->pfnSTAMR3RegisterFU(ptrVM.rawUVM(), &m_STAM.profileFnProcessAudio,
+                                             STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_NS_PER_CALL,
+                                             "Profiling the processing function (audio).", "/Main/Recording/Stream%RU32/ProfileFnProcessAudio", uScreen);
     }
+# endif
 #endif
 
     if (RT_SUCCESS(vrc))
@@ -1179,8 +1201,10 @@ int RecordingStream::Uninit(void)
  */
 int RecordingStream::uninitInternal(void)
 {
-    if (m_enmState != RECORDINGSTREAMSTATE_INITIALIZED)
+    if (m_enmState == RECORDINGSTREAMSTATE_UNINITIALIZED)
         return VINF_SUCCESS;
+
+    lock();
 
     int vrc = close();
     if (RT_FAILURE(vrc))
@@ -1195,28 +1219,38 @@ int RecordingStream::uninitInternal(void)
 
     if (RT_SUCCESS(vrc))
     {
-        RTCritSectDelete(&m_CritSect);
-
         uint32_t const cRefs = RTReqPoolRelease(m_hReqPool);
         Assert(cRefs == 0); RT_NOREF(cRefs);
         m_hReqPool = NIL_RTREQPOOL;
 
         m_enmState = RECORDINGSTREAMSTATE_UNINITIALIZED;
-    }
+
+        unlock();
+
+        RTCritSectDelete(&m_CritSect);
 
 #ifdef VBOX_WITH_STATISTICS
-    Console::SafeVMPtrQuiet ptrVM(m_pCtx->m_pConsole);
-    if (ptrVM.isOk())
-    {
-        ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(),"/Main/Recording/Stream%RU32/FramesAdded", m_uScreenID);
-        ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/FramesEncoded", m_uScreenID);
+        Console::SafeVMPtrQuiet ptrVM(m_pCtx->m_pConsole);
+        if (ptrVM.isOk())
+        {
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/VideoFramesAdded", m_uScreenID);
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/VideoFramesToEncode", m_uScreenID);
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/VideoFramesEncoded", m_uScreenID);
 
-        ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessTotal", m_uScreenID);
-        ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessVideo", m_uScreenID);
-        ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessAudio", m_uScreenID);
-    }
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/VideoFramesHousekeeping", m_uScreenID);
+
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessTotal", m_uScreenID);
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessVideo", m_uScreenID);
+# ifdef VBOX_WITH_AUDIO_RECORDING
+            ptrVM.vtable()->pfnSTAMR3DeregisterF(ptrVM.rawUVM(), "/Main/Recording/Stream%RU32/ProfileFnProcessAudio", m_uScreenID);
+# endif
+        }
 #endif
 
+        return VINF_SUCCESS;
+    }
+
+    unlock();
     return vrc;
 }
 
