@@ -364,9 +364,9 @@ static const SSMFIELD g_aCpumCtxFields[] =
     SSMFIELD_ENTRY(         CPUMCTX, MdcrEl2),
     SSMFIELD_ENTRY(         CPUMCTX, SctlrEl2),
     SSMFIELD_ENTRY(         CPUMCTX, SpsrEl2),
-    SSMFIELD_ENTRY(         CPUMCTX, SpEl2),
+    SSMFIELD_ENTRY(         CPUMCTX, aSpReg[2]),
     SSMFIELD_ENTRY(         CPUMCTX, TcrEl2),
-    SSMFIELD_ENTRY(         CPUMCTX, TpidrEl2),
+    SSMFIELD_ENTRY(         CPUMCTX, aTpIdr[2]),
     SSMFIELD_ENTRY(         CPUMCTX, Ttbr0El2),
     SSMFIELD_ENTRY(         CPUMCTX, Ttbr1El2),
     SSMFIELD_ENTRY(         CPUMCTX, VBarEl2),
@@ -629,7 +629,7 @@ DECLHIDDEN(void) cpumR3InfoOneTarget(PVM pVM, PCVMCPU pVCpu, PCDBGFINFOHLP pHlp,
                     "x20=%016RX64 x21=%016RX64 x22=%016RX64 x23=%016RX64\n"
                     "x24=%016RX64 x25=%016RX64 x26=%016RX64 x27=%016RX64\n"
                     "x28=%016RX64 x29=%016RX64 x30=%016RX64\n"
-                    " pc=%016RX64 psr=%016RX64 %s\n"
+                    " pc=%016RX64 psr=%012RX64 %s\n"
                     "sp_el0=%016RX64 sp_el1=%016RX64\n",
                     pCtx->aGRegs[0],  pCtx->aGRegs[1],  pCtx->aGRegs[2],  pCtx->aGRegs[3],
                     pCtx->aGRegs[4],  pCtx->aGRegs[5],  pCtx->aGRegs[6],  pCtx->aGRegs[7],
@@ -656,7 +656,7 @@ DECLHIDDEN(void) cpumR3InfoOneTarget(PVM pVM, PCVMCPU pVCpu, PCDBGFINFOHLP pHlp,
                     "x20=%016RX64 x21=%016RX64 x22=%016RX64 x23=%016RX64\n"
                     "x24=%016RX64 x25=%016RX64 x26=%016RX64 x27=%016RX64\n"
                     "x28=%016RX64 x29=%016RX64 x30=%016RX64\n"
-                    " pc=%016RX64 psr=%016RX64 %s\n"
+                    " pc=%016RX64 psr=%012RX64 %s\n"
                     "  sp_el0=%016RX64    sp_el1=%016RX64 sctlr_el1=%016RX64\n"
                     " tcr_el1=%016RX64 ttbr0_el1=%016RX64 ttbr1_el1=%016RX64\n"
                     "vbar_el1=%016RX64   elr_el1=%016RX64   esr_el1=%016RX64\n",
@@ -687,7 +687,7 @@ DECLHIDDEN(void) cpumR3InfoOneTarget(PVM pVM, PCVMCPU pVCpu, PCDBGFINFOHLP pHlp,
                     "x20=%016RX64 x21=%016RX64 x22=%016RX64 x23=%016RX64\n"
                     "x24=%016RX64 x25=%016RX64 x26=%016RX64 x27=%016RX64\n"
                     "x28=%016RX64 x29=%016RX64 x30=%016RX64\n"
-                    " pc=%016RX64 psr=%016RX64 %s\n"
+                    " pc=%016RX64 psr=%012RX64 %s\n"
                     "      sp_el0=%016RX64    sp_el1=%016RX64  sctlr_el1=%016RX64\n"
                     "     tcr_el1=%016RX64 ttbr0_el1=%016RX64  ttbr1_el1=%016RX64\n"
                     "    vbar_el1=%016RX64   elr_el1=%016RX64    esr_el1=%016RX64\n"

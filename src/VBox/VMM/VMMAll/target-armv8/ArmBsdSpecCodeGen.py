@@ -487,7 +487,7 @@ g_dRegToCpumCtx = {
 
     'AArch64.SP_EL0':           ('aSpReg[0].u64',),
     'AArch64.SP_EL1':           ('aSpReg[1].u64',),
-    'AArch64.SP_EL2':           ('SpEl2.u64',),
+    'AArch64.SP_EL2':           ('aSpReg[2].u64',),
 
     'AArch64.SPSR_EL1':         ('Spsr.u64',),
     'AArch64.ELR_EL1':          ('Elr.u64',),
@@ -595,6 +595,7 @@ g_dRegToCpumCtx = {
     'AArch64.TPIDRRO_EL0':      ('TpIdrRoEl0.u64',),
     'AArch64.TPIDR_EL0':        ('aTpIdr[0].u64',),
     'AArch64.TPIDR_EL1':        ('aTpIdr[1].u64',),
+    'AArch64.TPIDR_EL2':        ('aTpIdr[2].u64',),
     'AArch64.MDCCINT_EL1':      ('MDccInt.u64',),
     'AArch64.ACTLR_EL1':        ('Actlr.u64',),
 
@@ -614,7 +615,6 @@ g_dRegToCpumCtx = {
     'AArch64.SCTLR_EL2':        ('SctlrEl2.u64',),
     'AArch64.SPSR_EL2':         ('SpsrEl2.u64',),
     'AArch64.TCR_EL2':          ('TcrEl2.u64',),
-    'AArch64.TPIDR_EL2':        ('TpidrEl2.u64',),
     'AArch64.TTBR0_EL2':        ('Ttbr0El2.u64',),
     'AArch64.TTBR1_EL2':        ('Ttbr1El2.u64',),
     'AArch64.VBAR_EL2':         ('VBarEl2.u64',),
