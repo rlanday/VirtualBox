@@ -1661,9 +1661,6 @@ VOID GaDxgkDdiDpcRoutine(const PVOID MiniportDeviceContext)
         }
     }
 
-    if (ASMAtomicCmpXchgBool(&pSvga->fCommandBufferIrq, false, true) && pSvga->pCBState)
-        SvgaCmdBufProcess(pSvga);
-
     /*
      * Deferred MOB destruction.
      */
@@ -1681,6 +1678,12 @@ VOID GaDxgkDdiDpcRoutine(const PVOID MiniportDeviceContext)
             IoQueueWorkItemEx(pWorkItem, dxDeferredMobDestruction, DelayedWorkQueue, pSvga);
         }
     }
+
+    /* Dispose completed buffers.
+     * Must be done as last step to avoid race with cQueuedWorkItems when unloading the driver.
+     */
+    if (ASMAtomicCmpXchgBool(&pSvga->fCommandBufferIrq, false, true) && pSvga->pCBState)
+        SvgaCmdBufProcess(pSvga);
 }
 
 typedef struct GAPREEMPTCOMMANDCBCTX

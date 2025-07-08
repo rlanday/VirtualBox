@@ -222,7 +222,7 @@ static void svgaHwStop(VBOXWDDM_EXT_VMSVGA *pSvga)
 
     /* Wait for buffers to complete. Up to 5 seconds, arbitrary. */
     int cIntervals = 0;
-    while (!SvgaCmdBufIsIdle(pSvga) && ASMAtomicReadS32(&pSvga->cQueuedWorkItems) && cIntervals++ < 50)
+    while (!SvgaCmdBufIsIdle(pSvga) && cIntervals++ < 50)
     {
         /* Give the host some time to process them. */
         LARGE_INTEGER Interval;
@@ -344,6 +344,19 @@ void SvgaAdapterStop(PVBOXWDDM_EXT_VMSVGA pSvga,
             GaMemFree(pSvga->pu32GMRBits);
             pSvga->pu32GMRBits = NULL;
             pSvga->cbGMRBits = 0;
+        }
+
+        /* Submit any pending commands, which may require a working environment (miniportMob, etc) */
+        SvgaFlush(pSvga);
+
+        /* Wait for buffers to complete. Up to 5 seconds, arbitrary. */
+        int cIntervals = 0;
+        while ((!SvgaCmdBufIsIdle(pSvga) || ASMAtomicReadS32(&pSvga->cQueuedWorkItems)) && cIntervals++ < 50)
+        {
+            /* Give the host some time to process them. */
+            LARGE_INTEGER Interval;
+            Interval.QuadPart = -(int64_t)100 /* ms */ * 10000;
+            KeDelayExecutionThread(KernelMode, FALSE, &Interval);
         }
 
         if (RT_BOOL(pSvga->u32Caps & SVGA_CAP_DX) && pSvga->mobidMiniport != SVGA3D_INVALID_ID)
