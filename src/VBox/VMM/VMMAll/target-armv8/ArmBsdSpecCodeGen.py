@@ -3114,7 +3114,7 @@ class IEMArmGenerator(object):
                     '    {',
                 ];
                 asTail  = [
-                    '    Log(("Invalid instruction %%#x at %%x\\n", uOpcode, pVCpu->cpum.GstCtx.Pc.u64));',
+                    '    Log(("Invalid instruction %#x at %x\\n", uOpcode, pVCpu->cpum.GstCtx.Pc.u64));',
                     '    IEMOP_RAISE_INVALID_OPCODE_RET();',
                     '}',
                 ];
