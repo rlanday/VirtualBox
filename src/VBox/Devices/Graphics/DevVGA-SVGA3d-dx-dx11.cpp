@@ -1390,7 +1390,6 @@ static int dxDeviceCreate(PVMSVGA3DBACKEND pBackend, DXDEVICE *pDXDevice)
                     D3D11_MESSAGE_ID_DEVICE_DRAW_SAMPLER_MISMATCH,    /* U. */
                     D3D11_MESSAGE_ID_CREATEINPUTLAYOUT_EMPTY_LAYOUT,  /* P. */
                     D3D11_MESSAGE_ID_DEVICE_SHADER_LINKAGE_REGISTERMASK, /* S. */
-                    D3D11_MESSAGE_ID_DEVICE_SHADER_LINKAGE_NEVERWRITTEN_ALWAYSREADS, /* W11 VS->PS: False report, VS has 'add o0, ...' */
                 };
 
                 D3D11_INFO_QUEUE_FILTER filter;
@@ -6110,6 +6109,13 @@ static void dxDbgLogVertexElement(DXGI_FORMAT Format, void const *pvElementData)
                  pValues[0], pValues[1], pValues[2], pValues[3]));
             break;
         }
+        case DXGI_FORMAT_R8G8_UINT:
+        {
+            uint8_t const *pValues = (uint8_t const *)pvElementData;
+            Log8(("{ /*8uint*/  %u, %u },",
+                 pValues[0], pValues[1]));
+            break;
+        }
         case DXGI_FORMAT_R8G8_UNORM:
         {
             uint8_t const *pValues = (uint8_t const *)pvElementData;
@@ -6241,7 +6247,7 @@ static void dxDbgDumpIndexedVertexData(PVGASTATECC pThisCC, PVMSVGA3DDXCONTEXT p
             {
                 uint8_t const *pu8VertexData = (uint8_t *)mapVB.pvData;
                 pu8VertexData += pVBInfo->offset;
-                pu8VertexData += baseVertexLocation * pVBInfo->stride;
+                pu8VertexData += baseVertexLocation * (int32_t)pVBInfo->stride; /* signed */
 
                 SVGA3dElementLayoutId const elementLayoutId = pDXContext->svgaDXContext.inputAssembly.layoutId;
                 DXELEMENTLAYOUT *pDXElementLayout = &pDXContext->pBackendDXContext->paElementLayout[elementLayoutId];
