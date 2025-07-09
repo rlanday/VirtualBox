@@ -1,5 +1,5 @@
 project('libslirp', 'c',
-  version : '4.9.0',
+  version : '4.9.1',
   license : 'BSD-3-Clause',
   default_options : ['warning_level=1', 'c_std=gnu99'],
   meson_version : '>= 0.60',
@@ -29,7 +29,7 @@ if fuzzer_build and fuzz_reproduce
 endif
 
 cc = meson.get_compiler('c')
-add_languages('cpp', required : fuzzer_build)
+add_languages('cpp', required : fuzzer_build, native : false)
 
 glib_static = get_option('static')
 
@@ -168,9 +168,9 @@ sources = [
 
 mapfile = 'src/libslirp.map'
 vflag = []
-vflag_test = '-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), mapfile)
+libvflag = []
 if cc.has_link_argument('-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), 'src/libslirp.test.map'))
-  vflag += vflag_test
+  libvflag += '-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), mapfile)
 endif
 
 if fuzzer_build
@@ -203,7 +203,7 @@ configure_file(
 if glib_static or fuzzer_build or fuzz_reproduce
   lib = static_library('slirp', sources,
     c_args : cargs,
-    link_args : vflag,
+    link_args : libvflag + vflag,
     link_depends : mapfile,
     dependencies : libslirp_deps,
   )
@@ -211,7 +211,7 @@ else
   lib = library('slirp', sources,
     version : lt_version,
     c_args : cargs,
-    link_args : vflag,
+    link_args : libvflag + vflag,
     link_depends : mapfile,
     dependencies : libslirp_deps,
     install : install_devel or get_option('default_library') == 'shared',
@@ -264,5 +264,6 @@ libslirp_libdep = declare_dependency(
   link_with : lib,
   include_directories : [include_directories('src'), include_directories('.')],
 )
+meson.override_dependency('slirp', libslirp_libdep)
 
 subdir('fuzzing')

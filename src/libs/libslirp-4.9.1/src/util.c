@@ -252,11 +252,7 @@ int slirp_ioctlsocket_wrap(slirp_os_socket fd, int req, void *val)
 {
     int ret;
     ret = ioctlsocket(fd, req, val);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -267,11 +263,7 @@ int slirp_closesocket_wrap(slirp_os_socket fd)
 {
     int ret;
     ret = closesocket(fd);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -282,11 +274,7 @@ int slirp_connect_wrap(slirp_os_socket sockfd, const struct sockaddr *addr, int 
 {
     int ret;
     ret = connect(sockfd, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -297,11 +285,7 @@ int slirp_listen_wrap(slirp_os_socket sockfd, int backlog)
 {
     int ret;
     ret = listen(sockfd, backlog);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -313,11 +297,7 @@ int slirp_bind_wrap(slirp_os_socket sockfd, const struct sockaddr *addr, int add
 {
     int ret;
     ret = bind(sockfd, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -329,11 +309,7 @@ slirp_os_socket slirp_socket_wrap(int domain, int type, int protocol)
 {
     slirp_os_socket ret;
     ret = socket(domain, type, protocol);
-#ifdef VBOX
     if (ret == INVALID_SOCKET) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -344,11 +320,7 @@ slirp_os_socket slirp_accept_wrap(slirp_os_socket sockfd, struct sockaddr *addr,
 {
     slirp_os_socket ret;
     ret = accept(sockfd, addr, addrlen);
-#ifdef VBOX
     if (ret == INVALID_SOCKET) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -359,11 +331,7 @@ int slirp_shutdown_wrap(slirp_os_socket sockfd, int how)
 {
     int ret;
     ret = shutdown(sockfd, how);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -376,11 +344,7 @@ int slirp_getsockopt_wrap(slirp_os_socket sockfd, int level, int optname, void *
 {
     int ret;
     ret = getsockopt(sockfd, level, optname, optval, optlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -393,11 +357,7 @@ int slirp_setsockopt_wrap(slirp_os_socket sockfd, int level, int optname,
 {
     int ret;
     ret = setsockopt(sockfd, level, optname, optval, optlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -409,11 +369,7 @@ int slirp_getpeername_wrap(slirp_os_socket sockfd, struct sockaddr *addr, int *a
 {
     int ret;
     ret = getpeername(sockfd, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
 
@@ -425,11 +381,7 @@ int slirp_getsockname_wrap(slirp_os_socket sockfd, struct sockaddr *addr, int *a
 {
     int ret;
     ret = getsockname(sockfd, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -440,11 +392,7 @@ slirp_ssize_t slirp_send_wrap(slirp_os_socket sockfd, const void *buf, size_t le
 {
     int ret;
     ret = send(sockfd, buf, len, flags);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -456,11 +404,7 @@ slirp_ssize_t slirp_sendto_wrap(slirp_os_socket sockfd, const void *buf, size_t 
 {
     int ret;
     ret = sendto(sockfd, buf, len, flags, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -471,11 +415,7 @@ slirp_ssize_t slirp_recv_wrap(slirp_os_socket sockfd, void *buf, size_t len, int
 {
     int ret;
     ret = recv(sockfd, buf, len, flags);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;
@@ -487,11 +427,7 @@ slirp_ssize_t slirp_recvfrom_wrap(slirp_os_socket sockfd, void *buf, size_t len,
 {
     int ret;
     ret = recvfrom(sockfd, buf, len, flags, addr, addrlen);
-#ifdef VBOX
     if (ret == SOCKET_ERROR) {
-#else
-    if (ret < 0) {
-#endif
         errno = win32_socket_error();
     }
     return ret;

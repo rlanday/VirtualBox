@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.9.1] - 2025-05-28
+
+### Fixed
+
+  - meson: use boolean defaults for boolean options !149
+  - meson: specify that C++ is only used for host binaries !149
+  - meson: add dependency override for libslirp !150
+  - Do not link tests with libslirp.map #84
+  - apple: Fix getting IPv4 DNS server address when IPv4 and IPv4 are
+    interleaved #85
+  - Windows: Fix ICMP generation #87 #88
+  - tcp: Fix starting the linger2 timer on socket shutdown #86
+
+### Changed
+
+  - tcp: on input, reset TCPT_KEEP to TCPTV_KEEP_IDLE rather than
+    TCPTV_KEEPINTVL
+  - tcp: on input during init, reset TCPT_KEEP to TCPTV_KEEP_INIT
+  - tcp: Reduce linger time to two minutes
+
 ## [4.9.0] - 2025-01-30
 
 ### Added
@@ -245,7 +265,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Standalone project, removing any QEMU dependency.
  - License clarifications.
 
-[Unreleased]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.9.0...master
+[Unreleased]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.9.1...master
+[4.9.1]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.9.0...v4.9.1
 [4.9.0]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.8.0...v4.9.0
 [4.8.0]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.7.0...v4.8.0
 [4.7.0]: https://gitlab.freedesktop.org/slirp/libslirp/compare/v4.6.1...v4.7.0
