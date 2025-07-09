@@ -3206,6 +3206,30 @@ DECLINLINE(uint64_t) iemGetEffActlrMaskEl1(PVMCPU pVCpu, const CPUMFEATURESARMV8
 
 
 /**
+ * Gets the effective CPACRMASK_EL1 value.
+ */
+DECLINLINE(uint64_t) iemGetEffCpacrMaskEl1(PVMCPU pVCpu, const CPUMFEATURESARMV8 * const pGstFeats)
+{
+    /** @todo implement CPACRMASK_EL1 & FEAT_SRMASK */
+    Assert(!pGstFeats->fSrMask);
+    RT_NOREF(pVCpu, pGstFeats);
+    return 0;
+}
+
+
+/**
+ * Gets the effective CPTRMASK_EL2 value.
+ */
+DECLINLINE(uint64_t) iemGetEffCptrMaskEl2(PVMCPU pVCpu, const CPUMFEATURESARMV8 * const pGstFeats)
+{
+    /** @todo implement CPTRMASK_EL2 & FEAT_SRMASK */
+    Assert(!pGstFeats->fSrMask);
+    RT_NOREF(pVCpu, pGstFeats);
+    return 0;
+}
+
+
+/**
  * Gets the effective SCTLRMASK_EL1 value.
  */
 DECLINLINE(uint64_t) iemGetEffSctlrMaskEl1(PVMCPU pVCpu, const CPUMFEATURESARMV8 * const pGstFeats)

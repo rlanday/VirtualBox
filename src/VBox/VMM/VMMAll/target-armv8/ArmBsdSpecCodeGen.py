@@ -1988,6 +1988,20 @@ class SysRegGeneratorBase(object):
                                  cBitsWidth = 64);
         raise Exception('Unexpected: %s' % (oNode,));
 
+    def transformCodePass2_EffectiveCPACRMASK_EL1(self, oNode): # pylint: disable=invalid-name
+        """ Pass 2: EffectiveCPACRMASK_EL1() -> helper call. """
+        if len(oNode.aoArgs) == 0:
+            return ArmAstCppCall('iemGetEffCpacrMaskEl1', [ ArmAstCppExpr('pVCpu'), ArmAstCppExpr('pGstFeats'), ],
+                                 cBitsWidth = 64);
+        raise Exception('Unexpected: %s' % (oNode,));
+
+    def transformCodePass2_EffectiveCPTRMASK_EL2(self, oNode): # pylint: disable=invalid-name
+        """ Pass 2: EffectiveCPTRMASK_EL2() -> helper call. """
+        if len(oNode.aoArgs) == 0:
+            return ArmAstCppCall('iemGetEffCptrMaskEl2', [ ArmAstCppExpr('pVCpu'), ArmAstCppExpr('pGstFeats'), ],
+                                 cBitsWidth = 64);
+        raise Exception('Unexpected: %s' % (oNode,));
+
     def transformCodePass2_EffectiveSCTLRMASK_EL1(self, oNode): # pylint: disable=invalid-name
         """ Pass 2: EffectiveSCTLRMASK_EL1() -> helper call. """
         if len(oNode.aoArgs) == 0:
@@ -2605,6 +2619,10 @@ class SysRegGeneratorBase(object):
                 return self.transformCodePass2_EffectiveHCR_EL2_NVx(oNode);
             if oNode.sName == 'EffectiveACTLRMASK_EL1':
                 return self.transformCodePass2_EffectiveACTLRMASK_EL1(oNode);
+            if oNode.sName == 'EffectiveCPACRMASK_EL1':
+                return self.transformCodePass2_EffectiveCPACRMASK_EL1(oNode);
+            if oNode.sName == 'EffectiveCPTRMASK_EL2':
+                return self.transformCodePass2_EffectiveCPTRMASK_EL2(oNode);
             if oNode.sName == 'EffectiveSCTLRMASK_EL1':
                 return self.transformCodePass2_EffectiveSCTLRMASK_EL1(oNode);
             if oNode.sName == 'EffectiveSCTLRMASK_EL2':
