@@ -454,8 +454,8 @@ int RecordingBlockWorker::Run(void)
     if (m_tsLastRunMs == 0)
         m_tsLastRunMs = RTTimeMilliTS();
 
-    uint64_t msTimeout;
-    while (m_fShutdown || (msTimeout = timeoutRemaining() > 0))
+    uint64_t msTimeout = timeoutRemaining();
+    while (m_fShutdown || msTimeout > 0)
     {
         vrc = Worker(msTimeout, m_fShutdown, m_pvUser);
         if (m_fShutdown || RT_FAILURE(vrc))
@@ -468,6 +468,8 @@ int RecordingBlockWorker::Run(void)
                 && vrc != VERR_TIMEOUT)
                 break;
         }
+
+        msTimeout = timeoutRemaining();
     }
 
     timeoutReset();
@@ -1389,4 +1391,3 @@ void RecordingStream::unlock(void)
     int vrc = RTCritSectLeave(&m_CritSect);
     AssertRC(vrc);
 }
-
