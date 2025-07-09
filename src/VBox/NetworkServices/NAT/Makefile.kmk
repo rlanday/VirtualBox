@@ -152,7 +152,7 @@ else # !VBOX_WITH_LWIP_NAT
  VBoxNetNAT_DEFS.win = VBOX_COM_OUTOFPROC_MODULE
 
  VBoxNetNAT_INCS += \
- 	$(PATH_ROOT)/src/libs/libslirp-4.9.0/include
+ 	$(PATH_ROOT)/src/libs/libslirp-4.9.1/include
 
  VBoxNetNAT_SOURCES = \
  	VBoxNetSlirpNAT.cpp \

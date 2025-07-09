@@ -772,7 +772,7 @@ if !defined(VBOX_ONLY_EXTPACKS) && "$(intersects $(KBUILD_TARGET_ARCH),$(VBOX_SU
   VBoxDD_LIBS    += $(PATH_STAGE_LIB)/VBox-libslirp$(VBOX_SUFF_LIB)
   VBoxDD_LIBS.darwin += resolv
   Network/DrvNATlibslirp.cpp_INCS = \
-  	$(PATH_ROOT)/src/libs/libslirp-4.9.0/include
+  	$(PATH_ROOT)/src/libs/libslirp-4.9.1/include
 
  else  # !VBOX_WITH_LIBSLIRP
 
