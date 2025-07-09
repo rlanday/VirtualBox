@@ -14346,7 +14346,12 @@
  */
 
 /* MOVN  <Wd>, #<imm>{, LSL #<shift>} (ffc00000/12800000) */
-//#define IEM_INSTR_IMPL_A64__MOVN_32_movewide(Rd, imm16, hw)
+#define IEM_INSTR_IMPL_A64__MOVN_32_movewide(Rd, imm16, hw) \
+    if (hw & 2) return iemDecodeA64_Invalid(pVCpu, uOpcode); /** @todo missing 32-bit MOVZ precond... */ \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_STORE_GREG_U32_CONST(Rd, hw & 1 ? ~(uint32_t)imm16 << 16 : ~(uint32_t)imm16); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* MOVZ  <Wd>, #<imm>{, LSL #<shift>} (ffc00000/52800000) */
@@ -14359,11 +14364,24 @@
 
 
 /* MOVK  <Wd>, #<imm>{, LSL #<shift>} (ffc00000/72800000) */
-//#define IEM_INSTR_IMPL_A64__MOVK_32_movewide(Rd, imm16, hw)
+#define IEM_INSTR_IMPL_A64__MOVK_32_movewide(Rd, imm16, hw) \
+    if (hw & 2) return iemDecodeA64_Invalid(pVCpu, uOpcode); /** @todo missing 32-bit MOVZ precond... */ \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint32_t, uTmp); \
+    IEM_MC_FETCH_GREG_U32(uTmp, Rd); \
+    IEM_MC_AND_LOCAL_U32(uTmp, hw & 1 ? UINT32_C(0x0000ffff)  : UINT32_C(0xffff0000)); \
+    IEM_MC_OR_LOCAL_U32(uTmp,  hw & 1 ? (uint32_t)imm16 << 16 : (uint32_t)imm16); \
+    IEM_MC_STORE_GREG_U32(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* MOVN  <Xd>, #<imm>{, LSL #<shift>} (ff800000/92800000) */
-//#define IEM_INSTR_IMPL_A64__MOVN_64_movewide(Rd, imm16, hw)
+#define IEM_INSTR_IMPL_A64__MOVN_64_movewide(Rd, imm16, hw) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_STORE_GREG_U64_CONST(Rd, ~(uint64_t)imm16 << (hw * 16)); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 /* MOVZ  <Xd>, #<imm>{, LSL #<shift>} (ff800000/d2800000) */
@@ -14375,7 +14393,15 @@
 
 
 /* MOVK  <Xd>, #<imm>{, LSL #<shift>} (ff800000/f2800000) */
-//#define IEM_INSTR_IMPL_A64__MOVK_64_movewide(Rd, imm16, hw)
+#define IEM_INSTR_IMPL_A64__MOVK_64_movewide(Rd, imm16, hw) \
+    IEM_MC_BEGIN(0, 0); \
+    IEM_MC_LOCAL(uint64_t, uTmp); \
+    IEM_MC_FETCH_GREG_U64(uTmp, Rd); \
+    IEM_MC_AND_LOCAL_U64(uTmp, ~(UINT64_C(0xffff) << (hw * 16))); \
+    IEM_MC_OR_LOCAL_U64(uTmp, (uint64_t)imm16 << (hw * 16)); \
+    IEM_MC_STORE_GREG_U64(Rd, uTmp); \
+    IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    IEM_MC_END()
 
 
 
