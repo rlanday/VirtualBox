@@ -3408,19 +3408,59 @@
  */
 
 /* CBZ  <Wt>, <label> (ff000000/34000000) */
-//#define IEM_INSTR_IMPL_A64__CBZ_32_compbranch(Rt, imm19)
+#define IEM_INSTR_IMPL_A64__CBZ_32_compbranch(Rt, imm19) \
+    int32_t const offRel = (int32_t)(imm19 << (32 - 19)) >> (32 - 19 - 2); \
+    IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+    IEM_MC_LOCAL(uint32_t, uTmp); \
+    IEM_MC_FETCH_GREG_U32(uTmp, Rt); \
+    IEM_MC_IF_LOCAL_IS_Z(uTmp) { \
+        IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+    } IEM_MC_ELSE() { \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    } IEM_MC_ENDIF(); \
+    IEM_MC_END();
 
 
 /* CBNZ  <Wt>, <label> (ff000000/35000000) */
-//#define IEM_INSTR_IMPL_A64__CBNZ_32_compbranch(Rt, imm19)
+#define IEM_INSTR_IMPL_A64__CBNZ_32_compbranch(Rt, imm19) \
+    int32_t const offRel = (int32_t)(imm19 << (32 - 19)) >> (32 - 19 - 2); \
+    IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+    IEM_MC_LOCAL(uint32_t, uTmp); \
+    IEM_MC_FETCH_GREG_U32(uTmp, Rt); \
+    IEM_MC_IF_LOCAL_IS_Z(uTmp) { \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    } IEM_MC_ELSE() { \
+        IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+    } IEM_MC_ENDIF(); \
+    IEM_MC_END();
 
 
 /* CBZ  <Xt>, <label> (ff000000/b4000000) */
-//#define IEM_INSTR_IMPL_A64__CBZ_64_compbranch(Rt, imm19)
+#define IEM_INSTR_IMPL_A64__CBZ_64_compbranch(Rt, imm19) \
+    int32_t const offRel = (int32_t)(imm19 << (32 - 19)) >> (32 - 19 - 2); \
+    IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+    IEM_MC_LOCAL(uint64_t, uTmp); \
+    IEM_MC_FETCH_GREG_U64(uTmp, Rt); \
+    IEM_MC_IF_LOCAL_IS_Z(uTmp) { \
+        IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+    } IEM_MC_ELSE() { \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    } IEM_MC_ENDIF(); \
+    IEM_MC_END();
 
 
 /* CBNZ  <Xt>, <label> (ff000000/b5000000) */
-//#define IEM_INSTR_IMPL_A64__CBNZ_64_compbranch(Rt, imm19)
+#define IEM_INSTR_IMPL_A64__CBNZ_64_compbranch(Rt, imm19) \
+    int32_t const offRel = (int32_t)(imm19 << (32 - 19)) >> (32 - 19 - 2); \
+    IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+    IEM_MC_LOCAL(uint64_t, uTmp); \
+    IEM_MC_FETCH_GREG_U64(uTmp, Rt); \
+    IEM_MC_IF_LOCAL_IS_Z(uTmp) { \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+    } IEM_MC_ELSE() { \
+        IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+    } IEM_MC_ENDIF(); \
+    IEM_MC_END();
 
 
 
@@ -3752,11 +3792,150 @@
  */
 
 /* B.<cond>  <label> (ff000010/54000000) */
-//#define IEM_INSTR_IMPL_A64__B_only_condbranch(cond, imm19)
-
+#define IEM_INSTR_IMPL_A64__B_only_condbranch(cond, imm19) \
+    int32_t const offRel = (int32_t)(imm19 << (32 - 19)) >> (32 - 19 - 2); \
+    switch (cond) \
+    { \
+        case  0: /* Z=1: EQ - equal. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET(ARMV8_SPSR_EL2_AARCH64_Z) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  1: /* Z=0: NE - not equal. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_Z) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  2: /* C=1: CS - carry set   / HS - unsigned higher or same. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET(ARMV8_SPSR_EL2_AARCH64_C) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  3: /* C=0: CC - carry clear / LS - unsigned less than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_C) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  4: /* N=1: MI - minus. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET(ARMV8_SPSR_EL2_AARCH64_N) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  5: /* N=0: PL - plus (positive or zero). */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_N) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  6: /* V=1: VS - overflow set. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET(ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  7: /* V=0: VC - overflow clear. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  8: /* C=1 && Z=0:  HI - unsigned higher than */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET_AND_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_C, ARMV8_SPSR_EL2_AARCH64_Z) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case  9: /* C=0 || Z=1:  LS - unsigned less or equal than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET_OR_BIT_NOT_SET(ARMV8_SPSR_EL2_AARCH64_Z, ARMV8_SPSR_EL2_AARCH64_C) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case 10: /* N=V:         GE - signed greater or equal than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BITS_EQ(ARMV8_SPSR_EL2_AARCH64_N, ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case 11: /* N!=V:        LT - signed less than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BITS_NE(ARMV8_SPSR_EL2_AARCH64_N, ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case 12: /* Z=0 && N=V:  GT - sigend greater than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_NOT_SET_AND_BITS_EQ(ARMV8_SPSR_EL2_AARCH64_Z, \
+                                                    ARMV8_SPSR_EL2_AARCH64_N, ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        case 13: /* Z=1 || N!=V: LE - signed less or equal than. */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_CONDITIONAL | IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_IF_FLAGS_BIT_SET_OR_BITS_NE(ARMV8_SPSR_EL2_AARCH64_Z, \
+                                               ARMV8_SPSR_EL2_AARCH64_N, ARMV8_SPSR_EL2_AARCH64_V) { \
+                IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            } IEM_MC_ELSE() { \
+                IEM_MC_ADVANCE_PC_AND_FINISH(); \
+            } IEM_MC_ENDIF(); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+        default: RT_FALL_THRU(); \
+        case 14: /* AL - always. */ RT_FALL_THRU(); \
+        case 15: /* NV - never == always (https://devblogs.microsoft.com/oldnewthing/20220815-00/?p=106975) */ \
+            IEM_MC_BEGIN(0, IEM_CIMPL_F_BRANCH_RELATIVE); \
+            IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
+            IEM_MC_END(); \
+            break; /* for VS2022 */ \
+    } ((void)0)
 
 /* BC.<cond>  <label> (ff000010/54000010) */
-//#define IEM_INSTR_IMPL_A64__BC_only_condbranch(cond, imm19)
+#define IEM_INSTR_IMPL_A64__BC_only_condbranch(cond, imm19) \
+    IEM_INSTR_IMPL_A64__B_only_condbranch(cond, imm19)
 
 
 
