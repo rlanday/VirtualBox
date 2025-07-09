@@ -36,6 +36,7 @@
 
 #include <iprt/critsect.h>
 #include <iprt/req.h>
+#include <iprt/semaphore.h>
 
 #include "RecordingInternals.h"
 
@@ -107,6 +108,10 @@ struct RecordingBlockSet
 
     /**
      * Inserts a block list within the given PTS.
+     *
+     * @param  uPTS             Timestamp (PTS) to insert block list to.
+     * @param  pBlocks          Block list to insert.
+     *                          This class will take ownership of the data.
      */
     int Insert(uint64_t uPTS, RecordingBlocks *pBlocks)
     {
@@ -158,6 +163,161 @@ struct RecordingBlockSet
     uint64_t          tsLastProcessedMs;
     /** All blocks related to this block set. */
     RecordingBlockMap Map;
+};
+
+/**
+ * Virtual block worker base class.
+ *
+ * Can be used for keeping and working on a block set.
+ */
+class RecordingBlockWorker
+{
+protected:
+
+    /** Constructor -- will throw rc on errors. */
+    RecordingBlockWorker(const char *pszName,
+                         uint32_t msTimeout = RT_INDEFINITE_WAIT, uint32_t msWait = 0, void *pvUser = NULL)
+        : m_fShutdown(false)
+        , m_tsLastRunMs(0)
+        , m_msTimeout(msTimeout)
+        , m_msWait(msWait)
+        , m_pvUser(pvUser)
+    {
+        RTStrPrintf(m_szName, sizeof(m_szName), "%s", pszName);
+
+        if (m_msWait)
+        {
+            int vrc = RTSemEventCreate(&m_hSemEvent);
+            if (RT_FAILURE(vrc))
+                throw vrc;
+
+            /** @todo Handle threading creation here. */
+        }
+    }
+
+    virtual ~RecordingBlockWorker(void)
+    {
+        /** @todo Handle threading shutdown here. */
+
+        if (m_msWait)
+            RTSemEventDestroy(m_hSemEvent);
+    }
+
+public:
+
+    int Run(void);
+    int Notify(void);
+
+protected:
+
+    /**
+     * Pure virtual worker function. Must be implemented by the derived class.
+     * Will be called by the Run() function.
+     * Keep the implementation short so that this class can handle timeouts in a proper manner.
+     *
+     * @return VBox status code. Returning an error will abort the current worker run.
+     * @retval VINF_CALLBACK_RETURN if the worker wants to signal that there is nothing more to do in the current iteration.
+     * @param  msTimeout    Timeout (in ms) hint.
+     *                      This gives the worker a hint for how long it can run.
+     * @param  fShutdown    Shutdown flag.
+     * @param  pvUser       Handed-in user supplied pointer. Might be NULL. */
+    virtual DECLCALLBACK(int) Worker(uint64_t msTimeout, bool fShutdown, void *pvUser) = 0;
+
+protected:
+
+    /**
+     * Returns whether the stream's processing timeout has been reached.
+     *
+     * @returns \c true if timeout has been reached, or \c false if not.
+     */
+    bool timeoutReached(void) const
+    {
+        return timeoutRemaining() == 0 ? true : false;
+    }
+
+    /**
+     * Returns the remaining processing timeout (in ms).
+     *
+     * @returns Timeout remaining (in ms),
+     * @retval  UINT64_MAX if no timeout was configured.
+     * @retval  0 if timeout has been reached.
+     */
+    uint64_t timeoutRemaining(void) const
+    {
+        if (m_msTimeout == RT_INDEFINITE_WAIT)
+            return UINT64_MAX;
+        uint64_t const tsDiff = RTTimeMilliTS() - m_tsLastRunMs;
+        return tsDiff < m_msTimeout ? m_msTimeout - tsDiff : 0;
+    }
+
+    /**
+     * Resets the processing timeout for a worker iteration.
+     */
+    void timeoutReset(void)
+    {
+        m_tsLastRunMs = RTTimeMilliTS();
+    }
+
+    /**
+     * Sets a new processing timeout.
+     */
+    void timeoutSet(uint32_t msTimeout)
+    {
+        m_msTimeout = msTimeout;
+    }
+
+protected:
+
+    /** Worker name. Used for STAM paths.
+     *  @todo */
+    char                m_szName[8];
+    /** Shutdown indicator. */
+    bool                m_fShutdown;
+    /** Last run timestamp (in ms).
+     *  Set to 0 if never run (yet). */
+    uint64_t            m_tsLastRunMs;
+    /** Timeout (in ms) to use.
+     *  This specifies the maximum time the worker is allowed to run per iteration.
+     *  Specify RT_INDEFINITE_WAIT for running until all data is processed. */
+    uint32_t            m_msTimeout;
+    /** Event semaphore for triggering the worker. */
+    RTSEMEVENT          m_hSemEvent;
+    /** Waiting time (in ms) to use before calling the worker again.
+     *  If set to 0 (default), the worker wil be called immediately.
+     *  If set to RT_INDEFINITE_WAIT, the worker needs to be triggered via Notify() from another thread.
+     *  Any other value will wait for the time (in ms) specified and calls the worker again. */
+    uint32_t            m_msWait;
+    /** User-supplied pointer for the worker function. */
+    void               *m_pvUser;
+};
+
+/**
+ * Implementation of the block worker class for the stream's housekeeping.
+ *
+ ** @todo Use this in a separate thread?
+ */
+class RecordingBlockWorkerHousekeeping : public RecordingBlockWorker
+{
+public:
+
+    RecordingBlockWorkerHousekeeping(void)
+        : RecordingBlockWorker("Housekeeping", RT_MS_1SEC /* ms timeout */) { }
+
+    virtual ~RecordingBlockWorkerHousekeeping()
+    {
+        /* Invoke the worker one last time, to indicate shutdown. */
+        m_fShutdown = true;
+        Run();
+    }
+
+    int Insert(uint64_t uPTS, RecordingBlocks *pBlocks);
+
+    int Worker(uint64_t msTimeout, bool fShutdown, void *pvUser);
+
+protected:
+
+    /** Set of recording (data) blocks for this worker to process. */
+    RecordingBlockSet   m_BlockSet;
 };
 
 /**
@@ -215,6 +375,8 @@ protected:
     int initVideo(const settings::RecordingScreen &screenSettings);
     int unitVideo(void);
 
+    void housekeepingWorker(void);
+
     bool isLimitReachedInternal(uint64_t msTimestamp) const;
     int iterateInternal(uint64_t msTimestamp);
 
@@ -224,10 +386,6 @@ protected:
 
     void lock(void);
     void unlock(void);
-
-protected:
-
-    static DECLCALLBACK(void) doHousekeepingCallback(RecordingStream *pThis, RecordingBlockSet *pSet);
 
 protected:
 
@@ -320,12 +478,11 @@ protected:
          *  Can be changed by a SendScreenChange() call. */
         RECORDINGSURFACEINFO ScreenInfo;
     } m_Video;
-    /** Request pool for async tasks. */
-    RTREQPOOL           m_hReqPool;
     /** Set of unprocessed recording (data) blocks for this stream. */
     RecordingBlockSet   m_BlockSet;
-    /** Set of recording (data) blocks for this stream done processing. */
-    RecordingBlockSet   m_BlockSetHousekeeping;
+    /** Housekeeping block worker. */
+    RecordingBlockWorkerHousekeeping
+                        m_Housekeeping;
 };
 
 /** Vector of recording streams. */

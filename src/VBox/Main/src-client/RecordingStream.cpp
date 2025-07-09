@@ -32,6 +32,7 @@
 #include "LoggingNew.h"
 
 #include <iprt/path.h>
+#include <iprt/semaphore.h>
 
 #ifdef VBOX_RECORDING_DUMP
 # include <iprt/formats/bmp.h>
@@ -367,7 +368,7 @@ int RecordingStream::process(RecordingBlockSet &streamBlockSet, RecordingBlockMa
         }
 
         /* Move block set to housekeeping set. */
-        m_BlockSetHousekeeping.Insert(msTimestamp, itStreamBlock->second);
+        m_Housekeeping.Insert(msTimestamp, itStreamBlock->second);
         streamBlockSet.Map.erase(itStreamBlock);
         itStreamBlock = streamBlockSet.Map.begin();
     }
@@ -440,31 +441,95 @@ int RecordingStream::process(RecordingBlockSet &streamBlockSet, RecordingBlockMa
 }
 
 /**
- * Worker function (callback) to do housekeeping on a given recording block set.
+ * Runs one iteration of the worker until the timeout (if defined)
+ * or error is reached.
  *
- * Runs in a separate request pool thread to unblock a stream's main thread as much as possible.
+ * @returns VBox status code.
  */
-/* static */
-DECLCALLBACK(void) RecordingStream::doHousekeepingCallback(RecordingStream *pThis, RecordingBlockSet *pSet)
+int RecordingBlockWorker::Run(void)
 {
-    RT_NOREF(pThis);
+    int vrc = VINF_SUCCESS;
 
-#ifdef DEBUG
-    size_t const cFrames = pSet->Map.size();
+    /* Set last run initial timestamp. */
+    if (m_tsLastRunMs == 0)
+        m_tsLastRunMs = RTTimeMilliTS();
+
+    uint64_t msTimeout;
+    while (m_fShutdown || (msTimeout = timeoutRemaining() > 0))
+    {
+        vrc = Worker(msTimeout, m_fShutdown, m_pvUser);
+        if (m_fShutdown || RT_FAILURE(vrc))
+            break;
+
+        if (m_msWait)
+        {
+            vrc = RTSemEventWait(m_hSemEvent, m_msWait);
+            if (   RT_FAILURE(vrc)
+                && vrc != VERR_TIMEOUT)
+                break;
+        }
+    }
+
+    timeoutReset();
+    return vrc;
+}
+
+/**
+ * Notifies the worker.
+ *
+ * @returns VBox status code.
+ */
+int RecordingBlockWorker::Notify(void)
+{
+    return RTSemEventSignal(m_hSemEvent);
+}
+
+/**
+ * Inserts a block list within the given PTS.
+ *
+ * @param  uPTS             Timestamp (PTS) to insert block list to.
+ * @param  pBlocks          Block list to insert.
+ *                          This class will take ownership of the data.
+ */
+int RecordingBlockWorkerHousekeeping::Insert(uint64_t uPTS, RecordingBlocks *pBlocks)
+{
+    int vrc;
+
+    try
+    {
+        m_BlockSet.Map.insert(std::make_pair(uPTS, pBlocks));
+        vrc = VINF_SUCCESS;
+    }
+    catch (std::bad_alloc &)
+    {
+        vrc = VERR_NO_MEMORY;
+    }
+
+    return vrc;
+}
+
+/** @copydoc RecordingBlockWorker::Worker */
+DECLCALLBACK(int) RecordingBlockWorkerHousekeeping::Worker(uint64_t msTimeout, bool fShutdown, void *pvUser)
+{
+    RT_NOREF(msTimeout, fShutdown, pvUser);
+
+#if 0
+    size_t const cFrames = m_HousekeepingBlockSet.Map.size();
     LogFunc(("Running housekeeping (%zu frames)...\n", cFrames));
 #endif
 
-    pSet->Clear();
+    m_BlockSet.Clear();
 
-    LogFunc(("Running housekeeping done\n"));
+    LogFunc(("Running housekeeping (shutdown is %RTbool)\n", fShutdown));
 
-#ifdef DEBUG
-    Assert(pSet->Map.size() == 0);
+#if 0
+    Assert(m_HousekeepingBlockSet.Map.size() == 0);
     for (size_t i = 0; i < cFrames; i++)
-        STAM_COUNTER_DEC(&pThis->m_STAM.cVideoFramesHousekeeping); /** @todo No STAM_COUNTER_[REMOVE|SUBTRACT], gah! */
+        STAM_COUNTER_DEC(&m_STAM.cVideoFramesHousekeeping); /** @todo No STAM_COUNTER_[REMOVE|SUBTRACT], gah! */
     LogFunc(("Running housekeeping done\n"));
 #endif
 
+    return VINF_CALLBACK_RETURN;
 }
 
 /**
@@ -502,19 +567,7 @@ int RecordingStream::ThreadMain(int rcWait, uint64_t msTimestamp, RecordingBlock
      * Here we delete all processed stream blocks of this stream. Currently hardcoded to 5s.
      * The common blocks will be deleted by the recording context (which owns those).
      */
-    lock();
-
-    uint64_t const tsNowMs = RTTimeMilliTS();
-    if (tsNowMs - m_BlockSetHousekeeping.tsLastProcessedMs >= RT_MS_5SEC)
-    {
-        m_BlockSetHousekeeping.tsLastProcessedMs = tsNowMs;
-
-        int const  rc2 = RTReqPoolCallVoidWait(m_hReqPool,
-                                               (PFNRT)RecordingStream::doHousekeepingCallback, 2, this, &m_BlockSetHousekeeping);
-        AssertRC(rc2); RT_NOREF(rc2);
-    }
-
-    unlock();
+    m_Housekeeping.Run();
 
     return vrc;
 }
@@ -1039,24 +1092,6 @@ int RecordingStream::initInternal(RecordingContext *pCtx, uint32_t uScreen,
             break;
     }
 
-    if (RT_SUCCESS(vrc))
-    {
-        char szName[16];
-        RTStrPrintf(szName, sizeof(szName), "Rec%uWr", uScreen);
-        RTREQPOOL hReqPool = NIL_RTREQPOOL;
-        vrc = RTReqPoolCreate(1 /*cMaxThreads*/, RT_MS_30SEC /*cMsMinIdle*/, UINT32_MAX /*cThreadsPushBackThreshold*/,
-                              1 /*cMsMaxPushBack*/, szName, &hReqPool);
-        if (RT_SUCCESS(vrc))
-        {
-            vrc = RTReqPoolSetCfgVar(hReqPool, RTREQPOOLCFGVAR_THREAD_FLAGS, RTTHREADFLAGS_COM_MTA);
-            if (RT_SUCCESS(vrc))
-                vrc = RTReqPoolSetCfgVar(hReqPool, RTREQPOOLCFGVAR_MIN_THREADS, 1);
-
-            if (RT_SUCCESS(vrc))
-                m_hReqPool = hReqPool;
-        }
-    }
-
 #ifdef VBOX_WITH_STATISTICS
     Console::SafeVMPtrQuiet ptrVM(m_pCtx->m_pConsole);
     if (ptrVM.isOk())
@@ -1219,10 +1254,6 @@ int RecordingStream::uninitInternal(void)
 
     if (RT_SUCCESS(vrc))
     {
-        uint32_t const cRefs = RTReqPoolRelease(m_hReqPool);
-        Assert(cRefs == 0); RT_NOREF(cRefs);
-        m_hReqPool = NIL_RTREQPOOL;
-
         m_enmState = RECORDINGSTREAMSTATE_UNINITIALIZED;
 
         unlock();
