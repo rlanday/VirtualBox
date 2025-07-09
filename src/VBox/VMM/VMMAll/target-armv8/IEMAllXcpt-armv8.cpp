@@ -173,4 +173,3 @@ IEM_CIMPL_DEF_0(iemCImplRaiseInvalidOpcode)
     AssertFailedReturn(VERR_IEM_ASPECT_NOT_IMPLEMENTED);
 }
 
-
