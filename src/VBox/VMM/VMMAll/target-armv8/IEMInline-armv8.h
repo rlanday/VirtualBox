@@ -374,7 +374,7 @@ DECL_FORCE_INLINE(uint16_t) iemGRegFetchU16(PVMCPUCC pVCpu, uint8_t iReg, bool f
  * @param   iReg    The register.
  * @param   fSp     Set if register 31 is SP, otherwise it's zero.
  */
-DECL_FORCE_INLINE(uint32_t) iemGRegFetchU32(PVMCPUCC pVCpu, uint8_t iReg, bool fSp) RT_NOEXCEPT
+DECL_FORCE_INLINE(uint32_t) iemGRegFetchU32(PVMCPUCC pVCpu, uint8_t iReg, bool fSp = false) RT_NOEXCEPT
 {
     Assert(iReg < 32);
     return iReg < 31 ? pVCpu->cpum.GstCtx.aGRegs[iReg].w

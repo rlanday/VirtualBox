@@ -3418,8 +3418,7 @@
     } IEM_MC_ELSE() { \
         IEM_MC_ADVANCE_PC_AND_FINISH(); \
     } IEM_MC_ENDIF(); \
-    IEM_MC_END();
-
+    IEM_MC_END()
 
 /* CBNZ  <Wt>, <label> (ff000000/35000000) */
 #define IEM_INSTR_IMPL_A64__CBNZ_32_compbranch(Rt, imm19) \
@@ -3432,7 +3431,7 @@
     } IEM_MC_ELSE() { \
         IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
     } IEM_MC_ENDIF(); \
-    IEM_MC_END();
+    IEM_MC_END()
 
 
 /* CBZ  <Xt>, <label> (ff000000/b4000000) */
@@ -3446,7 +3445,7 @@
     } IEM_MC_ELSE() { \
         IEM_MC_ADVANCE_PC_AND_FINISH(); \
     } IEM_MC_ENDIF(); \
-    IEM_MC_END();
+    IEM_MC_END()
 
 
 /* CBNZ  <Xt>, <label> (ff000000/b5000000) */
@@ -3460,7 +3459,7 @@
     } IEM_MC_ELSE() { \
         IEM_MC_REL_JMP_S32_AND_FINISH(offRel); \
     } IEM_MC_ENDIF(); \
-    IEM_MC_END();
+    IEM_MC_END()
 
 
 
@@ -7404,7 +7403,29 @@
 
 
 /* ORR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>} (ff200000/aa000000) */
-//#define IEM_INSTR_IMPL_A64__ORR_64_log_shift(Rd, Rn, imm6, Rm, shift)
+#define IEM_INSTR_IMPL_A64__ORR_64_log_shift(Rd, Rn, imm6, Rm, shift) \
+    if (Rn == 31 /*XZR*/ && imm6 == 0 && shift == 0) \
+    { \
+        IEM_MC_BEGIN(0, 0); \
+        IEM_MC_LOCAL(uint64_t, uTmp); \
+        IEM_MC_FETCH_GREG_U64(uTmp, Rm); \
+        IEM_MC_STORE_GREG_U64(Rd, uTmp); \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+        IEM_MC_END(); \
+    } \
+    else if (shift == 0) \
+    { \
+        IEM_MC_BEGIN(0, 0); \
+        IEM_MC_LOCAL(uint64_t, uTmp1); \
+        IEM_MC_FETCH_GREG_U64(uTmp1, Rm); \
+        IEM_MC_LOCAL(uint64_t, uTmp2); \
+        IEM_MC_FETCH_GREG_U64(uTmp2, Rn); \
+        IEM_MC_OR_2LOCS_U64(uTmp1, uTmp2); \
+        IEM_MC_STORE_GREG_U64(Rd, uTmp1); \
+        IEM_MC_ADVANCE_PC_AND_FINISH(); \
+        IEM_MC_END(); \
+    } \
+    else AssertFailedReturn(VERR_IEM_INSTR_NOT_IMPLEMENTED)
 
 
 /* ORN  <Xd>, <Xn>, <Xm>{, <shift> #<amount>} (ff200000/aa200000) */
