@@ -88,8 +88,7 @@ typedef struct GICINTR
     uint32_t        fIntrGroupMask;
     /** The interrupt ID. */
     uint16_t        uIntId;
-    /** The index of the interrupt in the pending bitmap (UINT16_MAX if none or if
-     *  this interrupt is an LPI). */
+    /** The index of the interrupt in the pending bitmap (UINT16_MAX if none). */
     uint16_t        idxIntr;
     /** The interrupt priority. */
     uint8_t         bPriority;
@@ -671,7 +670,7 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
         PCGICDEV   pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
         if (pGicDev->fEnableLpis)
         {
-            uint16_t uLpiIntId = 0;
+            uint16_t idxHighest = UINT16_MAX;
             for (uint16_t i = 0; i < RT_ELEMENTS(pGicCpu->bmLpiPending.au64); i++)
             {
                 uint64_t bmLpiPending    = pGicCpu->bmLpiPending.au64[i];
@@ -689,19 +688,18 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
                         if (   fLpiEnabled
                             && bLpiPriority < bPriority)
                         {
-                            bPriority = bLpiPriority;
-                            uLpiIntId = idxLpi + GIC_INTID_RANGE_LPI_START;
+                            bPriority  = bLpiPriority;
+                            idxHighest = idxLpi;
                         }
                     }
                     bmLpiPending >>= 1;
                     ++idxLpiInElement;
                 }
             }
-            if (uLpiIntId)
+            if (idxHighest != UINT16_MAX)
             {
-                AssertMsgFailed(("LPI %u Priority=%u\n", uLpiIntId, bPriority));
-                uIntId   = uLpiIntId;
-                idxIntr  = UINT16_MAX;
+                uIntId   = idxHighest + GIC_INTID_RANGE_LPI_START;
+                idxIntr  = idxHighest;
                 fIntrGrp = GIC_INTR_GROUP_1NS;
                 Assert(GIC_IS_INTR_LPI(uIntId));
             }
@@ -713,9 +711,6 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
 
     /* Ensure that if no interrupt is pending, the index is invalid. */
     Assert(uIntId != GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT || idxIntr == UINT16_MAX);
-
-    /* Ensure that if the interrupt is an LPI, the index is invalid. */
-    Assert(!GIC_IS_INTR_LPI(uIntId) || idxIntr == UINT16_MAX);
 
     /* Populate the pending interrupt data and we're done. */
     if (pIntr)
@@ -1985,11 +1980,14 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
 
     STAM_PROFILE_START(&pGicCpu->StatProfIntrAck, x);
 
+    PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+
     /*
      * Get the pending interrupt with the highest priority for the given group.
      */
     GICINTR Intr;
-    PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     gicGetHighestPriorityPendingIntr(pVCpu, fIntrGroupMask, &Intr);
     if (Intr.uIntId == GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT)
     {
@@ -2000,15 +1998,14 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     uint8_t const  bIntrPriority = Intr.bPriority;
     uint16_t const uIntId        = Intr.uIntId;
     uint16_t const idxIntr       = Intr.idxIntr;
+    Assert(idxIntr != UINT16_MAX);
 
     /*
      * Acknowledge the interrupt.
      */
-    bool const fIsRedistIntId = GIC_IS_INTR_SGI_OR_PPI(uIntId)|| GIC_IS_INTR_EXT_PPI(uIntId);
-    if (fIsRedistIntId)
+    if (   GIC_IS_INTR_SGI_OR_PPI(uIntId)
+        || GIC_IS_INTR_EXT_PPI(uIntId))
     {
-        Assert(idxIntr != UINT16_MAX);
-
         /* Mark the interrupt as active. */
         AssertMsg(idxIntr < sizeof(pGicCpu->bmIntrActive) * 8, ("idxIntr=%u\n", idxIntr));
         ASMBitSet(&pGicCpu->bmIntrActive[0], idxIntr);
@@ -2055,11 +2052,6 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     }
     else if (uIntId < GIC_INTID_RANGE_LPI_START)
     {
-        Assert(idxIntr != UINT16_MAX);
-
-        PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
-        PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-
         /* Sanity check if the interrupt ID belongs to the distributor. */
         Assert(GIC_IS_INTR_SPI(uIntId) || GIC_IS_INTR_EXT_SPI(uIntId));
 
@@ -2104,12 +2096,56 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
         gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
         STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
-    else
+    else if (GIC_IS_INTR_LPI(uIntId))
     {
-        /** @todo LPIs. */
-        /* Sanity check if the interrupt ID is an LPIs. */
-        AssertMsgFailed(("todo\n"));
+        /* Update the pending state of the LPI in the LPI pending table in guest memory. */
+        //uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
+        uint16_t const cIntrs          = sizeof(pGicCpu->bmLpiPending) * 8;
+        uint64_t       uLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
+        uint16_t const cIntrPerElement = sizeof(uLpiPending) * 8;
+        uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
+        Assert(idxIntr < cIntrs);
+
+        /* Clear the pending state bit for the LPI. */
+        uLpiPending &= ~RT_BIT_64(idxPendingBit);
+
+        /* LPIs are always edge-triggered, mark the interrupt as no longer pending. */
+        pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = uLpiPending;
+
+        /* Update the pending state of the LPI in the LPI pending table in guest memory. */
+        RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
+        uint16_t const offPending  = (uIntId / cIntrPerElement);
+        PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&uLpiPending, sizeof(uLpiPending));
+
+        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
+        /* Update the active priorities bitmap. */
+        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup0) * 8 >= 128);
+        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
+        uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
+        if (fIntrGroupMask & GIC_INTR_GROUP_0)
+            ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
+        else
+            ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
+
+        /* Set priority of the running priority. */
+        if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
+        {
+            Assert(pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] > bIntrPriority);
+            LogFlowFunc(("Dropping interrupt priority from %u -> %u (idxRunningPriority: %u -> %u)\n",
+                         pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority],
+                         bIntrPriority,
+                         pGicCpu->idxRunningPriority, pGicCpu->idxRunningPriority + 1));
+            ++pGicCpu->idxRunningPriority;
+            pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] = bIntrPriority;
+            pGicCpu->abRunningIntId[pGicCpu->idxRunningPriority] = uIntId;
+        }
+        else
+            AssertReleaseMsgFailed(("Index of running-interrupt priority out-of-bounds %u\n", pGicCpu->idxRunningPriority));
+
+        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
     }
+    else
+        AssertReleaseMsgFailed(("Invalid interrupt-ID %u\n", uIntId));
 
     LogFlowFunc(("uIntId=%u\n", uIntId));
     STAM_PROFILE_STOP(&pGicCpu->StatProfIntrAck, x);
@@ -3369,6 +3405,10 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
                 AssertReturn(idxIntr < sizeof(pGicDev->IntrActive) * 8, VERR_BUFFER_OVERFLOW);
                 ASMBitClear(&pGicDev->IntrActive.au32[0], idxIntr);
                 fIsRedistIntId = false;
+            }
+            else if (uIntId <= GIC_INTID_RANGE_LPI_START + RT_ELEMENTS(pGicDev->abLpiConfig) - 1)
+            {
+                /* LPIs. LPIs don't have an active state so there's nothing to do here. */
             }
             else
             {
