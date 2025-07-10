@@ -1010,7 +1010,7 @@ DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGi
 #endif /* IN_RING3 */
 
 
-DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId, bool fAsserted)
+DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId, bool fAsserted)
 {
     /* We support 32-bits of device ID and hence it cannot be out of range (asserted below). */
     Assert(sizeof(uDevId) * 8 >= RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_DEV_BITS) + 1);
@@ -1050,7 +1050,6 @@ DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint
                             if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                             {
                                 Assert(!RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_PTA));
-                                PCVMCC         pVM  = PDMDevHlpGetVM(pDevIns);
                                 VMCPUID const idCpu = pGitsDev->aCtes[uIcId].idTargetCpu;
 
                                 /* Check that the target CPU is valid. */
