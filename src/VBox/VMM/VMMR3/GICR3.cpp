@@ -51,7 +51,7 @@
 *   Defined Constants And Macros                                                                                                 *
 *********************************************************************************************************************************/
 /** GIC saved state version. */
-#define GIC_SAVED_STATE_VERSION                     13
+#define GIC_SAVED_STATE_VERSION                     14
 
 # define GIC_SYSREGRANGE(a_uFirst, a_uLast, a_szName) \
     { (a_uFirst), (a_uLast), kCpumSysRegRdFn_GicIcc, kCpumSysRegWrFn_GicIcc, 0, 0, 0, 0, 0, 0, a_szName, { 0 }, { 0 }, { 0 }, { 0 } }
@@ -975,11 +975,11 @@ DECLCALLBACK(int) gicR3Construct(PPDMDEVINS pDevIns, int iInstance, PCFGMNODE pC
      * 16-bits since 8192 + 2^(NumLpi+1) is >= 73727. A value of 2 or lower support
      * fewer than 15 LPIs which seem pointless and is hence disallowed. This value is
      * ignored (set to 0 in the register) when LPIs are disabled. */
-    rc = pHlp->pfnCFGMQueryU8Def(pCfg, "MaxLpi", &pGicDev->uMaxLpi, 11);
+    rc = pHlp->pfnCFGMQueryU8Def(pCfg, "MaxLpi", &pGicDev->uMaxLpi, 12);
     AssertLogRelRCReturn(rc, rc);
 
-    /* We currently support 4096 LPIs until we need to support more. */
-    if (pGicDev->uMaxLpi == 11)
+    /* We currently support 8192 LPIs until we need to support more. */
+    if (pGicDev->uMaxLpi == 12)
     { /* likely */ }
     else
         return PDMDevHlpVMSetError(pDevIns, VERR_INVALID_PARAMETER, RT_SRC_POS,

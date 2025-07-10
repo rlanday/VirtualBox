@@ -256,7 +256,7 @@ typedef struct GICDEV
     /** ITS device state. */
     GITSDEV                     Gits;
     /** LPI config table. */
-    uint8_t                     abLpiConfig[4096];
+    uint8_t                     abLpiConfig[8192];
     /** LPI config table base register (GICR_PROPBASER). */
     RTUINT64U                   uLpiConfigBaseReg;
     /** LPI pending table base register (GICR_PENDBASER). */
@@ -316,9 +316,9 @@ AssertCompileSizeAlignment(GIC, 8);
 typedef union GICLPIBMP
 {
     /** The 64-bit view. */
-    uint64_t        au64[64];
+    uint64_t        au64[128];
     /** The 32-bit view. */
-    uint32_t        au32[128];
+    uint32_t        au32[256];
 } GICLPIBMP;
 AssertCompileSize(GICLPIBMP, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
 AssertCompileMembersSameSize(GICLPIBMP, au64, GICLPIBMP, au32);
