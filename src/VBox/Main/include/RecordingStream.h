@@ -312,7 +312,7 @@ public:
 
     int Insert(uint64_t uPTS, RecordingBlocks *pBlocks);
 
-    int Worker(uint64_t msTimeout, bool fShutdown, void *pvUser);
+    DECLCALLBACK(int) Worker(uint64_t msTimeout, bool fShutdown, void *pvUser);
 
 protected:
 
