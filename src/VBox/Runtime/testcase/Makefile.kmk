@@ -185,7 +185,8 @@ ifdef VBOX_WITH_TESTCASES # The whole file
   	tstRTVfs \
   	tstRTZip \
   	tstRTJson \
-  	tstRTShMem
+  	tstRTShMem \
+  	tstRTXml
 
   PROGRAMS.win += \
   	tstRTCritSectW32 \
@@ -979,6 +980,9 @@ ifdef VBOX_WITH_TESTCASES # The whole file
 
  tstRTShMem_TEMPLATE = VBoxR3TstExe
  tstRTShMem_SOURCES = tstRTShMem.cpp
+
+ tstRTXml_TEMPLATE = VBoxR3TstExe
+ tstRTXml_SOURCES = tstRTXml.cpp
 
  #
  # Ring-0 testcases.
