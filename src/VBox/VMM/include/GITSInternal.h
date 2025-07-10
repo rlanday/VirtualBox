@@ -283,7 +283,7 @@ DECL_HIDDEN_CALLBACK(void)         gitsMmioWriteTranslate(PGITSDEV pGitsDev, uin
 
 #ifdef IN_RING3
 DECL_HIDDEN_CALLBACK(void)         gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp);
-DECL_HIDDEN_CALLBACK(int)          gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf);
+DECL_HIDDEN_CALLBACK(int)          gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf);
 #endif
 
 #ifdef LOG_ENABLED

@@ -418,11 +418,7 @@ static DECLCALLBACK(void) gicR3DbgInfoLpi(PVM pVM, PCDBGFINFOHLP pHlp, const cha
 
 
 /**
- * The GIC ITS command-queue thread.
- *
- * @returns VBox status code.
- * @param   pDevIns     The device instance.
- * @param   pThread     The command thread.
+ * @callback_method_impl{FNPDMTHREADDEV, The GIC ITS command-queue thread.}
  */
 static DECLCALLBACK(int) gicItsR3CmdQueueThread(PPDMDEVINS pDevIns, PPDMTHREAD pThread)
 {
@@ -450,6 +446,7 @@ static DECLCALLBACK(int) gicItsR3CmdQueueThread(PPDMDEVINS pDevIns, PPDMTHREAD p
     AssertLogRelMsgReturn(pvCmds, ("Failed to alloc %.0Rhcb (%zu bytes) for the GITS command queue\n", cbCmds, cbCmds),
                           VERR_NO_MEMORY);
 
+    PCVMCC pVM = PDMDevHlpGetVM(pDevIns);
     while (pThread->enmState == PDMTHREADSTATE_RUNNING)
     {
         /* Sleep until we are woken up. */
@@ -462,7 +459,7 @@ static DECLCALLBACK(int) gicItsR3CmdQueueThread(PPDMDEVINS pDevIns, PPDMTHREAD p
         }
 
         /* Process the command queue. */
-        int const rc = gitsR3CmdQueueProcess(pDevIns, pGitsDev, pvCmds, cbCmds);
+        int const rc = gitsR3CmdQueueProcess(pVM, pDevIns, pGitsDev, pvCmds, cbCmds);
         if (RT_FAILURE(rc))
             break;
     }

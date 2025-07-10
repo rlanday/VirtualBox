@@ -785,7 +785,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
 }
 
 
-DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf)
+DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf)
 {
     Log4Func(("cbBuf=%RU32\n", cbBuf));
 
@@ -951,7 +951,7 @@ DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGi
                         case GITS_CMD_ID_INV:
                         {
                             /* Reading the table is likely to take the same time as reading just one entry. */
-                            //gicDistReadLpiConfigTableFromMem(pDevIns);
+                            gicDistReadLpiConfigTableFromMem(pDevIns);
                             /** @todo Invalidate one entry. */
                             break;
                         }
@@ -966,13 +966,12 @@ DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGi
                             /* Reading the table is likely to take the same time as reading just one entry. */
                             uint64_t const uDw2  = pCmd->au64[2].u;
                             uint16_t const uIcId = RT_BF_GET(uDw2, GITS_BF_CMD_INVALL_DW2_IC_ID);
-                            PCVMCC         pVM   = PDMDevHlpGetVM(pDevIns);
                             if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                             {
                                 if (pGitsDev->aCtes[uIcId].idTargetCpu < pVM->cCpus)
                                 {
                                     /** @todo Invalidate all from the table. */
-                                    //gicDistReadLpiConfigTableFromMem(pDevIns);
+                                    gicDistReadLpiConfigTableFromMem(pDevIns);
                                 }
                                 else
                                     gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Invall_Cte_Unmapped,
@@ -1018,6 +1017,9 @@ DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGi
     /** @todo Error recording. */
 
     GIC_CRIT_SECT_ENTER(pDevIns);
+
+    /** @todo Check LPI mapping cache and lookup cache here, if cache lookup fails,
+     *        proceed with parsing interrupt tables in guest memory below. */
 
     bool const fEnabled = RT_BF_GET(pGitsDev->uCtrlReg, GITS_BF_CTRL_REG_CTLR_ENABLED);
     if (fEnabled)
