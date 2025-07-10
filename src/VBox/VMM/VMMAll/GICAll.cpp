@@ -74,14 +74,6 @@
 *   Defined Constants And Macros                                                                                                 *
 *********************************************************************************************************************************/
 #define GIC_IDLE_PRIORITY                       0xff
-#define GIC_IS_INTR_SGI(a_uIntId)               ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SGI_START < (uint32_t)GIC_INTID_SGI_RANGE_SIZE)
-#define GIC_IS_INTR_PPI(a_uIntId)               ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_PPI_START < (uint32_t)GIC_INTID_PPI_RANGE_SIZE)
-#define GIC_IS_INTR_SGI_OR_PPI(a_uIntId)        ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SGI_START < (uint32_t)(GIC_INTID_SGI_RANGE_SIZE + GIC_INTID_PPI_RANGE_SIZE))
-#define GIC_IS_INTR_SPI(a_uIntId)               ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SPI_START < (uint32_t)GIC_INTID_SPI_RANGE_SIZE)
-#define GIC_IS_INTR_SPECIAL(a_uIntId)           ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SPECIAL_START < (uint32_t)GIC_INTID_SPECIAL_RANGE_SIZE)
-#define GIC_IS_INTR_EXT_PPI(a_uIntId)           ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_EXT_PPI_START < (uint32_t)GIC_INTID_EXT_PPI_RANGE_SIZE)
-#define GIC_IS_INTR_EXT_SPI(a_uIntId)           ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_EXT_SPI_START < (uint32_t)GIC_INTID_EXT_SPI_RANGE_SIZE)
-#define GIC_IS_INTR_LPI(a_pGicDev, a_uIntId)    ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_LPI_START < (uint32_t)RT_ELEMENTS((a_pGicDev)->abLpiConfig))
 
 
 /*********************************************************************************************************************************
@@ -612,12 +604,13 @@ DECL_FORCE_INLINE(uint32_t) gicReDistGetPendingIntrAt(PCGICCPU pGicCpu, uint16_t
  *
  * @returns The interrupt ID or GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT if no
  *          interrupts are pending or not in a state to be signalled.
- * @param   pGicCpu         The GIC redistributor and CPU interface state.
+ * @param   pVCpu           The cross context virtual CPU structure.
  * @param   fIntrGroupMask  The interrupt groups to consider.
  * @param   pIntr           Where to store the pending interrupt. Optional, can be NULL.
  */
-static uint16_t gicReDistGetHighestPriorityPendingIntr(PCGICCPU pGicCpu, uint32_t fIntrGroupMask, PGICINTR pIntr)
+static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t fIntrGroupMask, PGICINTR pIntr)
 {
+    PCGICCPU pGicCpu   = VMCPU_TO_GICCPU(pVCpu);
     uint16_t idxIntr   = UINT16_MAX;
     uint16_t uIntId    = GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT;
     uint8_t  bPriority = GIC_IDLE_PRIORITY;
@@ -637,6 +630,8 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCGICCPU pGicCpu, uint32_
         if (!(fIntrGroupMask & (GIC_INTR_GROUP_1NS | GIC_INTR_GROUP_1S)))
             bmReDistIntrs[i] &= ~pGicCpu->bmIntrGroup[i];
     }
+
+    /** @todo LPIs. */
 
     /* Among the collected interrupts, pick the one with the highest, non-idle priority. */
     /** @todo r=aeichner Can we merge this into the above loop?. */
@@ -786,12 +781,13 @@ static uint16_t gicDistGetHighestPriorityPendingIntr(PCGICDEV pGicDev, PCVMCPUCC
  * Gets whether the redistributor has pending interrupts with sufficient priority to
  * be signalled to the PE.
  *
- * @param   pGicCpu     The GIC redistributor and CPU interface state.
+ * @param   pVCpu       The cross context virtual CPU structure.
  * @param   pfIrq       Where to store whether IRQs can be signalled.
  * @param   pfFiq       Where to store whether FIQs can be signalled.
  */
-static void gicReDistHasIrqPending(PCGICCPU pGicCpu, bool *pfIrq, bool *pfFiq)
+static void gicReDistHasIrqPending(PCVMCPUCC pVCpu, bool *pfIrq, bool *pfFiq)
 {
+    PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     uint32_t const fIntrGroupMask = pGicCpu->fIntrGroupMask;
     LogFlowFunc(("fIntrGroupMask=%#RX32\n", fIntrGroupMask));
 
@@ -802,7 +798,7 @@ static void gicReDistHasIrqPending(PCGICCPU pGicCpu, bool *pfIrq, bool *pfFiq)
     {
         /* Get the highest pending priority interrupt from the redistributor. */
         GICINTR Intr;
-        gicReDistGetHighestPriorityPendingIntr(pGicCpu, fIntrGroupMask, &Intr);
+        gicReDistGetHighestPriorityPendingIntr(pVCpu, fIntrGroupMask, &Intr);
         if (Intr.uIntId != GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT)
         {
             /* Check if it has sufficient priority to be signalled to the PE. */
@@ -826,13 +822,14 @@ static void gicReDistHasIrqPending(PCGICCPU pGicCpu, bool *pfIrq, bool *pfFiq)
  * Gets whether the distributor has pending interrupts with sufficient priority to
  * be signalled to the PE.
  *
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   pfIrq       Where to store whether there are IRQs can be signalled.
  * @param   pfFiq       Where to store whether there are FIQs can be signalled.
  */
-static void gicDistHasIrqPendingForVCpu(PCGICDEV pGicDev, PCVMCPUCC pVCpu, bool *pfIrq, bool *pfFiq)
+static void gicDistHasIrqPendingForVCpu(PCVMCPUCC pVCpu, bool *pfIrq, bool *pfFiq)
 {
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PCGICDEV   pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
     uint32_t const fIntrGroupMask = pGicDev->fIntrGroupMask;
     LogFlowFunc(("fIntrGroupMask=%#RX32\n", fIntrGroupMask));
 
@@ -861,13 +858,6 @@ static void gicDistHasIrqPendingForVCpu(PCGICDEV pGicDev, PCVMCPUCC pVCpu, bool 
 
     *pfIrq = false;
     *pfFiq = false;
-}
-
-
-DECLHIDDEN(bool) gicDistIsLpiValid(PPDMDEVINS pDevIns, uint16_t uIntId)
-{
-    PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-    return GIC_IS_INTR_LPI(pGicDev, uIntId);
 }
 
 
@@ -914,7 +904,7 @@ static void gicReDistReadLpiPendingBitmapFromMem(PPDMDEVINS pDevIns, PVMCPU pVCp
 
         /** @todo Try releasing and re-acquiring the device critical section here.
          *        Probably safe, but haven't verified this... */
-        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingBitmap, (void *)&pGicCpu->bmLpiPending[0],
+        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingBitmap, (void *)&pGicCpu->bmLpiPending.au64[0],
                                              cbLpiPendingBitmap);
         AssertRC(rc);
     }
@@ -924,21 +914,20 @@ static void gicReDistReadLpiPendingBitmapFromMem(PPDMDEVINS pDevIns, PVMCPU pVCp
 
 
 /**
- * Updates the internal IRQ state and sets or clears the appropriate force action
- * flags.
+ * Updates the internal IRQ state of the redistributor and sets or clears the
+ * appropriate force action flags.
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  */
-static VBOXSTRICTRC gicReDistUpdateIrqState(PCGICDEV pGicDev, PVMCPUCC pVCpu)
+static VBOXSTRICTRC gicReDistUpdateIrqState(PVMCPUCC pVCpu)
 {
     LogFlowFunc(("\n"));
     bool fIrq, fFiq;
-    gicReDistHasIrqPending(VMCPU_TO_GICCPU(pVCpu), &fIrq, &fFiq);
+    gicReDistHasIrqPending(pVCpu, &fIrq, &fFiq);
 
     bool fIrqDist, fFiqDist;
-    gicDistHasIrqPendingForVCpu(pGicDev, pVCpu, &fIrqDist, &fFiqDist);
+    gicDistHasIrqPendingForVCpu(pVCpu, &fIrqDist, &fFiqDist);
 
     fIrq |= fIrqDist;
     fFiq |= fFiqDist;
@@ -948,25 +937,24 @@ static VBOXSTRICTRC gicReDistUpdateIrqState(PCGICDEV pGicDev, PVMCPUCC pVCpu)
 
 
 /**
- * Updates the internal IRQ state of the distributor and sets or clears the appropirate force action flags.
+ * Updates the internal IRQ state of the distributor and sets or clears the
+ * appropirate force action flags.
  *
  * @returns Strict VBox status code.
- * @param   pVM         The cross context VM state.
- * @param   pGicDev     The GIC distributor state.
+ * @param   pVM     The cross context VM state.
  */
-static VBOXSTRICTRC gicDistUpdateIrqState(PCVMCC pVM, PCGICDEV pGicDev)
+static VBOXSTRICTRC gicDistUpdateIrqState(PCVMCC pVM)
 {
     LogFlowFunc(("\n"));
     for (uint32_t idCpu = 0; idCpu < pVM->cCpus; idCpu++)
     {
-        PVMCPUCC pVCpu   = pVM->CTX_SUFF(apCpus)[idCpu];
-        PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+        PVMCPUCC pVCpu = pVM->CTX_SUFF(apCpus)[idCpu];
 
         bool fIrq, fFiq;
-        gicReDistHasIrqPending(pGicCpu, &fIrq, &fFiq);
+        gicReDistHasIrqPending(pVCpu, &fIrq, &fFiq);
 
         bool fIrqDist, fFiqDist;
-        gicDistHasIrqPendingForVCpu(pGicDev, pVCpu, &fIrqDist, &fFiqDist);
+        gicDistHasIrqPendingForVCpu(pVCpu, &fIrqDist, &fFiqDist);
         fIrq |= fIrqDist;
         fFiq |= fFiqDist;
 
@@ -1088,7 +1076,7 @@ static VBOXSTRICTRC gicDistWriteIntrSetEnableReg(PVM pVM, PGICDEV pGicDev, uint1
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1113,7 +1101,7 @@ static VBOXSTRICTRC gicDistWriteIntrClearEnableReg(PVM pVM, PGICDEV pGicDev, uin
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1157,7 +1145,7 @@ static VBOXSTRICTRC gicDistWriteIntrSetActiveReg(PVM pVM, PGICDEV pGicDev, uint1
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1182,7 +1170,7 @@ static VBOXSTRICTRC gicDistWriteIntrClearActiveReg(PVM pVM, PGICDEV pGicDev, uin
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1282,7 +1270,7 @@ static VBOXSTRICTRC gicDistWriteIntrPriorityReg(PVM pVM, PGICDEV pGicDev, uint16
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1336,7 +1324,7 @@ static VBOXSTRICTRC gicDistWriteIntrSetPendingReg(PVMCC pVM, PGICDEV pGicDev, ui
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1361,7 +1349,7 @@ static VBOXSTRICTRC gicDistWriteIntrClearPendingReg(PVMCC pVM, PGICDEV pGicDev, 
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1463,7 +1451,7 @@ static VBOXSTRICTRC gicDistWriteIntrGroupReg(PCVM pVM, PGICDEV pGicDev, uint16_t
     }
     else
         AssertReleaseMsgFailed(("Unexpected (but not illegal) write to SGI/PPI register in distributor\n"));
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -1494,14 +1482,15 @@ static VBOXSTRICTRC gicReDistReadIntrPriorityReg(PCGICDEV pGicDev, PGICCPU pGicC
  * Writes the redistributor's interrupt priority register (GICR_IPRIORITYR).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_IPRIORITY range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrPriorityReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrPriorityReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
     /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PCGICDEV   pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
     Assert(pGicDev->fAffRoutingEnabled);
 
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
@@ -1521,7 +1510,7 @@ static VBOXSTRICTRC gicReDistWriteIntrPriorityReg(PCGICDEV pGicDev, PVMCPUCC pVC
     }
 
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, *(uint32_t *)&pGicCpu->abIntrPriority[idxPriority]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1551,20 +1540,23 @@ static VBOXSTRICTRC gicReDistReadIntrPendingReg(PCGICDEV pGicDev, PGICCPU pGicCp
  * Writes the redistributor's interrupt set-pending register (GICR_ISPENDR).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ISPENDR range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrSetPendingReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrSetPendingReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
     /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrPending));
     pGicCpu->bmIntrPending[idxReg] |= uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrPending[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1572,20 +1564,23 @@ static VBOXSTRICTRC gicReDistWriteIntrSetPendingReg(PCGICDEV pGicDev, PVMCPUCC p
  * Writes the redistributor's interrupt clear-pending register (GICR_ICPENDR).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ICPENDR range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrClearPendingReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrClearPendingReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
     /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrPending));
     pGicCpu->bmIntrPending[idxReg] &= ~uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrPending[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1614,19 +1609,23 @@ static VBOXSTRICTRC gicReDistReadIntrEnableReg(PCGICDEV pGicDev, PGICCPU pGicCpu
  * Writes the redistributor's interrupt set-enable register (GICR_ISENABLER).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ISENABLER range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrSetEnableReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrSetEnableReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
+    /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrEnabled));
     pGicCpu->bmIntrEnabled[idxReg] |= uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrEnabled[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1634,18 +1633,23 @@ static VBOXSTRICTRC gicReDistWriteIntrSetEnableReg(PCGICDEV pGicDev, PVMCPUCC pV
  * Writes the redistributor's interrupt clear-enable register (GICR_ICENABLER).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ICENABLER range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrClearEnableReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrClearEnableReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
+    /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrEnabled));
     pGicCpu->bmIntrEnabled[idxReg] &= ~uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrEnabled[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1672,18 +1676,23 @@ static VBOXSTRICTRC gicReDistReadIntrActiveReg(PGICCPU pGicCpu, uint16_t idxReg,
  * Writes the redistributor's interrupt set-active register (GICR_ISACTIVER).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ISACTIVER range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrSetActiveReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrSetActiveReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
+    /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrActive));
     pGicCpu->bmIntrActive[idxReg] |= uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrActive[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1691,18 +1700,23 @@ static VBOXSTRICTRC gicReDistWriteIntrSetActiveReg(PCGICDEV pGicDev, PVMCPUCC pV
  * Writes the redistributor's interrupt clear-active register (GICR_ICACTIVER).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ICACTIVER range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrClearActiveReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrClearActiveReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
+    /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrActive));
     pGicCpu->bmIntrActive[idxReg] &= ~uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrActive[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1734,15 +1748,18 @@ static VBOXSTRICTRC gicReDistReadIntrConfigReg(PCGICDEV pGicDev, PGICCPU pGicCpu
  * Writes the redistributor's interrupt config register (GICR_ICFGR).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_ICFGR range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrConfigReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrConfigReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
     /* When affinity routing is disabled, writes are ignored. */
-    Assert(pGicDev->fAffRoutingEnabled); RT_NOREF(pGicDev);
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     if (idxReg > 0)
     {
@@ -1789,20 +1806,23 @@ static VBOXSTRICTRC gicReDistReadIntrGroupReg(PCGICDEV pGicDev, PGICCPU pGicCpu,
  * Writes the redistributor's interrupt group register (GICR_IGROUPR).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   idxReg      The index of the register in the GICR_IGROUPR range.
  * @param   uValue      The value to write to the register.
  */
-static VBOXSTRICTRC gicReDistWriteIntrGroupReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
+static VBOXSTRICTRC gicReDistWriteIntrGroupReg(PVMCPUCC pVCpu, uint16_t idxReg, uint32_t uValue)
 {
+#ifdef RT_STRICT
     /* When affinity routing is disabled, writes are ignored. */
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     Assert(pGicDev->fAffRoutingEnabled);
+#endif
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     Assert(idxReg < RT_ELEMENTS(pGicCpu->bmIntrGroup));
     pGicCpu->bmIntrGroup[idxReg] = uValue;
     LogFlowFunc(("idxReg=%#x written %#x\n", idxReg, pGicCpu->bmIntrGroup[idxReg]));
-    return gicReDistUpdateIrqState(pGicDev, pVCpu);
+    return gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -1827,19 +1847,20 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
  *
  * @returns The interrupt ID or GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT if no interrupt
  *          is pending or not in a state to be signalled to the PE.
- * @param   pGicDev         The GIC distributor state.
  * @param   pVCpu           The cross context virtual CPU structure.
  * @param   fIntrGroupMask  The interrupt groups to consider.
  * @param   pIntr           Where to store the pending interrupt. Optional, can be NULL.
  */
-static uint16_t gicGetHighestPriorityPendingIntr(PCGICDEV pGicDev, PCVMCPUCC pVCpu, uint32_t fIntrGroupMask, PGICINTR pIntr)
+static uint16_t gicGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t fIntrGroupMask, PGICINTR pIntr)
 {
     /* Only one group must be specified here since this is called from registers that specify a single group! */
     Assert(   fIntrGroupMask == GIC_INTR_GROUP_0
            || fIntrGroupMask == GIC_INTR_GROUP_1S
            || fIntrGroupMask == GIC_INTR_GROUP_1NS);
 
-    PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    PCGICCPU   pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
 
     /* Quick bailout if all interrupts are fully masked or if the active interrupt is at the highest priority. */
     uint16_t uIntId;
@@ -1847,7 +1868,7 @@ static uint16_t gicGetHighestPriorityPendingIntr(PCGICDEV pGicDev, PCVMCPUCC pVC
         && pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority])
     {
         GICINTR IntrRedist;
-        gicReDistGetHighestPriorityPendingIntr(pGicCpu, fIntrGroupMask, &IntrRedist);
+        gicReDistGetHighestPriorityPendingIntr(pVCpu, fIntrGroupMask, &IntrRedist);
 
         GICINTR IntrDist;
         gicDistGetHighestPriorityPendingIntr(pGicDev, pVCpu, fIntrGroupMask, &IntrDist);
@@ -1904,12 +1925,11 @@ static uint16_t gicGetHighestPriorityPendingIntr(PCGICDEV pGicDev, PCVMCPUCC pVC
  *
  * @returns The interrupt ID or GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT no interrupts
  *          are pending or not in a state to be signalled.
- * @param   pGicDev         The GIC distributor state.
  * @param   pVCpu           The cross context virtual CPU structure.
  * @param   fIntrGroupMask  The interrupt group to consider. Only one group must be
  *                          specified!
  */
-static uint16_t gicAckHighestPriorityPendingIntr(PGICDEV pGicDev, PVMCPUCC pVCpu, uint32_t fIntrGroupMask)
+static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrGroupMask)
 {
     LogFlowFunc(("[%u]: fIntrGroupMask=%#RX32\n", pVCpu->idCpu, fIntrGroupMask));
 
@@ -1925,7 +1945,7 @@ static uint16_t gicAckHighestPriorityPendingIntr(PGICDEV pGicDev, PVMCPUCC pVCpu
      */
     GICINTR Intr;
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-    gicGetHighestPriorityPendingIntr(pGicDev, pVCpu, fIntrGroupMask, &Intr);
+    gicGetHighestPriorityPendingIntr(pVCpu, fIntrGroupMask, &Intr);
     if (Intr.uIntId == GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT)
     {
         STAM_PROFILE_STOP(&pGicCpu->StatProfIntrAck, x);
@@ -1984,11 +2004,14 @@ static uint16_t gicAckHighestPriorityPendingIntr(PGICDEV pGicDev, PVMCPUCC pVCpu
         /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
 
         /* Update the redistributor IRQ state to reflect change to the active interrupt. */
-        gicReDistUpdateIrqState(pGicDev, pVCpu);
+        gicReDistUpdateIrqState(pVCpu);
         STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
     else if (uIntId < GIC_INTID_RANGE_LPI_START)
     {
+        PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+        PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+
         /* Sanity check if the interrupt ID belongs to the distributor. */
         Assert(GIC_IS_INTR_SPI(uIntId) || GIC_IS_INTR_EXT_SPI(uIntId));
 
@@ -2030,7 +2053,7 @@ static uint16_t gicAckHighestPriorityPendingIntr(PGICDEV pGicDev, PVMCPUCC pVCpu
         /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
 
         /* Update the distributor IRQ state to reflect change to the active interrupt. */
-        gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM), pGicDev);
+        gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
         STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
     else
@@ -2456,7 +2479,7 @@ DECLINLINE(VBOXSTRICTRC) gicDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVCpu
             if (pGicDev->fIntrGroupMask != fIntrGroupMask)
             {
                 pGicDev->fIntrGroupMask = fIntrGroupMask;
-                rcStrict = gicDistUpdateIrqState(pVM, pGicDev);
+                rcStrict = gicDistUpdateIrqState(pVM);
             }
             break;
         }
@@ -2656,7 +2679,6 @@ DECLINLINE(VBOXSTRICTRC) gicReDistReadSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPUC
 DECLINLINE(VBOXSTRICTRC) gicReDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t offReg, uint32_t uValue)
 {
     VMCPU_ASSERT_EMT(pVCpu);
-    RT_NOREF(pVCpu, uValue);
 
     VBOXSTRICTRC rcStrict = VINF_SUCCESS;
     PGICDEV      pGicDev  = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
@@ -2723,8 +2745,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVC
  */
 DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t offReg, uint32_t uValue)
 {
-    VMCPU_ASSERT_EMT(pVCpu);
-    PCGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
+    VMCPU_ASSERT_EMT(pVCpu); RT_NOREF(pDevIns);
     uint16_t const cbReg = sizeof(uint32_t);
 
     /*
@@ -2733,7 +2754,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_IGROUPR0_OFF, GIC_REDIST_SGI_PPI_REG_IGROUPRnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_IGROUPR0_OFF) / cbReg;
-        return gicReDistWriteIntrGroupReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrGroupReg(pVCpu, idxReg, uValue);
     }
 
     /*
@@ -2743,12 +2764,12 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ISENABLER0_OFF, GIC_REDIST_SGI_PPI_REG_ISENABLERnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ISENABLER0_OFF) / cbReg;
-        return gicReDistWriteIntrSetEnableReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrSetEnableReg(pVCpu, idxReg, uValue);
     }
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ICENABLER0_OFF, GIC_REDIST_SGI_PPI_REG_ICENABLERnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ICENABLER0_OFF) / cbReg;
-        return gicReDistWriteIntrClearEnableReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrClearEnableReg(pVCpu, idxReg, uValue);
     }
 
     /*
@@ -2758,12 +2779,12 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ISACTIVER0_OFF, GIC_REDIST_SGI_PPI_REG_ISACTIVERnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ISACTIVER0_OFF) / cbReg;
-        return gicReDistWriteIntrSetActiveReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrSetActiveReg(pVCpu, idxReg, uValue);
     }
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ICACTIVER0_OFF, GIC_REDIST_SGI_PPI_REG_ICACTIVERnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ICACTIVER0_OFF) / cbReg;
-        return gicReDistWriteIntrClearActiveReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrClearActiveReg(pVCpu, idxReg, uValue);
     }
 
     /*
@@ -2773,12 +2794,12 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ISPENDR0_OFF, GIC_REDIST_SGI_PPI_REG_ISPENDRnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ISPENDR0_OFF) / cbReg;
-        return gicReDistWriteIntrSetPendingReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrSetPendingReg(pVCpu, idxReg, uValue);
     }
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ICPENDR0_OFF, GIC_REDIST_SGI_PPI_REG_ICPENDRnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ICPENDR0_OFF) / cbReg;
-        return gicReDistWriteIntrClearPendingReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrClearPendingReg(pVCpu, idxReg, uValue);
     }
 
     /*
@@ -2787,7 +2808,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_IPRIORITYRn_OFF_START, GIC_REDIST_SGI_PPI_REG_IPRIORITYRnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_IPRIORITYRn_OFF_START) / cbReg;
-        return gicReDistWriteIntrPriorityReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrPriorityReg(pVCpu, idxReg, uValue);
     }
 
     /*
@@ -2796,12 +2817,74 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
     if (GIC_IS_REG_IN_RANGE(offReg, GIC_REDIST_SGI_PPI_REG_ICFGR0_OFF, GIC_REDIST_SGI_PPI_REG_ICFGRnE_RANGE_SIZE))
     {
         uint16_t const idxReg = (offReg - GIC_REDIST_SGI_PPI_REG_ICFGR0_OFF) / cbReg;
-        return gicReDistWriteIntrConfigReg(pGicDev, pVCpu, idxReg, uValue);
+        return gicReDistWriteIntrConfigReg(pVCpu, idxReg, uValue);
     }
 
     AssertReleaseMsgFailed(("offReg=%#RX16 (%s)\n", offReg, gicReDistGetSgiPpiRegDescription(offReg)));
     return VERR_INTERNAL_ERROR_2;
 }
+
+
+/**
+ * Sets an LPI (Locality-specific Peripheral Interrupt).
+ *
+ * @param   pDevIns     The device instance.
+ * @param   pVCpu       The cross context virtual CPU structure.
+ * @param   uIntId      The interrupt ID.
+ * @param   fAsserted   Flag whether to mark the interrupt as asserted/de-asserted.
+ */
+DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
+{
+    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
+    Assert(GIC_IS_INTR_LPI(uIntId));
+    Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
+
+    /*
+     * LPIs are always non-secure group 1 interrupts with edge-triggered behavior.
+     * LPIs do -not- have an active state and thus don't require explicit deactivation.[1]
+     * When LPIs are disabled, they cannot be made pending and are lost.[2]
+     *
+     * [1] -- See ARM GIC spec. 1.2.1 "Interrupt Types".
+     * [2] -- See ARM GIC spec. 5.1 "LPIs".
+     */
+    PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    if (pGicDev->fEnableLpis)
+    {
+        /*
+         * Check if the pending state of this LPI has changed compared to
+         * what we have in our cache.
+         */
+        PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+        Assert(GIC_IS_INTR_LPI(uIntId));
+
+        uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
+        uint16_t const cIntrs          = sizeof(pGicCpu->bmLpiPending) * 8;
+        uint64_t       uLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
+        uint16_t const cIntrPerElement = sizeof(uLpiPending) * 8;
+        uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
+        bool const     fIntrLevel      = RT_BOOL(uLpiPending & RT_BIT(idxPendingBit));
+        Assert(idxIntr < cIntrs);
+        if (fAsserted != fIntrLevel)
+        {
+            /* Alter the pending state bit for the LPI. */
+            uLpiPending &= ~RT_BIT_64(idxPendingBit);
+            uLpiPending |= ((fAsserted & 1) << idxPendingBit);
+
+            /* Update the pending state of the LPI in our cache. */
+            pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = uLpiPending;
+
+            /* Update the pending state of the LPI in the LPI pending table in guest memory. */
+            RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
+            uint16_t const offPending  = (uIntId / cIntrPerElement);
+            PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&uLpiPending, sizeof(uLpiPending));
+
+            /* Update the redistributor IRQ state as we might need to signal this LPI.*/
+            if (fAsserted)
+                gicReDistUpdateIrqState(pVCpu);
+        }
+    }
+}
+
 
 
 /**
@@ -2845,7 +2928,7 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
     else
         ASMBitClear(&pGicDev->IntrLevel.au32[0], idxIntr);
 
-    int const rc = VBOXSTRICTRC_VAL(gicDistUpdateIrqState(pVM, pGicDev));
+    int const rc = VBOXSTRICTRC_VAL(gicDistUpdateIrqState(pVM));
     GIC_CRIT_SECT_LEAVE(pDevIns);
     STAM_PROFILE_STOP(&pGicCpu->StatProfSetSpi, a);
     return rc;
@@ -2860,7 +2943,6 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
     LogFlowFunc(("pVCpu=%p{.idCpu=%u} uPpiIntId=%u fAsserted=%RTbool\n", pVCpu, pVCpu->idCpu, uPpiIntId, fAsserted));
 
     PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
-    PCGICDEV   pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
     PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 
     STAM_COUNTER_INC(&pVCpu->gic.s.StatSetPpi);
@@ -2889,37 +2971,11 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
     else
         ASMBitClear(&pGicCpu->bmIntrLevel[0], idxIntr);
 
-    int const rc = VBOXSTRICTRC_VAL(gicReDistUpdateIrqState(pGicDev, pVCpu));
+    int const rc = VBOXSTRICTRC_VAL(gicReDistUpdateIrqState(pVCpu));
     STAM_PROFILE_STOP(&pGicCpu->StatProfSetPpi, b);
 
     GIC_CRIT_SECT_LEAVE(pDevIns);
     return rc;
-}
-
-
-DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
-{
-    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
-    Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
-
-    /*
-     * LPIs are always non-secure group 1 interrupts with edge-triggered behavior.
-     * LPIs do -not- have an active state and thus don't require explicit deactivation.
-     * See ARM GIC spec. 1.2.1 "Interrupt Types".
-     */
-    PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-    PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-
-    Assert(GIC_IS_INTR_LPI(pGicDev, uIntId));
-    uint16_t const idxIntr = uIntId - GIC_INTID_RANGE_LPI_START;
-    Assert(idxIntr < sizeof(pGicCpu->bmLpiPending) * 8);
-
-    if (fAsserted)
-        ASMBitSet(&pGicCpu->bmLpiPending, idxIntr);
-    else
-        ASMBitClear(&pGicCpu->bmLpiPending, idxIntr);
-
-    gicReDistUpdateIrqState(pGicDev, pVCpu);
 }
 
 
@@ -2954,31 +3010,33 @@ DECL_HIDDEN_CALLBACK(int) gicSendMsi(PVMCC pVM, PCIBDF uBusDevFn, PCMSIMSG pMsi,
  * Sets the specified software generated interrupt (SGI).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev         The GIC distributor state.
  * @param   pVCpu           The cross context virtual CPU structure.
  * @param   pDestCpuSet     Which CPUs to deliver the SGI to.
  * @param   uIntId          The SGI interrupt ID.
  */
-static VBOXSTRICTRC gicSetSgi(PCGICDEV pGicDev, PVMCPUCC pVCpu, PCVMCPUSET pDestCpuSet, uint8_t uIntId)
+static VBOXSTRICTRC gicSetSgi(PVMCPUCC pVCpu, PCVMCPUSET pDestCpuSet, uint8_t uIntId)
 {
     LogFlowFunc(("pVCpu=%p{.idCpu=%u} uIntId=%u\n", pVCpu, pVCpu->idCpu, uIntId));
 
-    PPDMDEVINS     pDevIns = VMCPU_TO_DEVINS(pVCpu);
-    PCVMCC         pVM     = pVCpu->CTX_SUFF(pVM);
-    uint32_t const cCpus   = pVM->cCpus;
+#ifdef RT_STRICT
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
     AssertReturn(uIntId <= GIC_INTID_RANGE_SGI_LAST, VERR_INVALID_PARAMETER);
-    Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns)); NOREF(pDevIns);
+#endif
 
+    PCVMCC         pVM   = pVCpu->CTX_SUFF(pVM);
+    uint32_t const cCpus = pVM->cCpus;
     for (VMCPUID idCpu = 0; idCpu < cCpus; idCpu++)
+    {
         if (VMCPUSET_IS_PRESENT(pDestCpuSet, idCpu))
         {
             PVMCPUCC pVCpuTarget = pVM->CTX_SUFF(apCpus)[idCpu];
             PGICCPU  pGicCpu     = VMCPU_TO_GICCPU(pVCpuTarget);
             pGicCpu->bmIntrPending[0] |= RT_BIT_32(uIntId);
-            gicReDistUpdateIrqState(pGicDev, pVCpuTarget);
+            gicReDistUpdateIrqState(pVCpuTarget);
         }
-
-    return gicDistUpdateIrqState(pVM, pGicDev);
+    }
+    return gicDistUpdateIrqState(pVM);
 }
 
 
@@ -2986,11 +3044,10 @@ static VBOXSTRICTRC gicSetSgi(PCGICDEV pGicDev, PVMCPUCC pVCpu, PCVMCPUSET pDest
  * Writes to the redistributor's SGI group 1 register (ICC_SGI1R_EL1).
  *
  * @returns Strict VBox status code.
- * @param   pGicDev     The GIC distributor state.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   uValue      The value being written to the ICC_SGI1R_EL1 register.
  */
-static VBOXSTRICTRC gicReDistWriteSgiReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint64_t uValue)
+static VBOXSTRICTRC gicReDistWriteSgiReg(PVMCPUCC pVCpu, uint64_t uValue)
 {
 #ifdef VBOX_WITH_STATISTICS
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
@@ -3046,7 +3103,7 @@ static VBOXSTRICTRC gicReDistWriteSgiReg(PCGICDEV pGicDev, PVMCPUCC pVCpu, uint6
     {
         uint8_t const uSgiIntId = ARMV8_ICC_SGI1R_EL1_AARCH64_INTID_GET(uValue);
         Assert(GIC_IS_INTR_SGI(uSgiIntId));
-        VBOXSTRICTRC const rcStrict = gicSetSgi(pGicDev, pVCpu, &DestCpuSet, uSgiIntId);
+        VBOXSTRICTRC const rcStrict = gicSetSgi(pVCpu, &DestCpuSet, uSgiIntId);
         Assert(RT_SUCCESS(rcStrict)); RT_NOREF_PV(rcStrict);
     }
 
@@ -3071,7 +3128,6 @@ static DECLCALLBACK(VBOXSTRICTRC) gicReadSysReg(PVMCPUCC pVCpu, uint32_t u32Reg,
     *pu64Value = 0;
     PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
-    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
 
     GIC_CRIT_SECT_ENTER(pDevIns);
 
@@ -3131,11 +3187,11 @@ static DECLCALLBACK(VBOXSTRICTRC) gicReadSysReg(PVMCPUCC pVCpu, uint32_t u32Reg,
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_IAR1_EL1:
-            *pu64Value = gicAckHighestPriorityPendingIntr(pGicDev, pVCpu, GIC_INTR_GROUP_1NS);
+            *pu64Value = gicAckHighestPriorityPendingIntr(pVCpu, GIC_INTR_GROUP_1NS);
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_HPPIR1_EL1:
-            *pu64Value = gicGetHighestPriorityPendingIntr(pGicDev, pVCpu, GIC_INTR_GROUP_1NS, NULL /*pIntr*/);
+            *pu64Value = gicGetHighestPriorityPendingIntr(pVCpu, GIC_INTR_GROUP_1NS, NULL /*pIntr*/);
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_BPR1_EL1:
@@ -3191,7 +3247,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
     {
         case ARMV8_AARCH64_SYSREG_ICC_PMR_EL1:
             pGicCpu->bIntrPriorityMask = (uint8_t)u64Value;
-            rcStrict = gicReDistUpdateIrqState(pGicDev, pVCpu);
+            rcStrict = gicReDistUpdateIrqState(pVCpu);
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_BPR0_EL1:
@@ -3210,7 +3266,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_SGI1R_EL1:
-            gicReDistWriteSgiReg(pGicDev, pVCpu, u64Value);
+            gicReDistWriteSgiReg(pVCpu, u64Value);
             break;
 
         case ARMV8_AARCH64_SYSREG_ICC_EOIR1_EL1:
@@ -3301,9 +3357,9 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
             else
                 AssertReleaseMsgFailed(("Index of running-priority interrupt out-of-bounds %u\n", pGicCpu->idxRunningPriority));
             if (fIsRedistIntId)
-                rcStrict = gicReDistUpdateIrqState(pGicDev, pVCpu);
+                rcStrict = gicReDistUpdateIrqState(pVCpu);
             else
-                rcStrict = gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM), pGicDev);
+                rcStrict = gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
             break;
         }
 
@@ -3326,7 +3382,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
             if (pGicCpu->fIntrGroupMask != fIntrGroupMask)
             {
                 pGicCpu->fIntrGroupMask = fIntrGroupMask;
-                rcStrict = gicReDistUpdateIrqState(pGicDev, pVCpu);
+                rcStrict = gicReDistUpdateIrqState(pVCpu);
             }
             break;
         }
@@ -3338,7 +3394,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
             if (pGicCpu->fIntrGroupMask != fIntrGroupMask)
             {
                 pGicCpu->fIntrGroupMask = fIntrGroupMask;
-                rcStrict = gicReDistUpdateIrqState(pGicDev, pVCpu);
+                rcStrict = gicReDistUpdateIrqState(pVCpu);
             }
             break;
         }

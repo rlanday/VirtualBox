@@ -357,7 +357,6 @@ static DECLCALLBACK(void) gicR3DbgInfoLpi(PVM pVM, PCDBGFINFOHLP pHlp, const cha
     PVMCPU pVCpu = VMMGetCpu(pVM);
     if (!pVCpu)
         pVCpu = pVM->apCpusR3[0];
-    PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 
     pHlp->pfnPrintf(pHlp, "GIC LPIs:\n");
     pHlp->pfnPrintf(pHlp, "  Enabled            = %RTbool\n", pGicDev->fEnableLpis);
@@ -404,15 +403,16 @@ static DECLCALLBACK(void) gicR3DbgInfoLpi(PVM pVM, PCDBGFINFOHLP pHlp, const cha
     }
 
     /* Pending LPI registers. */
-    pHlp->pfnPrintf(pHlp, "  LPI pending bitmap:\n");
-    for (uint32_t i = 0; i < RT_ELEMENTS(pGicCpu->bmLpiPending); i += 8)
+    PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    pHlp->pfnPrintf(pHlp, "  VCPU[%u] LPI pending bitmap:\n", pVCpu->idCpu);
+    for (uint32_t i = 0; i < RT_ELEMENTS(pGicCpu->bmLpiPending.au64); i += sizeof(pGicCpu->bmLpiPending.au64[0]))
     {
         pHlp->pfnPrintf(pHlp, "    [%3u..%-3u] = %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64\n",
-                              i,                             i + 7,
-                              pGicCpu->bmLpiPending[i],      pGicCpu->bmLpiPending[i + 1],
-                              pGicCpu->bmLpiPending[i + 2],  pGicCpu->bmLpiPending[i + 3],
-                              pGicCpu->bmLpiPending[i + 4],  pGicCpu->bmLpiPending[i + 5],
-                              pGicCpu->bmLpiPending[i + 6],  pGicCpu->bmLpiPending[i + 7]);
+                              i,                                  i + 7,
+                              pGicCpu->bmLpiPending.au64[i],      pGicCpu->bmLpiPending.au64[i + 1],
+                              pGicCpu->bmLpiPending.au64[i + 2],  pGicCpu->bmLpiPending.au64[i + 3],
+                              pGicCpu->bmLpiPending.au64[i + 4],  pGicCpu->bmLpiPending.au64[i + 5],
+                              pGicCpu->bmLpiPending.au64[i + 6],  pGicCpu->bmLpiPending.au64[i + 7]);
     }
 }
 
@@ -574,7 +574,7 @@ static DECLCALLBACK(int) gicR3SaveExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM)
         pHlp->pfnSSMPutU32(pSSM,  pGicCpu->fIntrGroupMask);
 
         /* LPI state. */
-        pHlp->pfnSSMPutMem(pSSM, &pGicCpu->bmLpiPending[0], sizeof(pGicCpu->bmLpiPending));
+        pHlp->pfnSSMPutMem(pSSM, &pGicCpu->bmLpiPending.au64[0], sizeof(pGicCpu->bmLpiPending));
     }
 
     /* Marker. */
@@ -690,7 +690,7 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
         pHlp->pfnSSMGetU32(pSSM,  &pGicCpu->fIntrGroupMask);
 
         /* LPI state. */
-        pHlp->pfnSSMGetMem(pSSM, &pGicCpu->bmLpiPending[0], sizeof(pGicCpu->bmLpiPending));
+        pHlp->pfnSSMGetMem(pSSM, &pGicCpu->bmLpiPending.au64[0], sizeof(pGicCpu->bmLpiPending));
     }
 
     /*
@@ -987,7 +987,8 @@ DECLCALLBACK(int) gicR3Construct(PPDMDEVINS pDevIns, int iInstance, PCFGMNODE pC
     else
         return PDMDevHlpVMSetError(pDevIns, VERR_INVALID_PARAMETER, RT_SRC_POS,
                                    N_("Configuration error: \"MaxLpi\" must be in the range [3,14]"));
-    AssertRelease(UINT32_C(2) << pGicDev->uMaxLpi <= RT_ELEMENTS(pGicDev->abLpiConfig));
+    Assert(UINT32_C(2) << pGicDev->uMaxLpi <= RT_ELEMENTS(pGicDev->abLpiConfig));
+    Assert(UINT32_C(2) << pGicDev->uMaxLpi <= UINT16_MAX);
 
     /*
      * Register the GIC with PDM.

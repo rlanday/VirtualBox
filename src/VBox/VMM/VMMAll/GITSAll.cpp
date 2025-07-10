@@ -743,7 +743,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
         GITS_CMD_QUEUE_SET_ERR_RET(IcId_Invalid);
 
     /* Validate LPI INTID. */
-    if (gicDistIsLpiValid(pDevIns, uIntId))
+    if (GIC_IS_INTR_LPI(uIntId))
     { /* likely */ }
     else
         GITS_CMD_QUEUE_SET_ERR_RET(Lpi_Invalid);
@@ -951,7 +951,8 @@ DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGi
                         case GITS_CMD_ID_INV:
                         {
                             /* Reading the table is likely to take the same time as reading just one entry. */
-                            gicDistReadLpiConfigTableFromMem(pDevIns);
+                            //gicDistReadLpiConfigTableFromMem(pDevIns);
+                            /** @todo Invalidate one entry. */
                             break;
                         }
 
@@ -969,7 +970,10 @@ DECL_HIDDEN_CALLBACK(int) gitsR3CmdQueueProcess(PPDMDEVINS pDevIns, PGITSDEV pGi
                             if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                             {
                                 if (pGitsDev->aCtes[uIcId].idTargetCpu < pVM->cCpus)
-                                    gicDistReadLpiConfigTableFromMem(pDevIns);
+                                {
+                                    /** @todo Invalidate all from the table. */
+                                    //gicDistReadLpiConfigTableFromMem(pDevIns);
+                                }
                                 else
                                     gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Invall_Cte_Unmapped,
                                                          false /* fStall */);
@@ -1037,9 +1041,9 @@ DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint
                     if (RT_SUCCESS(rc))
                     {
                         /* Check the interrupt ID is within range. */
-                        uint16_t const uIntId = RT_BF_GET(uIte, GITS_BF_ITE_INTID);
-                        uint16_t const uIcId  = RT_BF_GET(uIte, GITS_BF_ITE_ICID);
-                        bool const fIsLpiValid = gicDistIsLpiValid(pDevIns, uIntId);
+                        uint16_t const uIntId  = RT_BF_GET(uIte, GITS_BF_ITE_INTID);
+                        uint16_t const uIcId   = RT_BF_GET(uIte, GITS_BF_ITE_ICID);
+                        bool const fIsLpiValid = GIC_IS_INTR_LPI(uIntId);
                         if (fIsLpiValid)
                         {
                             /* Check the interrupt collection ID is valid. */

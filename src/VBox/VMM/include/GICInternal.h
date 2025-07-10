@@ -61,7 +61,6 @@ extern const PDMGICBACKEND g_GicKvmBackend;
 
 #define VMCPU_TO_GICCPU(a_pVCpu)            (&(a_pVCpu)->gic.s)
 #define VM_TO_GIC(a_pVM)                    (&(a_pVM)->gic.s)
-#define VM_TO_GICDEV(a_pVM)                 CTX_SUFF(VM_TO_GIC(a_pVM)->pGicDev)
 #define GICDEV_TO_GITSDEV(a_GicDev)         (&(a_GicDev)->Gits)
 #ifdef IN_RING3
 # define VMCPU_TO_DEVINS(a_pVCpu)           ((a_pVCpu)->pVMR3->gic.s.pDevInsR3)
@@ -143,6 +142,18 @@ extern const PDMGICBACKEND g_GicKvmBackend;
         (a_uReg) = ((a_uReg) & ~(a_fRwMask)) | ((uint32_t)(a_uValue) & (uint32_t)(a_fRwMask)); \
     } while (0)
 
+/** @name GIC interrupt ID range checks macros.
+ * @{ */
+#define GIC_IS_INTR_SGI(a_uIntId)        ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SGI_START < (uint32_t)GIC_INTID_SGI_RANGE_SIZE)
+#define GIC_IS_INTR_PPI(a_uIntId)        ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_PPI_START < (uint32_t)GIC_INTID_PPI_RANGE_SIZE)
+#define GIC_IS_INTR_SGI_OR_PPI(a_uIntId) ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SGI_START < (uint32_t)(GIC_INTID_SGI_RANGE_SIZE + GIC_INTID_PPI_RANGE_SIZE))
+#define GIC_IS_INTR_SPI(a_uIntId)        ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SPI_START < (uint32_t)GIC_INTID_SPI_RANGE_SIZE)
+#define GIC_IS_INTR_SPECIAL(a_uIntId)    ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_SPECIAL_START < (uint32_t)GIC_INTID_SPECIAL_RANGE_SIZE)
+#define GIC_IS_INTR_EXT_PPI(a_uIntId)    ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_EXT_PPI_START < (uint32_t)GIC_INTID_EXT_PPI_RANGE_SIZE)
+#define GIC_IS_INTR_EXT_SPI(a_uIntId)    ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_EXT_SPI_START < (uint32_t)GIC_INTID_EXT_SPI_RANGE_SIZE)
+#define GIC_IS_INTR_LPI(a_uIntId)        ((uint32_t)(a_uIntId) - (uint32_t)GIC_INTID_RANGE_LPI_START < (uint32_t)RT_ELEMENTS(GICDEV::abLpiConfig))
+/** @} */
+
 /** @name GIC interrupt groups.
  * @{ */
 /** Interrupt Group 0. */
@@ -158,14 +169,20 @@ extern const PDMGICBACKEND g_GicKvmBackend;
  */
 typedef union GICDISTINTRBMP
 {
-    /** The 32-bit view. */
-    uint64_t        au64[32];
     /** The 64-bit view. */
+    uint64_t        au64[32];
+    /** The 32-bit view. */
     uint32_t        au32[64];
 } GICDISTINTRBMP;
 AssertCompileSize(GICDISTINTRBMP, 256);
 AssertCompileMembersSameSize(GICDISTINTRBMP, au64, GICDISTINTRBMP, au32);
 AssertCompileMemberAlignment(GICDISTINTRBMP, au32, 4);
+
+/** GIC LPI pending-table entry. */
+typedef uint64_t GICLPIPTE;
+
+/** GIC LPI config-table entry. */
+typedef uint64_t GICLPICTE;
 
 /**
  * GIC PDM instance data (per-VM).
@@ -205,15 +222,15 @@ typedef struct GICDEV
     uint8_t                     uArchRev;
     /** The GIC architecture minor revision (currently 1 as we only support GICv3.1). */
     uint8_t                     uArchRevMinor;
-    /** The maximum SPI supported (GICD_TYPER.ItLinesNumber). */
+    /** Maximum SPIs supported (GICD_TYPER.ItLinesNumber). */
     uint8_t                     uMaxSpi;
     /** Whether extended SPIs are supported (GICD_ESPI). */
     bool                        fExtSpi;
-    /** The maximum extended SPI supported (GICD_TYPER.ESPI_range).  */
+    /** Maximum extended SPIs supported (GICD_TYPER.ESPI_range).  */
     uint8_t                     uMaxExtSpi;
     /** Whether extended PPIs are supported. */
     bool                        fExtPpi;
-    /** The maximum extended PPI supported (GICR_TYPER.PPInum). */
+    /** Maximum extended PPI supported (GICR_TYPER.PPInum). */
     uint8_t                     uMaxExtPpi;
     /** Whether range-selector is supported (GICD_TYPER.RSS and ICC_CTLR_EL1.RSS). */
     bool                        fRangeSel;
@@ -226,7 +243,7 @@ typedef struct GICDEV
     bool                        fAff3Levels;
     /** Whether LPIs are supported (GICD_TYPER.PLPIS). */
     bool                        fLpi;
-    /** The maximum LPI supported (GICD_TYPER.num_LPI). */
+    /** Maximum LPI supported (GICD_TYPER.num_LPI). */
     uint8_t                     uMaxLpi;
     /** @} */
 
@@ -240,31 +257,32 @@ typedef struct GICDEV
     GITSDEV                     Gits;
     /** LPI config table. */
     uint8_t                     abLpiConfig[4096];
-    /** The LPI config table base register (GICR_PROPBASER). */
+    /** LPI config table base register (GICR_PROPBASER). */
     RTUINT64U                   uLpiConfigBaseReg;
-    /** The LPI pending table base register (GICR_PENDBASER). */
+    /** LPI pending table base register (GICR_PENDBASER). */
     RTUINT64U                   uLpiPendingBaseReg;
     /** @} */
 
     /** @name MMIO data.
      * @{ */
-    /** The distributor MMIO handle. */
+    /** Distributor MMIO handle. */
     IOMMMIOHANDLE               hMmioDist;
-    /** The redistributor MMIO handle. */
+    /** Redistributor MMIO handle. */
     IOMMMIOHANDLE               hMmioReDist;
-    /** The interrupt translation service MMIO handle. */
+    /** Interrupt translation service MMIO handle. */
     IOMMMIOHANDLE               hMmioGits;
-    /** The physical address of the ITS. */
+    /** Physical address of the ITS. */
     RTGCPHYS                    GCPhysGits;
     /** @} */
 
+#ifdef VBOX_WITH_STATISTICS
     /** @name Statistics.
      * @{ */
-#ifdef VBOX_WITH_STATISTICS
     /** Number of set SPI callbacks. */
     STAMCOUNTER                 StatSetSpi;
     /** Number of set LPI callbacks. */
     STAMCOUNTER                 StatSetLpi;
+    /** @} */
 #endif
 } GICDEV;
 /** Pointer to a GIC device. */
@@ -292,6 +310,21 @@ typedef GIC const *PCGIC;
 AssertCompileSizeAlignment(GIC, 8);
 
 /**
+ * GIC LPI pending bitmap.
+ * This contains the same number of LPIs to match GICDEV::abLpiConfig.
+ */
+typedef union GICLPIBMP
+{
+    /** The 64-bit view. */
+    uint64_t        au64[64];
+    /** The 32-bit view. */
+    uint32_t        au32[128];
+} GICLPIBMP;
+AssertCompileSize(GICLPIBMP, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
+AssertCompileMembersSameSize(GICLPIBMP, au64, GICLPIBMP, au32);
+AssertCompileMemberAlignment(GICLPIBMP, au32, 4);
+
+/**
  * GIC VMCPU Instance data.
  */
 typedef struct GICCPU
@@ -316,39 +349,39 @@ typedef struct GICCPU
 
     /** @name ICC system register state.
      * @{ */
-    /** The control register (ICC_CTLR_EL1). */
+    /** Control register (ICC_CTLR_EL1). */
     uint64_t                    uIccCtlr;
-    /** The interrupt priority mask of the CPU interface (ICC_PMR_EL1). */
+    /** Interrupt priority mask of the CPU interface (ICC_PMR_EL1). */
     uint8_t                     bIntrPriorityMask;
-    /** The index to the current running priority. */
+    /** Index to the current running priority. */
     uint8_t                     idxRunningPriority;
-    /** The running priorities caused by preemption. */
+    /** Running priorities caused by preemption. */
     uint8_t                     abRunningPriorities[256];
-    /** The active priorities group 0 bitmap. */
+    /** Active priorities group 0 bitmap. */
     uint32_t                    bmActivePriorityGroup0[4];
-    /** The active priorities group 1 bitmap. */
+    /** Active priorities group 1 bitmap. */
     uint32_t                    bmActivePriorityGroup1[4];
-    /** The binary point register for group 0 interrupts. */
+    /** Binary point register for group 0 interrupts. */
     uint8_t                     bBinaryPtGroup0;
-    /** The binary point register for group 1 interrupts. */
+    /** Binary point register for group 1 interrupts. */
     uint8_t                     bBinaryPtGroup1;
     /** Alignment. */
     bool                        afPadding1[2];
     /** Mask of enabled interrupt groups (see GIC_INTR_GROUP_XXX). */
     uint32_t                    fIntrGroupMask;
-    /** The INTID of the running interrupts (for debugging). */
+    /** INTID of the running interrupts (for debugging). */
     uint16_t                    abRunningIntId[256];
     /** @} */
 
     /** @name LPIs.
      * @{ */
     /** LPI pending bitmap. */
-    uint64_t                    bmLpiPending[64];
+    GICLPIBMP                   bmLpiPending;
     /** @} */
 
+#ifdef VBOX_WITH_STATISTICS
     /** @name Statistics.
      * @{ */
-#ifdef VBOX_WITH_STATISTICS
     /** Number of MMIO reads. */
     STAMCOUNTER                 StatMmioRead;
     /** Number of MMIO writes. */
@@ -374,8 +407,8 @@ typedef struct GICCPU
     STAMPROFILE                 StatProfSetPpi;
     /** Profiling of set SGI function. */
     STAMPROFILE                 StatProfSetSgi;
-#endif
     /** @} */
+#endif
 } GICCPU;
 /** Pointer to GIC VMCPU instance data. */
 typedef GICCPU *PGICCPU;
