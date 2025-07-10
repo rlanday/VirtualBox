@@ -1,4 +1,4 @@
-/* $Id$ */
+﻿/* $Id$ */
 /** @file
  * IPRT Testcase - XML reading / writing.
  */
@@ -50,7 +50,8 @@ void testReadWriteSimple(void)
     } aValues[] =
     {
         { "val0", "bar"   , "bar"    },
-        //{ "val1", "�"     , "�"      },
+        //{ "val1", "Ã"     , "Ã"      },
+        //{ "val1", "fÃƒÆ" , "f&#xC3;&#xFFFD;" },
         { "val2", "&#xC3;", "&amp;#xC3;" }
     };
     char szFileDst[RTPATH_MAX] = { 0 };
