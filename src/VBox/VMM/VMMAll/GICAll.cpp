@@ -2862,7 +2862,7 @@ DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uI
         uint64_t       uLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
         uint16_t const cIntrPerElement = sizeof(uLpiPending) * 8;
         uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
-        bool const     fIntrLevel      = RT_BOOL(uLpiPending & RT_BIT(idxPendingBit));
+        bool const     fIntrLevel      = RT_BOOL(uLpiPending & RT_BIT_64(idxPendingBit));
         Assert(idxIntr < cIntrs);
         if (fAsserted != fIntrLevel)
         {
