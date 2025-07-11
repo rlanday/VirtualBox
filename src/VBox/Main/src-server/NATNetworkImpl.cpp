@@ -1175,7 +1175,7 @@ int NATNetwork::i_recalculateIpv4AddressAssignments()
     RTStrPrintf(szTmpIp, 16, "%RTnaipv4", netmask);
     m->IPv4NetworkMask = szTmpIp;
 
-    LogFlowFunc(("getaway:%RTnaipv4, netmask:%RTnaipv4\n", gateway, netmask));
+    LogFlowFunc(("gateway:%RTnaipv4, netmask:%RTnaipv4\n", gateway, netmask));
     return VINF_SUCCESS;
 }
 
