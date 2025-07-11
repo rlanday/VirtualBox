@@ -7435,7 +7435,7 @@ void vmsvgaR3CmdDefineCursor(PVGASTATE pThis, PVGASTATECC pThisCC, SVGAFifoCmdDe
     /*
      * Convert the input to 1-bit AND mask and a 32-bit BRGA XOR mask.
      * The AND data uses 8-bit aligned scanlines.
-     * The XOR data must be starting on a 32-bit boundrary.
+     * The XOR data must be starting on a 32-bit boundary.
      */
     uint32_t cbDstAndLine = RT_ALIGN_32(cx, 8) / 8;
     uint32_t cbDstAndMask = cbDstAndLine          * cy;
@@ -7455,7 +7455,7 @@ void vmsvgaR3CmdDefineCursor(PVGASTATE pThis, PVGASTATECC pThisCC, SVGAFifoCmdDe
                 memcpy(pbDst, pbSrc, cbSrcAndLine * cy);
             else
             {
-                Assert(cbSrcAndLine > cbDstAndLine); /* lines are dword alined in source, but only byte in destination. */
+                Assert(cbSrcAndLine > cbDstAndLine); /* lines are dword aligned in source, but only byte in destination. */
                 for (uint32_t y = 0; y < cy; y++)
                 {
                     memcpy(pbDst, pbSrc, cbDstAndLine);
@@ -7474,7 +7474,7 @@ void vmsvgaR3CmdDefineCursor(PVGASTATE pThis, PVGASTATECC pThisCC, SVGAFifoCmdDe
                     uint8_t fBit = 0x80;
                     do
                     {
-                        uintptr_t const idxPal = pbSrc[x] * 3;
+                        uint8_t const idxPal = pbSrc[x];
                         if (((   pThis->last_palette[idxPal]
                               | (pThis->last_palette[idxPal] >>  8)
                               | (pThis->last_palette[idxPal] >> 16)) & 0xff) > 0xfc)
