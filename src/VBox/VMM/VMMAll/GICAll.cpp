@@ -901,6 +901,11 @@ static void gicDistHasIrqPendingForVCpu(PCVMCPUCC pVCpu, bool *pfIrq, bool *pfFi
 }
 
 
+/**
+ * Reads the LPI config table from guest memory.
+ *
+ * @param   pDevIns     The device instance.
+ */
 DECLHIDDEN(void) gicDistReadLpiConfigTableFromMem(PPDMDEVINS pDevIns)
 {
     PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
@@ -915,19 +920,29 @@ DECLHIDDEN(void) gicDistReadLpiConfigTableFromMem(PPDMDEVINS pDevIns)
         return;
     }
 
-    /* Copy the LPI config table from guest memory to our internal cache. */
+    /* Copy the LPI config table from guest memory to our cache. */
     Assert(UINT32_C(2) << pGicDev->uMaxLpi == RT_ELEMENTS(pGicDev->abLpiConfig));
     RTGCPHYS const GCPhysLpiConfigTable = pGicDev->uLpiConfigBaseReg.u & GIC_BF_REDIST_REG_PROPBASER_PHYS_ADDR_MASK;
     uint32_t const cbLpiConfigTable     = sizeof(pGicDev->abLpiConfig);
 
-    /** @todo Try releasing and re-acquiring the device critical section here.
-     *        Probably safe, but haven't verified this... */
     int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiConfigTable, (void *)&pGicDev->abLpiConfig[0], cbLpiConfigTable);
-    AssertRC(rc);
+    if (RT_SUCCESS(rc))
+        return;
+
+    AssertMsgFailed(("Failed to read the LPI config table at %#RGp rc=%Rrc\n", GCPhysLpiConfigTable, rc));
+
+    /* If we failed to read the table for whatever reason, invalidate our cache. */
+    RT_ZERO(pGicDev->abLpiConfig);
 }
 
 
-static void gicReDistReadLpiPendingBitmapFromMem(PPDMDEVINS pDevIns, PVMCPU pVCpu)
+/**
+ * Reads the LPI pending table from guest memory if necessary.
+ *
+ * @param   pDevIns     The device instance.
+ * @param   pVCpu       The cross context virtual CPU structure.
+ */
+static void gicReDistReadLpiPendingTableFromMem(PPDMDEVINS pDevIns, PVMCPU pVCpu)
 {
     PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     Assert(pGicDev->fEnableLpis);
@@ -937,19 +952,19 @@ static void gicReDistReadLpiPendingBitmapFromMem(PPDMDEVINS pDevIns, PVMCPU pVCp
     bool const fIsZeroed = RT_BF_GET(pGicDev->uLpiPendingBaseReg.u, GIC_BF_REDIST_REG_PENDBASER_PTZ);
     if (!fIsZeroed)
     {
-        /* Copy the LPI pending bitmap from guest memory to our internal cache. */
-        RTGCPHYS const GCPhysLpiPendingBitmap = (pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK)
-                                              + GIC_INTID_RANGE_LPI_START;  /* Skip first 1KB (since LPI INTIDs start at 8192). */
-        uint32_t const cbLpiPendingBitmap     = sizeof(pGicCpu->bmLpiPending);
-
-        /** @todo Try releasing and re-acquiring the device critical section here.
-         *        Probably safe, but haven't verified this... */
-        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingBitmap, (void *)&pGicCpu->bmLpiPending.au64[0],
-                                             cbLpiPendingBitmap);
-        AssertRC(rc);
+        /* Read the LPI pending bitmap from guest memory to our cache. */
+        RTGCPHYS const GCPhysLpiPendingTable = (pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK)
+                                             + GIC_INTID_RANGE_LPI_START;  /* Skip first 1KB (since LPI INTIDs start at 8192). */
+        uint32_t const cbLpiPendingTable     = sizeof(pGicCpu->bmLpiPending);
+        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingTable, (void *)&pGicCpu->bmLpiPending.au64[0],
+                                             cbLpiPendingTable);
+        if (RT_SUCCESS(rc))
+            return;
+        AssertMsgFailed(("Failed to read the LPI pending table at %#RGp rc=%Rrc\n", GCPhysLpiPendingTable, rc));
     }
-    else
-        RT_ZERO(pGicCpu->bmLpiPending); /* Paranoia. */
+
+    /* If the guest indicates the table is zero'ed OR if we failed to read the table for whatever reason, invalidate our cache. */
+    RT_ZERO(pGicCpu->bmLpiPending);
 }
 
 
@@ -1883,6 +1898,55 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
 
 
 /**
+ * Updates the LPI pending state in both the cache and in the LPI pending table in
+ * guest memory.
+ *
+ * @returns VBox status code.
+ * @retval VINF_SUCCESS if the pending state was changed.
+ * @retval VINF_NO_CHANGE if the pending state was not changed.
+ *
+ * @param   pVCpu       The cross context virtual CPU structure.
+ * @param   uIntId      The interrupt ID.
+ * @param   fAsserted   Flag whether to mark the interrupt as asserted/de-asserted.
+ */
+static int gicUpdateLpiPendingState(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
+{
+    Assert(GIC_IS_INTR_LPI(uIntId));
+
+    PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+
+    /* Get the particular bit that represents the pending state of the LPI. */
+    uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
+    uint16_t const cIntrs          = sizeof(pGicCpu->bmLpiPending) * 8;
+    uint64_t       bmLpiPending    = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
+    uint16_t const cIntrPerElement = sizeof(bmLpiPending) * 8;
+    uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
+    bool const     fIntrLevel      = RT_BOOL(bmLpiPending & RT_BIT_64(idxPendingBit));
+    Assert(idxIntr < cIntrs);
+
+    /* Accessing guest memory is expensive, so only update if the LPI pending state is actually changed. */
+    if (fAsserted != fIntrLevel)
+    {
+        /* Update the pending state bit for the LPI. */
+        bmLpiPending &= ~RT_BIT_64(idxPendingBit);
+        bmLpiPending |= (!!fAsserted << idxPendingBit);
+
+        /* Update the pending state of the LPI in our cache. */
+        pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = bmLpiPending;
+
+        /* Update the pending state of the LPI in the LPI pending table in guest memory. */
+        RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
+        uint16_t const offPending  = (uIntId / cIntrPerElement);
+        PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&bmLpiPending, sizeof(bmLpiPending));
+        return VINF_SUCCESS;
+    }
+    return VINF_NO_CHANGE;
+}
+
+
+/**
  * Gets the highest priority pending interrupt that can be signalled to the PE.
  *
  * @returns The interrupt ID or GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT if no interrupt
@@ -2098,24 +2162,8 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     }
     else if (GIC_IS_INTR_LPI(uIntId))
     {
-        /* Update the pending state of the LPI in the LPI pending table in guest memory. */
-        //uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
-        uint16_t const cIntrs          = sizeof(pGicCpu->bmLpiPending) * 8;
-        uint64_t       uLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
-        uint16_t const cIntrPerElement = sizeof(uLpiPending) * 8;
-        uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
-        Assert(idxIntr < cIntrs);
-
-        /* Clear the pending state bit for the LPI. */
-        uLpiPending &= ~RT_BIT_64(idxPendingBit);
-
         /* LPIs are always edge-triggered, mark the interrupt as no longer pending. */
-        pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = uLpiPending;
-
-        /* Update the pending state of the LPI in the LPI pending table in guest memory. */
-        RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
-        uint16_t const offPending  = (uIntId / cIntrPerElement);
-        PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&uLpiPending, sizeof(uLpiPending));
+        gicUpdateLpiPendingState(pVCpu, uIntId, false /* fAsserted */);
 
         /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
         /* Update the active priorities bitmap. */
@@ -2784,7 +2832,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVC
                 if (pGicDev->fEnableLpis)
                 {
                     gicDistReadLpiConfigTableFromMem(pDevIns);
-                    gicReDistReadLpiPendingBitmapFromMem(pDevIns, pVCpu);
+                    gicReDistReadLpiPendingTableFromMem(pDevIns, pVCpu);
                 }
                 else
                 {
@@ -2924,48 +2972,20 @@ DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uI
     Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
 
     /*
-     * LPIs are always non-secure group 1 interrupts with edge-triggered behavior.
-     * LPIs do -not- have an active state and thus don't require explicit deactivation.[1]
-     * When LPIs are disabled, they cannot be made pending and are lost.[2]
+     * When LPIs are disabled, they cannot be made pending and are lost.[1]
+     * When enabled, update the LPI pending state and if the LPI is newly
+     * asserted update redistributor IRQ state as we well as we might have
+     * to signal the LPI to the PE.
      *
-     * [1] -- See ARM GIC spec. 1.2.1 "Interrupt Types".
-     * [2] -- See ARM GIC spec. 5.1 "LPIs".
+     * [1] -- See ARM GIC spec. 5.1 "LPIs".
      */
     PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
     if (pGicDev->fEnableLpis)
     {
-        /*
-         * Check if the pending state of this LPI has changed compared to
-         * what we have in our cache.
-         */
-        PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-        Assert(GIC_IS_INTR_LPI(uIntId));
-
-        uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
-        uint16_t const cIntrs          = sizeof(pGicCpu->bmLpiPending) * 8;
-        uint64_t       uLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
-        uint16_t const cIntrPerElement = sizeof(uLpiPending) * 8;
-        uint8_t const  idxPendingBit   = idxIntr % cIntrPerElement;
-        bool const     fIntrLevel      = RT_BOOL(uLpiPending & RT_BIT_64(idxPendingBit));
-        Assert(idxIntr < cIntrs);
-        if (fAsserted != fIntrLevel)
-        {
-            /* Alter the pending state bit for the LPI. */
-            uLpiPending &= ~RT_BIT_64(idxPendingBit);
-            uLpiPending |= (!!fAsserted << idxPendingBit);
-
-            /* Update the pending state of the LPI in our cache. */
-            pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = uLpiPending;
-
-            /* Update the pending state of the LPI in the LPI pending table in guest memory. */
-            RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
-            uint16_t const offPending  = (uIntId / cIntrPerElement);
-            PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&uLpiPending, sizeof(uLpiPending));
-
-            /* Update the redistributor IRQ state as we might need to signal this LPI.*/
-            if (fAsserted)
-                gicReDistUpdateIrqState(pVCpu);
-        }
+        int const rc = gicUpdateLpiPendingState(pVCpu, uIntId, fAsserted);
+        if (   rc == VINF_SUCCESS
+            && fAsserted)
+            gicReDistUpdateIrqState(pVCpu);
     }
 }
 

@@ -387,18 +387,14 @@ DECL_HIDDEN_CALLBACK(void) gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsD
     switch (offReg)
     {
         case GITS_CTRL_REG_CTLR_OFF:
+        {
             Assert(cb == 4);
             Assert(!(pGitsDev->uTypeReg.u & GITS_BF_CTRL_REG_TYPER_UMSI_IRQ_MASK));
             GIC_SET_REG_U32(pGitsDev->uCtrlReg, uValue, GITS_BF_CTRL_REG_CTLR_RW_MASK);
-            if (RT_BF_GET(uValue, GITS_BF_CTRL_REG_CTLR_ENABLED))
-                pGitsDev->uCtrlReg &= ~GITS_BF_CTRL_REG_CTLR_QUIESCENT_MASK;
-            else
-            {
-                pGitsDev->uCtrlReg |=  GITS_BF_CTRL_REG_CTLR_QUIESCENT_MASK;
-                /** @todo Clear ITS caches. */
-            }
-            gitsCmdQueueThreadWakeUpIfNeeded(pDevIns, pGitsDev);
+            if (pGitsDev->uCtrlReg & GITS_BF_CTRL_REG_CTLR_ENABLED_MASK)
+                gitsCmdQueueThreadWakeUpIfNeeded(pDevIns, pGitsDev);
             break;
+        }
 
         case GITS_CTRL_REG_CBASER_OFF:
             if (cb == 8)
@@ -1029,26 +1025,26 @@ DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGi
         int rc = gitsR3DteRead(pDevIns, pGitsDev, uDevId, &uDte);
         if (RT_SUCCESS(rc))
         {
-            /* Check the DTE is mapped (valid). */
+            /* Check if the DTE is mapped (valid). */
             bool const fValid = RT_BF_GET(uDte, GITS_BF_DTE_VALID);
             if (fValid)
             {
-                /* Check that the event ID (which is the index) is within range. */
+                /* Check if the event ID (which is the index) is within range. */
                 uint32_t const cEntries = RT_BIT_32(RT_BF_GET(uDte, GITS_BF_DTE_ITT_RANGE) + 1);
                 if (uEventId < cEntries)
                 {
-                    /* Read the interrupt-translation entry. */
+                    /* Read the interrupt-translation entry from guest memory. */
                     GITSITE uIte = 0;
                     rc = gitsR3IteRead(pDevIns, uDte, uEventId, &uIte);
                     if (RT_SUCCESS(rc))
                     {
-                        /* Check the interrupt ID is within range. */
+                        /* Check if the interrupt ID is within range. */
                         uint16_t const uIntId  = RT_BF_GET(uIte, GITS_BF_ITE_INTID);
                         uint16_t const uIcId   = RT_BF_GET(uIte, GITS_BF_ITE_ICID);
                         bool const fIsLpiValid = GIC_IS_INTR_LPI(uIntId);
                         if (fIsLpiValid)
                         {
-                            /* Check the interrupt collection ID is valid. */
+                            /* Check if the interrupt collection ID is valid. */
                             if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                             {
                                 Assert(!RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_PTA));
@@ -1062,25 +1058,25 @@ DECL_HIDDEN_CALLBACK(int) gitsSetLpi(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGi
                                     gicReDistSetLpi(pDevIns, pVCpu, uIntId, fAsserted);
                                 }
                                 else
-                                    AssertMsgFailed(("CPU index out-of-bounds %RU32\n", idCpu));
+                                    Log4Func(("CPU index out-of-bounds (idCpu=%RU32)\n", idCpu));
                             }
                             else
-                                AssertMsgFailed(("ICID out-of-bounds %#RU16 (uIte=%#RX64)\n", uIcId, uIte));
+                                Log4Func(("ICID out-of-bounds (uIcId=%#RU16 uIte=%#RX64)\n", uIcId, uIte));
                         }
                         else
-                            AssertMsgFailed(("LPI invalid (uIte=%#RX64)\n", uIte));
+                            Log4Func(("LPI invalid (uIte=%#RX64)\n", uIte));
                     }
                     else
-                        AssertMsgFailed(("Failed to read the ITE, rc=%Rrc\n", rc));
+                        Log4Func(("Failed to read the ITE (uDevId=%#RX32 uEventId=%#RX32 rc=%Rrc)\n", uDevId, uEventId, rc));
                 }
                 else
-                    AssertMsgFailed(("Event Id out-of-bounds %#RU32 (uDte=%#RX64)\n", cEntries, uDte));
+                    Log4Func(("Event Id out-of-bounds %#RU32 (uDte=%#RX64)\n", cEntries, uDte));
             }
             else
-                AssertMsgFailed(("fValid\n"));
+                Log4Func(("DTE is not mapped (uDevId=%#RX32 uEventId=%#RX32)\n", uDevId, uEventId));
         }
         else
-            AssertMsgFailed(("Failed to read the DTE, rc=%Rrc\n", rc));
+            Log4Func(("Failed to read the DTE (uDevId=%#RX32 uEventId=%#RX32 rc=%Rrc)\n", uDevId, uEventId, rc));
     }
     GIC_CRIT_SECT_LEAVE(pDevIns);
     return VINF_SUCCESS;
