@@ -123,12 +123,6 @@ static DECLCALLBACK(void) vboxTrayLogHeaderFooter(PRTLOGGER pLoggerRelease, RTLO
     }
 }
 
-RTDECL(void) RTLogWriteStdOut(const char* pachChars, size_t cbChars)
-{
-    if (pachChars)
-        RTPrintf("%s: %.*s", VBOX_VBOXTRAY_TITLE, cbChars, pachChars);
-}
-
 /**
  * Creates the default release logger outputting to the specified file.
  *
@@ -148,7 +142,7 @@ int VBoxTrayLogCreate(const char *pszLogFile)
 #endif
     RTERRINFOSTATIC ErrInfo;
     int rc = RTLogCreateEx(&g_pLoggerRelease, s_szEnvVarPfx,
-                           RTLOGFLAGS_PREFIX_THREAD | RTLOGFLAGS_PREFIX_TIME_PROG | RTLOGFLAGS_USECRLF,
+                           RTLOGFLAGS_PREFIX_THREAD | RTLOGFLAGS_USECRLF,
                            s_szGroupSettings, RT_ELEMENTS(s_apszGroups), s_apszGroups, UINT32_MAX,
                            0 /*cBufDescs*/, NULL /*paBufDescs*/, RTLOGDEST_STDOUT | RTLOGDEST_USER,
                            vboxTrayLogHeaderFooter, g_cHistory, g_uHistoryFileSize, g_uHistoryFileTime,
