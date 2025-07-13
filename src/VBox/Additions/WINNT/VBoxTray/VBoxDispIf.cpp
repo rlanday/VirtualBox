@@ -1860,6 +1860,31 @@ BOOL VBoxDispIfResizeDisplayWin7Wddm(PCVBOXDISPIF const pIf, uint32_t cDispDef, 
         return (winEr == ERROR_SUCCESS);
     }
 
+    if (pDispDefPrimary == NULL)
+    {
+        /* Try to keep the current primary display by finding it. */
+        for (i = 0; i < cDispDef; ++i)
+        {
+            int const iPath = vboxDispIfWddmDcSearchPath(&DispCfg, i, i);
+            if (iPath < 0)
+                continue;
+
+            DISPLAYCONFIG_PATH_INFO *pPathInfo = &DispCfg.pPathInfoArray[iPath];
+            if (pPathInfo->flags & DISPLAYCONFIG_PATH_ACTIVE)
+            {
+                UINT const iSrcMode = pPathInfo->sourceInfo.modeInfoIdx;
+                DISPLAYCONFIG_SOURCE_MODE *pSrcMode = &DispCfg.pModeInfoArray[iSrcMode].sourceMode;
+                if (   pSrcMode->position.x == 0
+                    && pSrcMode->position.y == 0)
+                {
+                     /* "The source surface that is positioned at (0, 0) is considered the primary." */
+                     pDispDefPrimary = &paDispDef[i];
+                     break;
+                }
+            }
+        }
+    }
+
     for (i = 0; i < cDispDef; ++i)
     {
         pDispDef = &paDispDef[i];
