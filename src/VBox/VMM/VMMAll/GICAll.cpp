@@ -1898,8 +1898,8 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
 
 
 /**
- * Updates the LPI pending state in both the cache and in the LPI pending table in
- * guest memory.
+ * Updates the pending state of the specified LPI in the redistributor and updates
+ * the LPI pending table in guest memory if needed.
  *
  * @returns VBox status code.
  * @retval VINF_SUCCESS if the pending state was changed.
@@ -1909,7 +1909,7 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
  * @param   uIntId      The interrupt ID.
  * @param   fAsserted   Flag whether to mark the interrupt as asserted/de-asserted.
  */
-static int gicUpdateLpiPendingState(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
+static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
 {
     Assert(GIC_IS_INTR_LPI(uIntId));
 
@@ -2163,7 +2163,7 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     else if (GIC_IS_INTR_LPI(uIntId))
     {
         /* LPIs are always edge-triggered, mark the interrupt as no longer pending. */
-        gicUpdateLpiPendingState(pVCpu, uIntId, false /* fAsserted */);
+        gicReDistUpdateLpiPending(pVCpu, uIntId, false /* fAsserted */);
 
         /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
         /* Update the active priorities bitmap. */
@@ -2839,6 +2839,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVC
                     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
                     RT_ZERO(pGicCpu->bmLpiPending);
                 }
+                gitsLpiCacheInvalidateAll(&pGicDev->Gits);
             }
             break;
         }
@@ -2958,7 +2959,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteSgiPpiRegister(PPDMDEVINS pDevIns, PVMCPU
 
 
 /**
- * Sets an LPI (Locality-specific Peripheral Interrupt).
+ * Sets the specified Locality-specific Peripheral Interrupt (LPI).
  *
  * @param   pDevIns     The device instance.
  * @param   pVCpu       The cross context virtual CPU structure.
@@ -2971,22 +2972,10 @@ DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uI
     Assert(GIC_IS_INTR_LPI(uIntId));
     Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
 
-    /*
-     * When LPIs are disabled, they cannot be made pending and are lost.[1]
-     * When enabled, update the LPI pending state and if the LPI is newly
-     * asserted update redistributor IRQ state as we well as we might have
-     * to signal the LPI to the PE.
-     *
-     * [1] -- See ARM GIC spec. 5.1 "LPIs".
-     */
-    PGICDEV pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-    if (pGicDev->fEnableLpis)
-    {
-        int const rc = gicUpdateLpiPendingState(pVCpu, uIntId, fAsserted);
-        if (   rc == VINF_SUCCESS
-            && fAsserted)
-            gicReDistUpdateIrqState(pVCpu);
-    }
+    int const rc = gicReDistUpdateLpiPending(pVCpu, uIntId, fAsserted);
+    if (   rc == VINF_SUCCESS
+        && fAsserted)
+        gicReDistUpdateIrqState(pVCpu);
 }
 
 
@@ -3091,20 +3080,40 @@ DECL_HIDDEN_CALLBACK(int) gicSendMsi(PVMCC pVM, PCIBDF uBusDevFn, PCMSIMSG pMsi,
     AssertPtrReturn(pMsi, VERR_INVALID_PARAMETER);
     Log4Func(("uBusDevFn=%#RX32 Msi.Addr=%#RX64 Msi.Data=%#RX32\n", uBusDevFn, pMsi->Addr.u64, pMsi->Data.u32));
 
-    PGIC       pGic    = VM_TO_GIC(pVM);
-    PPDMDEVINS pDevIns = pGic->CTX_SUFF(pDevIns);
-    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-    Assert(pGicDev->fEnableLpis);
+    /*
+     * ARM expects that the 16-bit requester ID from a PCIe Root Complex is
+     * presented to an ITS as the device ID. The guest seems to use device ID
+     * of 0 instead of the legacy endpoint BDF (bus:dev:fn).
+     *
+     * See ARM GIC spec. 5.2.3 "The Device Table".
+     */
+    /** @todo Figure out why device ID 0 is being used? Is it because the device
+     *        maybe behind the PCI-to-PCI bridge? */
+    uBusDevFn = 0;
 
-    uint32_t const uEventId = pMsi->Data.u32;
-    uint32_t const uDevId   = uBusDevFn;
+    PGIC           pGic     = VM_TO_GIC(pVM);
+    PPDMDEVINS     pDevIns  = pGic->CTX_SUFF(pDevIns);
+    PGICDEV        pGicDev  = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    uint16_t const uEventId = pMsi->Data.u32;
+    uint16_t const uDevId   = uBusDevFn;
     AssertMsg((pMsi->Addr.u64 & ~(RTGCPHYS)GITS_REG_OFFSET_MASK) == pGicDev->GCPhysGits + GITS_REG_FRAME_SIZE,
               ("Addr=%#RX64 MMIO frame=%#RX64\n", pMsi->Addr.u64, pGicDev->GCPhysGits));
     AssertMsg((pMsi->Addr.u64 & GITS_REG_OFFSET_MASK) == GITS_TRANSLATION_REG_TRANSLATER,
               ("Addr=%#RX64 offset=%#RX32\n", pMsi->Addr.u64, GITS_TRANSLATION_REG_TRANSLATER));
     STAM_COUNTER_INC(&pGicDev->StatSetLpi);
 
-    gitsSetLpi(pVM, pDevIns, &pGicDev->Gits, uDevId, uEventId, true /* fAsserted */);
+    /*
+     * When LPIs are disabled (GICR_CTLR.EnableLpis bit), they cannot be made pending and are lost.[1]
+     * When LPIs are enabled, we update the LPI pending state and if the LPI is newly asserted, we
+     * update redistributor IRQ state as we well as we might have to signal the LPI to the PE.
+     *
+     * [1] -- ARM GIC spec. 5.1 "LPIs".
+     */
+    GIC_CRIT_SECT_ENTER(pDevIns);
+    if (pGicDev->fEnableLpis)
+        gitsLpiSet(pVM, pDevIns, &pGicDev->Gits, uDevId, uEventId, true /* fAsserted */);
+    GIC_CRIT_SECT_LEAVE(pDevIns);
+
     return VINF_SUCCESS;
 }
 
@@ -3541,15 +3550,15 @@ static void gicInit(PPDMDEVINS pDevIns)
     pGicDev->fIntrGroupMask = 0;
     pGicDev->fAffRoutingEnabled = true; /* GICv2 backwards compatibility is not implemented, so this is RA1/WI. */
 
+    /* LPIs. */
+    pGicDev->fEnableLpis = false;
+    pGicDev->uLpiConfigBaseReg.u = 0;
+    pGicDev->uLpiPendingBaseReg.u = 0;
+    RT_ZERO(pGicDev->abLpiConfig);
+
     /* GITS. */
     PGITSDEV pGitsDev = &pGicDev->Gits;
     gitsInit(pGitsDev);
-
-    /* LPIs. */
-    RT_ZERO(pGicDev->abLpiConfig);
-    pGicDev->uLpiConfigBaseReg.u = 0;
-    pGicDev->uLpiPendingBaseReg.u = 0;
-    pGicDev->fEnableLpis = false;
 }
 
 
