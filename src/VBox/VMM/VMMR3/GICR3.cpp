@@ -51,7 +51,7 @@
 *   Defined Constants And Macros                                                                                                 *
 *********************************************************************************************************************************/
 /** GIC saved state version. */
-#define GIC_SAVED_STATE_VERSION                     14
+#define GIC_SAVED_STATE_VERSION                     15
 
 # define GIC_SYSREGRANGE(a_uFirst, a_uLast, a_szName) \
     { (a_uFirst), (a_uLast), kCpumSysRegRdFn_GicIcc, kCpumSysRegWrFn_GicIcc, 0, 0, 0, 0, 0, 0, a_szName, { 0 }, { 0 }, { 0 }, { 0 } }
@@ -532,15 +532,31 @@ static DECLCALLBACK(int) gicR3SaveExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM)
     pHlp->pfnSSMPutMem(pSSM,  &pGicDev->IntrRoutingMode,    sizeof(pGicDev->IntrRoutingMode));
 
     /* LPI state. */
-    /* We store the size followed by the data because we currently do not support the full LPI range. */
+    /* We store the size followed by the data (per-VCPU) because we don't support the full LPI range. */
     pHlp->pfnSSMPutU32(pSSM,  RT_SIZEOFMEMB(GICCPU, bmLpiPending));
     pHlp->pfnSSMPutU32(pSSM,  sizeof(pGicDev->abLpiConfig));
-    pHlp->pfnSSMPutMem(pSSM,  &pGicDev->abLpiConfig[0],       sizeof(pGicDev->abLpiConfig));
+    pHlp->pfnSSMPutMem(pSSM,  &pGicDev->abLpiConfig[0], sizeof(pGicDev->abLpiConfig));
     pHlp->pfnSSMPutU64(pSSM,  pGicDev->uLpiConfigBaseReg.u);
     pHlp->pfnSSMPutU64(pSSM,  pGicDev->uLpiPendingBaseReg.u);
     pHlp->pfnSSMPutBool(pSSM, pGicDev->fEnableLpis);
 
-    /** @todo GITS data. */
+    /* GITS. */
+    {
+        PCGITSDEV pGitsDev = &pGicDev->Gits;
+        pHlp->pfnSSMPutU32(pSSM, pGitsDev->uCtrlReg);
+        pHlp->pfnSSMPutU64(pSSM, pGitsDev->uTypeReg.u);
+        for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aItsTableRegs); i++)
+            pHlp->pfnSSMPutU64(pSSM, pGitsDev->aItsTableRegs[i].u);
+        pHlp->pfnSSMPutU64(pSSM, pGitsDev->uCmdBaseReg.u);
+        pHlp->pfnSSMPutU32(pSSM, pGitsDev->uCmdReadReg);
+        pHlp->pfnSSMPutU32(pSSM, pGitsDev->uCmdWriteReg);
+
+        /* We store the count followed by the data because we support only a fixed number of hardware-internal CTEs. */
+        pHlp->pfnSSMPutU32(pSSM, RT_ELEMENTS(pGitsDev->aCtes));
+        for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
+            pHlp->pfnSSMPutU32(pSSM, pGitsDev->aCtes[i].idTargetCpu);
+        pHlp->pfnSSMPutU8(pSSM, pGitsDev->uArchRev);
+    }
 
     /*
      * Save per-VCPU data.
@@ -656,7 +672,27 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
     pHlp->pfnSSMGetU64(pSSM,  &pGicDev->uLpiPendingBaseReg.u);
     pHlp->pfnSSMGetBool(pSSM, &pGicDev->fEnableLpis);
 
-    /** @todo GITS data. */
+    /* GITS. */
+    PGITSDEV pGitsDev = &pGicDev->Gits;
+    {
+        pHlp->pfnSSMGetU32(pSSM, &pGitsDev->uCtrlReg);
+        pHlp->pfnSSMGetU64(pSSM, &pGitsDev->uTypeReg.u);
+        for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aItsTableRegs); i++)
+            pHlp->pfnSSMGetU64(pSSM, &pGitsDev->aItsTableRegs[i].u);
+        pHlp->pfnSSMGetU64(pSSM, &pGitsDev->uCmdBaseReg.u);
+        pHlp->pfnSSMGetU32(pSSM, &pGitsDev->uCmdReadReg);
+        pHlp->pfnSSMGetU32(pSSM, &pGitsDev->uCmdWriteReg);
+
+        /* Verify the count followed before loading the data. */
+        uint32_t cCtes = 0;
+        pHlp->pfnSSMGetU32(pSSM, &cCtes);
+        if (cCtes != RT_ELEMENTS(pGitsDev->aCtes))
+            return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Config mismatch: CTE table count: got=%u expected=%u"),
+                                           cCtes, RT_ELEMENTS(pGitsDev->aCtes));
+        for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
+            pHlp->pfnSSMGetU32(pSSM, &pGitsDev->aCtes[i].idTargetCpu);
+        pHlp->pfnSSMGetU8(pSSM, &pGitsDev->uArchRev);
+    }
 
     /*
      * Load per-VCPU data.
@@ -712,8 +748,15 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
         && pGicDev->uArchRev <= GIC_DIST_REG_PIDR2_ARCHREV_GICV4)
     { /* likely */ }
     else
-        return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Invalid uArchRev, got %u expected range [%u,%u]"), pGicDev->uArchRev,
-                                       GIC_DIST_REG_PIDR2_ARCHREV_GICV1, GIC_DIST_REG_PIDR2_ARCHREV_GICV4);
+        return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Invalid GIC uArchRev, got %u expected range [%u,%u]"),
+                                       pGicDev->uArchRev, GIC_DIST_REG_PIDR2_ARCHREV_GICV1, GIC_DIST_REG_PIDR2_ARCHREV_GICV4);
+
+    if (   pGitsDev->uArchRev >= GIC_DIST_REG_PIDR2_ARCHREV_GICV1
+        && pGitsDev->uArchRev <= GIC_DIST_REG_PIDR2_ARCHREV_GICV4)
+    { /* likely */ }
+    else
+        return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Invalid GITS uArchRev, got %u expected range [%u,%u]"),
+                                       pGitsDev->uArchRev, GIC_DIST_REG_PIDR2_ARCHREV_GICV1, GIC_DIST_REG_PIDR2_ARCHREV_GICV4);
 
     if (pGicDev->uArchRevMinor == 1)
     { /* likely */ }

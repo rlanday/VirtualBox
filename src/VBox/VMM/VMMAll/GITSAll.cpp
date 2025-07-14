@@ -824,7 +824,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
                                                | RT_BF_MAKE(GITS_BF_ITE_INTID,   uIntId)
                                                | RT_BF_MAKE(GITS_BF_ITE_IS_PHYS, 1)
                                                | RT_BF_MAKE(GITS_BF_ITE_VALID,   1);
-                            LogRelFunc(("uDte=%#RX64 uIte=%#RX64 uIcId=%RU16 uIntId=%RU16\n", uDte, uIte, uIcId, uIntId));
+                            Log4Func(("uDte=%#RX64 uIte=%#RX64 uIcId=%RU16 uIntId=%RU16\n", uDte, uIte, uIcId, uIntId));
                             rc = gitsR3IteWrite(pDevIns, uDte, uEventId, uIte);
                             if (RT_SUCCESS(rc))
                                 return;
@@ -1128,12 +1128,14 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
             uint16_t const uIntId = LpiMapEntry.uIntId;
             Assert(GIC_IS_INTR_LPI(uIntId));
             uint16_t const uIcId = LpiMapEntry.uIcId;
-            if (   uIcId < RT_ELEMENTS(pGitsDev->aCtes)
-                && pGitsDev->aCtes[uIcId].idTargetCpu < pVM->cCpus)
+            if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
             {
                 VMCPUID const idCpu = pGitsDev->aCtes[uIcId].idTargetCpu;
-                PVMCPUCC      pVCpu = pVM->CTX_SUFF(apCpus)[idCpu];
-                gicReDistSetLpi(pDevIns, pVCpu, LpiMapEntry.uIntId, fAsserted);
+                if (idCpu < pVM->cCpus)
+                {
+                    PVMCPUCC      pVCpu = pVM->CTX_SUFF(apCpus)[idCpu];
+                    gicReDistSetLpi(pDevIns, pVCpu, LpiMapEntry.uIntId, fAsserted);
+                }
             }
             return;
         }
@@ -1163,17 +1165,16 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
                     uint16_t const uIntId  = RT_BF_GET(uIte, GITS_BF_ITE_INTID);
                     uint16_t const uIcId   = RT_BF_GET(uIte, GITS_BF_ITE_ICID);
                     bool     const fIsPhys = RT_BF_GET(uIte, GITS_BF_ITE_IS_PHYS);
-                    bool const fIsLpiValid = GIC_IS_INTR_LPI(uIntId);
-                    if (   fIsLpiValid
+                    bool const     fIsLpi  = GIC_IS_INTR_LPI(uIntId);
+                    if (   fIsLpi
                         && fIsPhys)
                     {
                         /* Check if the interrupt collection ID is valid. */
                         if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                         {
+                            /* Check that the target CPU is valid. */
                             Assert(!RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_PTA));
                             VMCPUID const idCpu = pGitsDev->aCtes[uIcId].idTargetCpu;
-
-                            /* Check that the target CPU is valid. */
                             if (idCpu < pVM->cCpus)
                             {
                                 /* Set or clear the LPI pending state in the redistributor. */
