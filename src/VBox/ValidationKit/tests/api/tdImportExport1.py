@@ -244,9 +244,9 @@ class SubTstDrvImportExportEFIVM1(base.SubTestDriverBase):
         # which only apply to certain item types.
         sNewVmName = self.sVmName + '-imported';
         aEnabled = [];
-        for i in range(0, len(aTypes)):
+        for (i, aType) in enumerate(aTypes):
             aEnabled.append(True);
-            if aTypes[i] == vboxcon.VirtualSystemDescriptionType_Name:
+            if aType == vboxcon.VirtualSystemDescriptionType_Name:
                 aVBoxValues[i] = sNewVmName;
 
         try:
