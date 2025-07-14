@@ -46,6 +46,7 @@ ValidationKitTestsApi_EXEC_SOURCES := \
 	$(PATH_SUB_CURRENT)/tdAppliance1.py \
 	$(PATH_SUB_CURRENT)/tdCloneMedium1.py \
 	$(PATH_SUB_CURRENT)/tdCreateVMWithDefaults1.py \
+	$(PATH_SUB_CURRENT)/tdImportExport1.py \
 	$(PATH_SUB_CURRENT)/tdMoveMedium1.py \
 	$(PATH_SUB_CURRENT)/tdMoveVm1.py \
 	$(PATH_SUB_CURRENT)/tdPython1.py \
