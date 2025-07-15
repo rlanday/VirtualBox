@@ -75,7 +75,7 @@ Rules for adding a changelog entry to make them look more uniform:
 
     <title>Version X.Y.Z (date tbd)</title>
 
-    <para>This is a maintenance release. The following items were fixed and/or
+    <para>This is a maintenance release. The following items were fixed or
       added:</para>
 
     <itemizedlist>
@@ -91,7 +91,7 @@ Rules for adding a changelog entry to make them look more uniform:
 
     <title>Version 7.2.0_BETA2 (2025-06-26)</title>
 
-    <para>This is a maintenance release. The following items were fixed and/or
+    <para>This is a maintenance release. The following items were fixed or
       added:</para>
 
     <itemizedlist>
@@ -242,7 +242,7 @@ Rules for adding a changelog entry to make them look more uniform:
 
     </itemizedlist>
 
-    <para>In addition, the following items were fixed and/or added:</para>
+    <para>In addition, the following items were fixed or added:</para>
 
     <itemizedlist>
 
