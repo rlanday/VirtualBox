@@ -302,15 +302,13 @@ class TestBoxScript(object):
                 raise TestBoxScriptException('Unsupported server type %s.' % (sType,));
 
         elif sHostOs == 'linux':
+            if sShare == 'builds':
+                sMountOpt = 'vers=2.1'  # right now only linux unhappy with builds mount, adding vers to avoid it
             if sMountOpt != '':
                 sMountOpt = ',' + sMountOpt
             utils.sudoProcessCall(['/bin/umount', sMountPoint]);
             utils.sudoProcessCall(['/bin/mkdir', '-p', sMountPoint]);
             if sType == 'cifs':
-                sMountVers = '' #smb protocol version, default is unset
-                if sServer == '10.165.98.144' and sShare == 'builds':
-                    sMountVers = ',vers=2.1'
-
                 utils.sudoProcessOutputChecked(['/bin/mount', '-t', 'cifs',
                                                 '-o',
                                                 'user=' + sUser
@@ -319,7 +317,6 @@ class TestBoxScript(object):
                                                 + ',uid=' + str(os.getuid()) # pylint: disable=no-member
                                                 + ',gid=' + str(os.getgid()) # pylint: disable=no-member
                                                 + ',nounix,file_mode=0555,dir_mode=0555,soft,ro'
-                                                + sMountVers
                                                 + sMountOpt,
                                                 '//%s/%s' % (sServer, sShare),
                                                 sMountPoint]);
