@@ -286,7 +286,13 @@ static DECLCALLBACK(void) gicR3DbgInfoReDist(PVM pVM, PCDBGFINFOHLP pHlp, const 
                                   pGicCpu->abRunningPriorities[i + 10], pGicCpu->abRunningPriorities[i + 11],
                                   pGicCpu->abRunningPriorities[i + 12], pGicCpu->abRunningPriorities[i + 13],
                                   pGicCpu->abRunningPriorities[i + 14], pGicCpu->abRunningPriorities[i + 15]);
+    }
 
+    /* Running interrupt IDs. */
+    {
+        uint32_t const cPriorities = RT_ELEMENTS(pGicCpu->abRunningIntId);
+        AssertCompile(!(cPriorities % 16));
+        pHlp->pfnPrintf(pHlp, "  Running-interrupt IDs:\n");
         for (uint32_t i = 0; i < cPriorities; i += 16)
             pHlp->pfnPrintf(pHlp, "    [%3u..%-3u] = %5u %5u %5u %5u %5u %5u %5u %5u"
                                   "    [%3u..%-3u] = %5u %5u %5u %5u %5u %5u %5u %5u\n",
