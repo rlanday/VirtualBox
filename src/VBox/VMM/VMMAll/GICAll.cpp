@@ -967,7 +967,8 @@ static void gicReDistReadLpiPendingTableFromMem(PPDMDEVINS pDevIns, PVMCPU pVCpu
         AssertMsgFailed(("Failed to read the LPI pending table at %#RGp rc=%Rrc\n", GCPhysLpiPendingTable, rc));
     }
 
-    /* If the guest indicates the table is zero'ed OR if we failed to read the table for whatever reason, invalidate our cache. */
+    /* If the guest indicates the table is zero'ed OR if we failed to read the table for whatever reason,
+       clear the LPI pending bitmap. */
     RT_ZERO(pGicCpu->bmLpiPending);
 }
 
@@ -1916,10 +1917,7 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
 static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
 {
     Assert(GIC_IS_INTR_LPI(uIntId));
-
-    PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-    PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
-    PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
+    PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 
     /* Get the particular bit that represents the pending state of the LPI. */
     uint16_t const idxIntr         = uIntId - GIC_INTID_RANGE_LPI_START;
@@ -1941,6 +1939,8 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
         pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = bmLpiPending;
 
         /* Update the pending state of the LPI in the LPI pending table in guest memory. */
+        PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
+        PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
         RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
         uint16_t const offPending  = (uIntId / cIntrPerElement);
         PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&bmLpiPending, sizeof(bmLpiPending));
@@ -2029,6 +2029,47 @@ static uint16_t gicGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t fIntr
 
 
 /**
+ * Sets/updates the priority of the CPU interface's active interrupt.
+ *
+ * @param   pGicCpu         The GIC redistributor and CPU interface state.
+ * @param   uIntId          The interrupt ID (used for updating diagnostic info).
+ * @param   bIntrPriority   The priority of the active interrupt.
+ * @param   fIntrGroupMask  The interrupt group of the active interrupt.
+ */
+static void gicReDistSetActiveIntrPriority(PGICCPU pGicCpu, uint16_t uIntId, uint8_t bIntrPriority, uint32_t fIntrGroupMask)
+{
+    /* Only one group must be specified here since this is called from registers that specify a single group! */
+    Assert(   fIntrGroupMask == GIC_INTR_GROUP_0
+           || fIntrGroupMask == GIC_INTR_GROUP_1S
+           || fIntrGroupMask == GIC_INTR_GROUP_1NS);
+
+    /* Updating active priority bitmap. */
+    AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup0) * 8 >= 128);
+    AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
+    uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
+    if (fIntrGroupMask & GIC_INTR_GROUP_0)
+        ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
+    else
+        ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
+
+    /* Set running priority of the active interrupt. */
+    if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
+    {
+        Assert(pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] > bIntrPriority);
+        LogFlowFunc(("Dropping interrupt priority from %u -> %u (idxRunningPriority: %u -> %u)\n",
+                     pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority],
+                     bIntrPriority,
+                     pGicCpu->idxRunningPriority, pGicCpu->idxRunningPriority + 1));
+        ++pGicCpu->idxRunningPriority;
+        pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] = bIntrPriority;
+        pGicCpu->abRunningIntId[pGicCpu->idxRunningPriority] = uIntId;
+    }
+    else
+        AssertReleaseMsgFailed(("Index of running-interrupt priority out-of-bounds %u\n", pGicCpu->idxRunningPriority));
+}
+
+
+/**
  * Get and acknowledge the interrupt ID of a signalled interrupt.
  *
  * @returns The interrupt ID or GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT no interrupts
@@ -2074,47 +2115,18 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     if (   GIC_IS_INTR_SGI_OR_PPI(uIntId)
         || GIC_IS_INTR_EXT_PPI(uIntId))
     {
-        /* Mark the interrupt as active. */
         AssertMsg(idxIntr < sizeof(pGicCpu->bmIntrActive) * 8, ("idxIntr=%u\n", idxIntr));
         ASMBitSet(&pGicCpu->bmIntrActive[0], idxIntr);
 
-        /* If it is an edge-triggered interrupt, mark it as no longer pending. */
         AssertMsg(idxIntr < sizeof(pGicCpu->bmIntrConfig) * 8, ("idxIntr=%u\n", idxIntr));
         bool const fEdgeTriggered = ASMBitTest(&pGicCpu->bmIntrConfig[0], idxIntr);
         if (fEdgeTriggered)
             ASMBitClear(&pGicCpu->bmIntrPending[0], idxIntr);
 
-        /* Paranoia - SGIs are always edge-triggered. */
+        /* SGIs are always edge-triggered. */
         Assert(!GIC_IS_INTR_SGI(uIntId) || fEdgeTriggered);
 
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
-        /* Update the active priorities bitmap. */
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup0) * 8 >= 128);
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
-        uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
-        if (fIntrGroupMask & GIC_INTR_GROUP_0)
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
-        else
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
-
-        /* Set priority of the running interrupt. */
-        if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
-        {
-            Assert(pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] > bIntrPriority);
-            LogFlowFunc(("Setting interrupt priority from %u -> %u (idxRunningPriority: %u -> %u)\n",
-                         pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority],
-                         bIntrPriority,
-                         pGicCpu->idxRunningPriority, pGicCpu->idxRunningPriority + 1));
-            ++pGicCpu->idxRunningPriority;
-            pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] = bIntrPriority;
-            pGicCpu->abRunningIntId[pGicCpu->idxRunningPriority] = uIntId;
-        }
-        else
-            AssertReleaseMsgFailed(("Index of running-interrupt priority out-of-bounds %u\n", pGicCpu->idxRunningPriority));
-
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
-
-        /* Update the redistributor IRQ state to reflect change to the active interrupt. */
+        gicReDistSetActiveIntrPriority(pGicCpu, uIntId, bIntrPriority, fIntrGroupMask);
         gicReDistUpdateIrqState(pVCpu);
         STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
@@ -2123,44 +2135,15 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
         /* Sanity check if the interrupt ID belongs to the distributor. */
         Assert(GIC_IS_INTR_SPI(uIntId) || GIC_IS_INTR_EXT_SPI(uIntId));
 
-        /* Mark the interrupt as active. */
         Assert(idxIntr < sizeof(pGicDev->IntrActive) * 8);
         ASMBitSet(&pGicDev->IntrActive.au32[0], idxIntr);
 
-        /* If it is an edge-triggered interrupt, mark it as no longer pending. */
         AssertMsg(idxIntr < sizeof(pGicDev->IntrConfig) * 8, ("idxIntr=%u\n", idxIntr));
         bool const fEdgeTriggered = ASMBitTest(&pGicDev->IntrConfig.au32[0], idxIntr);
         if (fEdgeTriggered)
             ASMBitClear(&pGicDev->IntrPending.au32[0], idxIntr);
 
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
-        /* Update the active priorities bitmap. */
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup0) * 8 >= 128);
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
-        uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
-        if (fIntrGroupMask & GIC_INTR_GROUP_0)
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
-        else
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
-
-        /* Set priority of the running priority. */
-        if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
-        {
-            Assert(pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] > bIntrPriority);
-            LogFlowFunc(("Dropping interrupt priority from %u -> %u (idxRunningPriority: %u -> %u)\n",
-                         pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority],
-                         bIntrPriority,
-                         pGicCpu->idxRunningPriority, pGicCpu->idxRunningPriority + 1));
-            ++pGicCpu->idxRunningPriority;
-            pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] = bIntrPriority;
-            pGicCpu->abRunningIntId[pGicCpu->idxRunningPriority] = uIntId;
-        }
-        else
-            AssertReleaseMsgFailed(("Index of running-interrupt priority out-of-bounds %u\n", pGicCpu->idxRunningPriority));
-
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
-
-        /* Update the distributor IRQ state to reflect change to the active interrupt. */
+        gicReDistSetActiveIntrPriority(pGicCpu, uIntId, bIntrPriority, fIntrGroupMask);
         gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
         STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
@@ -2168,33 +2151,8 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
     {
         /* LPIs are always edge-triggered, mark the interrupt as no longer pending. */
         gicReDistUpdateLpiPending(pVCpu, uIntId, false /* fAsserted */);
-
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (start). */
-        /* Update the active priorities bitmap. */
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup0) * 8 >= 128);
-        AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
-        uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
-        if (fIntrGroupMask & GIC_INTR_GROUP_0)
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
-        else
-            ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
-
-        /* Set priority of the running priority. */
-        if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
-        {
-            Assert(pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] > bIntrPriority);
-            LogFlowFunc(("Dropping interrupt priority from %u -> %u (idxRunningPriority: %u -> %u)\n",
-                         pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority],
-                         bIntrPriority,
-                         pGicCpu->idxRunningPriority, pGicCpu->idxRunningPriority + 1));
-            ++pGicCpu->idxRunningPriority;
-            pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] = bIntrPriority;
-            pGicCpu->abRunningIntId[pGicCpu->idxRunningPriority] = uIntId;
-        }
-        else
-            AssertReleaseMsgFailed(("Index of running-interrupt priority out-of-bounds %u\n", pGicCpu->idxRunningPriority));
-
-        /** @todo Duplicate block Id=E5ED12D2-088D-4525-9609-8325C02846C3 (end). */
+        gicReDistSetActiveIntrPriority(pGicCpu, uIntId, bIntrPriority, fIntrGroupMask);
+        STAM_COUNTER_INC(&pVCpu->gic.s.StatIntrAck);
     }
     else
         AssertReleaseMsgFailed(("Invalid interrupt-ID %u\n", uIntId));
