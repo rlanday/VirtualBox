@@ -1938,12 +1938,23 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
         /* Update the pending state of the LPI in our cache. */
         pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = bmLpiPending;
 
+        /*
+         * There is no guarantee that GICR_CTLR.EnableLPIs=0 causes the LPI pending table
+         * to be updated in (guest) memory. It's my understanding that software cannot rely
+         * on memory being coherent with the hardware cache of the LPI pending table,
+         * see @bugref{10877#c57}. If for some reason, this turns out to be false, uncomment
+         * the code block below (would hurt performance).
+         *
+         * See ARM GIC spec. 5.1.2 "LPI Pending tables".
+         */
+#if 0
         /* Update the pending state of the LPI in the LPI pending table in guest memory. */
         PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
         PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
         RTGCPHYS const GCPhysLpiPt = pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK;
         uint16_t const offPending  = (uIntId / cIntrPerElement);
         PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&bmLpiPending, sizeof(bmLpiPending));
+#endif
         return VINF_SUCCESS;
     }
     return VINF_NO_CHANGE;
