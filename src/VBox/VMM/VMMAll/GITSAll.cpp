@@ -101,6 +101,12 @@ AssertCompile(RT_ELEMENTS(g_apszGitsDiagDesc) == kGitsDiag_End);
 
 #ifndef VBOX_DEVICE_STRUCT_TESTCASE
 
+/**
+ * Gets the descriptive name of an control register.
+ *
+ * @returns The description.
+ * @param   offReg  The register offset.
+ */
 DECLHIDDEN(const char *) gitsGetCtrlRegDescription(uint16_t offReg)
 {
     if (GIC_IS_REG_IN_RANGE(offReg, GITS_CTRL_REG_BASER_OFF_FIRST, GITS_CTRL_REG_BASER_RANGE_SIZE))
@@ -124,6 +130,12 @@ DECLHIDDEN(const char *) gitsGetCtrlRegDescription(uint16_t offReg)
 }
 
 
+/**
+ * Gets the descriptive name of an interrupt translation register.
+ *
+ * @returns The description.
+ * @param   offReg  The register offset.
+ */
 DECLHIDDEN(const char *) gitsGetTranslationRegDescription(uint16_t offReg)
 {
     switch (offReg)
@@ -135,6 +147,12 @@ DECLHIDDEN(const char *) gitsGetTranslationRegDescription(uint16_t offReg)
 }
 
 
+/**
+ * Gets the descriptive name for a command.
+ *
+ * @returns The description.
+ * @param   uCmdId      The command ID.
+ */
 static const char *gitsGetCommandName(uint8_t uCmdId)
 {
     switch (uCmdId)
@@ -166,6 +184,12 @@ static const char *gitsGetCommandName(uint8_t uCmdId)
 }
 
 
+/**
+ * Gets description for an error diagnostic.
+ *
+ * @returns The description.
+ * @param   enmDiag     The error diagnostic.
+ */
 DECL_FORCE_INLINE(const char *) gitsGetDiagDescription(GITSDIAG enmDiag)
 {
     if (enmDiag < RT_ELEMENTS(g_apszGitsDiagDesc))
@@ -174,6 +198,12 @@ DECL_FORCE_INLINE(const char *) gitsGetDiagDescription(GITSDIAG enmDiag)
 }
 
 
+/**
+ * Gets the guest physical address from a GITS_BASER register.
+ *
+ * @returns The guest physical address.
+ * @param   uGitsBaseReg    The GITS_BASER register.
+ */
 static RTGCPHYS gitsGetBaseRegPhysAddr(uint64_t uGitsBaseReg)
 {
     /* Mask for physical address bits [47:12]. */
@@ -203,6 +233,14 @@ static RTGCPHYS gitsGetBaseRegPhysAddr(uint64_t uGitsBaseReg)
 }
 
 
+/**
+ * Records an error while processing a command in the command queue.
+ *
+ * @param   pDevIns         The device instance.
+ * @param   pGitsDev        The GIC ITS state.
+ * @param   enmDiag         The error diagnostic.
+ * @param   fStallQueue     Whether to stall the command queue or not.
+ */
 static void gitsCmdQueueSetError(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, GITSDIAG enmDiag, bool fStallQueue)
 {
     Log4Func(("enmDiag=%#RX32 (%s) fStallQueue=%RTbool\n", enmDiag, gitsGetDiagDescription(enmDiag), fStallQueue));
@@ -222,6 +260,15 @@ static void gitsCmdQueueSetError(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, GITSDIAG
 }
 
 
+/**
+ * Returns whether the command queue is empty and the read and write offset in the
+ * command queue.
+ *
+ * @returns @c true if queue is empty, @c false otherwise.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   poffRead    Where to store the command queue read offset.
+ * @param   poffWrite   Where to store the command queue write offset.
+ */
 DECL_FORCE_INLINE(bool) gitsCmdQueueIsEmptyEx(PCGITSDEV pGitsDev, uint32_t *poffRead, uint32_t *poffWrite)
 {
     *poffRead  = pGitsDev->uCmdReadReg  & GITS_BF_CTRL_REG_CREADR_OFFSET_MASK;
@@ -230,6 +277,12 @@ DECL_FORCE_INLINE(bool) gitsCmdQueueIsEmptyEx(PCGITSDEV pGitsDev, uint32_t *poff
 }
 
 
+/**
+ * Returns whether the command queue is empty.
+ *
+ * @returns @c true if queue is empty, @c false otherwise.
+ * @param   pGitsDev    The GIC ITS state.
+ */
 DECL_FORCE_INLINE(bool) gitsCmdQueueIsEmpty(PCGITSDEV pGitsDev)
 {
     uint32_t offRead;
@@ -238,6 +291,12 @@ DECL_FORCE_INLINE(bool) gitsCmdQueueIsEmpty(PCGITSDEV pGitsDev)
 }
 
 
+/**
+ * Returns whether the command queue can process requests.
+ *
+ * @returns @c true if requests can be processed, @c false otherwise.
+ * @param   pGitsDev    The GIC ITS state.
+ */
 DECL_FORCE_INLINE(bool) gitsCmdQueueCanProcessRequests(PCGITSDEV pGitsDev)
 {
     if (    (pGitsDev->uTypeReg.u    & GITS_BF_CTRL_REG_CTLR_ENABLED_MASK)
@@ -248,6 +307,12 @@ DECL_FORCE_INLINE(bool) gitsCmdQueueCanProcessRequests(PCGITSDEV pGitsDev)
 }
 
 
+/**
+ * Wakes up the command queue thread if there are commands to be processed.
+ *
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ */
 static void gitsCmdQueueThreadWakeUpIfNeeded(PPDMDEVINS pDevIns, PGITSDEV pGitsDev)
 {
     Log4Func(("\n"));
@@ -255,13 +320,21 @@ static void gitsCmdQueueThreadWakeUpIfNeeded(PPDMDEVINS pDevIns, PGITSDEV pGitsD
     if (    gitsCmdQueueCanProcessRequests(pGitsDev)
         && !gitsCmdQueueIsEmpty(pGitsDev))
     {
-        Log4Func(("Waking up command-queue thread\n"));
+        Log4Func(("Waking up the command queue thread\n"));
         int const rc = PDMDevHlpSUPSemEventSignal(pDevIns, pGitsDev->hEvtCmdQueue);
         AssertRC(rc);
     }
 }
 
 
+/**
+ * Reads a register in the control registers MMIO region.
+ *
+ * @returns The register value.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   offReg      The offset of the register being written.
+ * @param   cb          Number of bytes written.
+ */
 DECLHIDDEN(uint64_t) gitsMmioReadCtrl(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb)
 {
     Assert(cb == 4 || cb == 8);
@@ -342,18 +415,14 @@ DECLHIDDEN(uint64_t) gitsMmioReadCtrl(PCGITSDEV pGitsDev, uint16_t offReg, unsig
 }
 
 
-DECLHIDDEN(uint64_t) gitsMmioReadTranslate(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb)
-{
-    Assert(cb == 8 || cb == 4);
-    Assert(!(offReg & 3));
-    RT_NOREF(pGitsDev, cb);
-
-    uint64_t uReg = 0;
-    AssertReleaseMsgFailed(("offReg=%#x (%s) uReg=%#RX64 [%u-bit]\n", offReg, gitsGetTranslationRegDescription(offReg), uReg, cb << 3));
-    return uReg;
-}
-
-
+/**
+ * Writes a register in the control registers MMIO region.
+ *
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   offReg      The offset of the register being written.
+ * @param   uValue      The register value.
+ * @param   cb          Number of bytes written.
+ */
 DECLHIDDEN(void) gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb)
 {
     Assert(cb == 8 || cb == 4);
@@ -371,16 +440,27 @@ DECLHIDDEN(void) gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16
         if (!(offReg & 7))
         {
             if (cb == 8)
+            {
+                uint64_t const uOldReg = pGitsDev->aItsTableRegs[idxReg].u;
                 GIC_SET_REG_U64_FULL(pGitsDev->aItsTableRegs[idxReg].u, uValue, fRwMask);
+                uint64_t const uNewReg = pGitsDev->aItsTableRegs[idxReg].u;
+                if (    (uOldReg ^ uNewReg) & GITS_BF_CTRL_REG_BASER_VALID_MASK
+                    && !(uNewReg & GITS_BF_CTRL_REG_BASER_VALID_MASK))
+                    gitsLpiCacheInvalidateAll(pGitsDev);
+            }
             else
                 GIC_SET_REG_U64_LO(pGitsDev->aItsTableRegs[idxReg].s.Lo, uValue, fRwMask);
         }
         else
         {
             Assert(cb == 4);
+            uint64_t const uOldReg = pGitsDev->aItsTableRegs[idxReg].u;
             GIC_SET_REG_U64_HI(pGitsDev->aItsTableRegs[idxReg].s.Hi, uValue, fRwMask);
+            uint64_t const uNewReg = pGitsDev->aItsTableRegs[idxReg].u;
+            if (    (uOldReg ^ uNewReg) & GITS_BF_CTRL_REG_BASER_VALID_MASK
+                && !(uNewReg & GITS_BF_CTRL_REG_BASER_VALID_MASK))
+                gitsLpiCacheInvalidateAll(pGitsDev);
         }
-        /** @todo Clear ITS caches when GITS_BASER<n>.Valid = 0. */
         return;
     }
 
@@ -428,6 +508,33 @@ DECLHIDDEN(void) gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16
 }
 
 
+/**
+ * Reads a register in the interrupt translation MMIO region.
+ *
+ * @returns The register value.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   offReg      The offset of the register being written.
+ * @param   cb          Number of bytes read.
+ */
+DECLHIDDEN(uint64_t) gitsMmioReadTranslate(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb)
+{
+    Assert(cb == 8 || cb == 4);
+    Assert(!(offReg & 3));
+    RT_NOREF(pGitsDev, cb);
+
+    uint64_t uReg = 0;
+    AssertReleaseMsgFailed(("offReg=%#x (%s) uReg=%#RX64 [%u-bit]\n", offReg, gitsGetTranslationRegDescription(offReg), uReg, cb << 3));
+    return uReg;
+}
+
+
+/**
+ * Writes an register in the interrupt translation MMIO region.
+ *
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   offReg      The offset of the register being written.
+ * @param   uValue      The register value.
+ */
 DECLHIDDEN(void) gitsMmioWriteTranslate(PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb)
 {
     RT_NOREF(pGitsDev);
@@ -455,6 +562,7 @@ static bool gitstLpiCacheLookup(PGITSDEV pGitsDev, uint16_t uDevId, uint16_t uEv
     AssertCompile(RT_ELEMENTS(pLpiMap->uDevIdEventId) == GITS_LPI_MAP_CACHE_COUNT);
     AssertCompile(RT_ELEMENTS(pLpiMap->uIcId)  == GITS_LPI_MAP_CACHE_COUNT);
     AssertCompile(RT_ELEMENTS(pLpiMap->uIntId) == GITS_LPI_MAP_CACHE_COUNT);
+    AssertCompile(RT_ELEMENTS(pLpiMap->idCpu) == GITS_LPI_MAP_CACHE_COUNT);
 
     /*
      * Lookup the entry in the cache that matches the device ID and event ID combo.
@@ -465,14 +573,16 @@ static bool gitstLpiCacheLookup(PGITSDEV pGitsDev, uint16_t uDevId, uint16_t uEv
      * See ARM GIC spec. 5.2.10 "Restrictions for INTID mapping rules".
      */
     uint64_t const uDevIdEventId = RT_MAKE_U64(uDevId, uEventId);
-    uint32_t const cItems        = pGitsDev->cLpiMap;
-    for (uint32_t i = 0; i < cItems; i++)
+    uint8_t const  cEntries      = pGitsDev->cLpiMap;
+    Assert(cEntries < RT_ELEMENTS(pLpiMap->uDevIdEventId));
+    for (uint8_t i = 0; i < cEntries; i++)
     {
         if (pLpiMap->uDevIdEventId[i].u == uDevIdEventId)
         {
             pLpiMapEntry->uDevIdEventId = pLpiMap->uDevIdEventId[i];
             pLpiMapEntry->uIntId        = pLpiMap->uIntId[i];
             pLpiMapEntry->uIcId         = pLpiMap->uIcId[i];
+            pLpiMapEntry->idCpu         = pLpiMap->idCpu[i];
             STAM_COUNTER_INC(&pGitsDev->StatLpiCacheHit);
             return true;
         }
@@ -480,6 +590,7 @@ static bool gitstLpiCacheLookup(PGITSDEV pGitsDev, uint16_t uDevId, uint16_t uEv
     pLpiMapEntry->uDevIdEventId.u = 0;
     pLpiMapEntry->uIntId          = 0;
     pLpiMapEntry->uIcId           = 0;
+    pLpiMapEntry->idCpu           = NIL_VMCPUID;
     STAM_COUNTER_INC(&pGitsDev->StatLpiCacheMiss);
     return false;
 }
@@ -490,17 +601,19 @@ static bool gitstLpiCacheLookup(PGITSDEV pGitsDev, uint16_t uDevId, uint16_t uEv
  *
  * @param   pGitsDev        The GIC ITS state.
  * @param   pLpiMapEntry    The LPI map entry to add.
+ * @remarks The caller must ensure the fields in the entry are valid.
 */
 static void gitsLpiCacheAdd(PGITSDEV pGitsDev, PGITSLPIMAPENTRY pLpiMapEntry)
 {
     PGITSLPIMAP     pLpiMap  = &pGitsDev->LpiMap;
     uint32_t const cCapacity = RT_ELEMENTS(pLpiMap->uDevIdEventId);
 
-    uint32_t const idxMap = pGitsDev->idxLpiMap;
+    uint8_t const idxMap = pGitsDev->idxLpiMap;
     Assert(idxMap < cCapacity);
     pLpiMap->uDevIdEventId[idxMap].u = pLpiMapEntry->uDevIdEventId.u;
     pLpiMap->uIcId[idxMap]           = pLpiMapEntry->uIcId;
     pLpiMap->uIntId[idxMap]          = pLpiMapEntry->uIntId;
+    pLpiMap->idCpu[idxMap]           = pLpiMapEntry->idCpu;
 
     pGitsDev->idxLpiMap = (pGitsDev->idxLpiMap + 1) % cCapacity;
     if (pGitsDev->cLpiMap < cCapacity)
@@ -523,6 +636,13 @@ DECLHIDDEN(void) gitsLpiCacheInvalidateAll(PGITSDEV pGitsDev)
 }
 
 
+/**
+ * Initializes the GIC ITS state.
+ *
+ * @param   pGitsDev    The GIC ITS state.
+ * @remarks This is also called during VM reset, so do NOT remove values that are
+ *          cleared to zero!
+ */
 DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
 {
     Log4Func(("\n"));
@@ -533,15 +653,15 @@ DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
     /* GITS_TYPER. */
     pGitsDev->uTypeReg.u = RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_PHYSICAL,  1)     /* Physical LPIs supported. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_VIRTUAL,   0) */  /* Virtual LPIs not supported. */
-                         | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CCT,       0)     /* Collections in memory not supported. */
+                       /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CCT,       0) */  /* Collections in memory not supported. */
                          | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_ITT_ENTRY_SIZE, sizeof(GITSITE) - 1) /* ITE size in bytes minus 1. */
                          | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_ID_BITS,   GITS_EVENT_ID_BITS - 1)   /* Event ID bits minus 1. */
                          | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_DEV_BITS,  GITS_DEV_ID_BITS - 1)     /* Device ID bits minus 1. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_SEIS,      0) */  /* Locally generated errors not recommended. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_PTA,       0) */  /* Target is VCPU ID not address. */
                          | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_HCC,       255)   /* Collection count. */
-                         | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CID_BITS,  0)     /* Collections in memory not supported. */
-                         | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CIL,       0)     /* Collections in memory not supported. */
+                       /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CID_BITS,  0) */  /* Collections in memory not supported. */
+                       /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_CIL,       0) */  /* Collections in memory not supported. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_VMOVP,     0) */  /* VMOVP not supported. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_MPAM,      0) */  /* MPAM no supported. */
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_VSGI,      0) */  /* VSGI not supported. */
@@ -552,7 +672,7 @@ DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
                        /*| RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_UMSI_IRQ,  0) */  /** @todo Generating interrupt on unmapped MSI. */
                          | RT_BF_MAKE(GITS_BF_CTRL_REG_TYPER_INV,       1);    /* ITS caches invalidated when clearing
                                                                                   GITS_CTLR.Enabled and GITS_BASER<n>.Valid. */
-    Assert(RT_ELEMENTS(pGitsDev->aCtes) >= RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_HCC));
+    Assert(RT_ELEMENTS(pGitsDev->aCtes) == RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_HCC));
     Assert(RT_SIZEOFMEMB(GITSLPIMAPENTRY, uDevIdEventId) * 8 >= RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_ID_BITS) + 1
                                                               + RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_DEV_BITS) + 1);
 
@@ -568,7 +688,7 @@ DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
 
     /* Collection Table. */
     for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
-        pGitsDev->aCtes[i].idTargetCpu = NIL_VMCPUID;
+        pGitsDev->aCtes[i] = NIL_VMCPUID;
 
     /* Misc. stuff. */
     pGitsDev->cCmdQueueErrors = 0;
@@ -579,6 +699,12 @@ DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
 
 
 #ifdef IN_RING3
+/**
+ * Dumps GIC ITS information.
+ *
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   pHlp        The info helpers.
+ */
 DECL_HIDDEN_CALLBACK(void) gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp)
 {
     pHlp->pfnPrintf(pHlp, "GIC ITS:\n");
@@ -663,7 +789,7 @@ DECL_HIDDEN_CALLBACK(void) gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp)
         bool fHasValidCtes = false;
         for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
         {
-            VMCPUID const idTargetCpu = pGitsDev->aCtes[i].idTargetCpu;
+            VMCPUID const idTargetCpu = pGitsDev->aCtes[i];
             if (idTargetCpu != NIL_VMCPUID)
             {
                 pHlp->pfnPrintf(pHlp, "    [%3u] = %RU32\n", i, idTargetCpu);
@@ -677,21 +803,34 @@ DECL_HIDDEN_CALLBACK(void) gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp)
     /* LPI cache. */
     {
         PCGITSLPIMAP   pLpiMap  = &pGitsDev->LpiMap;
-        uint32_t const cEntries = pGitsDev->cLpiMap;
+        uint8_t const  cEntries = pGitsDev->cLpiMap;
         pHlp->pfnPrintf(pHlp, "  LPI cache (capacity=%u entries=%u)\n", RT_ELEMENTS(pLpiMap->uDevIdEventId), cEntries);
-        for (uint32_t i = 0; i < cEntries; i++)
+        for (uint8_t i = 0; i < cEntries; i++)
         {
             uint16_t const uDevId   = pLpiMap->uDevIdEventId[i].s.Lo;
             uint16_t const uEventId = pLpiMap->uDevIdEventId[i].s.Hi;
             uint16_t const uIcId    = pLpiMap->uIcId[i];
             uint16_t const uIntId   = pLpiMap->uIntId[i];
-            pHlp->pfnPrintf(pHlp, "    [%2u] = (devid=%#RX16 eventid=%#RX16 intid=%RU16 icid=%RU16)\n",
-                                  i, uDevId, uEventId, uIntId, uIcId);
+            VMCPUID const  idCpu    = pLpiMap->idCpu[i];
+            pHlp->pfnPrintf(pHlp, "    [%2u] = (devid=%#RX16 eventid=%#RX16 intid=%RU16 icid=%RU16 vcpu=%RU32)\n",
+                                  i, uDevId, uEventId, uIntId, uIcId, idCpu);
         }
     }
 }
 
 
+/**
+ * Gets the guest physical address of the device-table entry given its device ID.
+ * This handles the device table being a flat (direct) or a two-level (indirect)
+ * structure.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns         The device instance.
+ * @param   pGitsDev        The GIC ITS state.
+ * @param   uDevId          The device ID.
+ * @param   pGCPhysDte      Where to store the guest physical address of the
+ *                          device-table entry.
+ */
 static int gitsR3DteGetAddr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, PRTGCPHYS pGCPhysDte)
 {
     uint64_t const uBaseReg       = pGitsDev->aItsTableRegs[0].u;
@@ -744,6 +883,15 @@ static int gitsR3DteGetAddr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDev
 }
 
 
+/**
+ * Reads a device-table entry (DTE) from guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID.
+ * @param   uDte        Where to store the device-table entry.
+ */
 static int gitsR3DteRead(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE *puDte)
 {
     RTGCPHYS GCPhysDte;
@@ -755,6 +903,15 @@ static int gitsR3DteRead(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId,
 }
 
 
+/**
+ * Writes a device-table entry (DTE) to guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID.
+ * @param   uDte        The device-table entry.
+ */
 static int gitsR3DteWrite(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE uDte)
 {
     RTGCPHYS GCPhysDte;
@@ -766,6 +923,15 @@ static int gitsR3DteWrite(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId
 }
 
 
+/**
+ * Reads an interrupt-translation table entry (ITE) from guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   uDte        The device-table entry.
+ * @param   uEventId    The event ID.
+ * @param   puIte       Where to store the interrupt-translation table entry.
+ */
 static int gitsR3IteRead(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE *puIte)
 {
     RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
@@ -774,6 +940,15 @@ static int gitsR3IteRead(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GI
 }
 
 
+/**
+ * Writes an interrupt-translation table entry (ITE) to guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   uDte        The device-table entry.
+ * @param   uEventId    The event ID.
+ * @param   uIte        The interrupt-translation table entry.
+ */
 static int gitsR3IteWrite(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE uIte)
 {
     RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
@@ -782,6 +957,18 @@ static int gitsR3IteWrite(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, G
 }
 
 
+/**
+ * MAPTI and MAPI command workers.
+ *
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID (full 32-bits as issued in the command).
+ * @param   uEventId    The event ID (full 32-bits as issued in the command).
+ * @param   uIntId      The physical LPI INTID.
+ * @param   uIcId       The interrupt collection ID.
+ * @param   fMapti      Whether this is the MAPTI command (@c true) or MAPI command
+ *                      (@c false).
+ */
 static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId, uint16_t uIntId,
                              uint16_t uIcId, bool fMapti)
 {
@@ -848,6 +1035,16 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
 }
 
 
+/**
+ * Processes ITS commands.
+ *
+ * @returns VBox status code.
+ * @param   pVM         The cross context VM state.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   pvBuf       The command queue buffer.
+ * @param   cbBuf       The size of the command queue buffer in bytes.
+ */
 DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf)
 {
     Log4Func(("cbBuf=%RU32\n", cbBuf));
@@ -921,7 +1118,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                             /* Map interrupt collection with a target CPU ID. */
                             uint64_t const uDw2 = pCmd->au64[2].u;
                             uint8_t  const fValid  = RT_BF_GET(uDw2, GITS_BF_CMD_MAPC_DW2_VALID);
-                            uint16_t const uRdBase = RT_BF_GET(uDw2, GITS_BF_CMD_MAPC_DW2_RDBASE);
+                            uint32_t const uRdBase = RT_BF_GET(uDw2, GITS_BF_CMD_MAPC_DW2_RDBASE);
                             uint16_t const uIcId   = RT_BF_GET(uDw2, GITS_BF_CMD_MAPC_DW2_IC_ID);
 
                             if (RT_LIKELY(uIcId < RT_ELEMENTS(pGitsDev->aCtes)))
@@ -934,7 +1131,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                     idCpu = uRdBase;
                                 else
                                     idCpu = NIL_VMCPUID;
-                                pGitsDev->aCtes[uIcId].idTargetCpu = idCpu;
+                                pGitsDev->aCtes[uIcId] = idCpu;
                                 GIC_CRIT_SECT_LEAVE(pDevIns);
                             }
                             else
@@ -979,15 +1176,14 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                     uint64_t const uDte = 0;
                                     GIC_CRIT_SECT_ENTER(pDevIns);
                                     rc = gitsR3DteWrite(pDevIns, pGitsDev, uDevId, uDte);
-                                    GIC_CRIT_SECT_LEAVE(pDevIns);
-                                    AssertRC(rc);
-
                                     /*
                                      * Well-behaving guests don't typically keep modifying the device ID mapping,
                                      * so we simply invalidate the whole cache here. If the need arises, perform
                                      * selective invalidation of the cache.
                                      */
                                     gitsLpiCacheInvalidateAll(pGitsDev);
+                                    GIC_CRIT_SECT_LEAVE(pDevIns);
+                                    AssertRC(rc);
                                 }
                             }
                             else
@@ -1030,8 +1226,10 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                         case GITS_CMD_ID_INV:
                         {
                             /* Reading the table is likely to take the same time as reading just one entry. */
+                            GIC_CRIT_SECT_ENTER(pDevIns);
                             gicDistReadLpiConfigTableFromMem(pDevIns);
                             gitsLpiCacheInvalidateAll(pGitsDev);
+                            GIC_CRIT_SECT_LEAVE(pDevIns);
                             STAM_COUNTER_INC(&pGitsDev->StatCmdInv);
                             break;
                         }
@@ -1048,10 +1246,12 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                             uint16_t const uIcId = RT_BF_GET(uDw2, GITS_BF_CMD_INVALL_DW2_IC_ID);
                             if (uIcId < RT_ELEMENTS(pGitsDev->aCtes))
                             {
-                                if (pGitsDev->aCtes[uIcId].idTargetCpu < pVM->cCpus)
+                                if (pGitsDev->aCtes[uIcId] < pVM->cCpus)
                                 {
+                                    GIC_CRIT_SECT_ENTER(pDevIns);
                                     gicDistReadLpiConfigTableFromMem(pDevIns);
                                     gitsLpiCacheInvalidateAll(pGitsDev);
+                                    GIC_CRIT_SECT_LEAVE(pDevIns);
                                 }
                                 else
                                     gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Invall_Cte_Unmapped,
@@ -1089,6 +1289,16 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
 #endif /* IN_RING3 */
 
 
+/**
+ * Translates and forwards the LPI to a redistributor.
+ *
+ * @param   pVM         The cross context VM state.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID.
+ * @param   uEventId    The event ID.
+ * @param   fAsserted   Whether the LPI is asserted/de-asserted.
+ */
 DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId, bool fAsserted)
 {
     Assert(GIC_CRIT_SECT_IS_OWNER(pDevIns));
@@ -1122,23 +1332,17 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
         bool const fFound = gitstLpiCacheLookup(pGitsDev, uDevId, uEventId, &LpiMapEntry);
         if (fFound)
         {
-            uint16_t const uIcId = LpiMapEntry.uIcId;
-            if (RT_LIKELY(uIcId < RT_ELEMENTS(pGitsDev->aCtes)))
+            uint16_t const uIntId = LpiMapEntry.uIntId;
+            VMCPUID const  idCpu  = LpiMapEntry.idCpu;
+            Assert(GIC_IS_INTR_LPI(uIntId));
+            if (RT_LIKELY(idCpu < pVM->cCpus))
             {
-                VMCPUID const idCpu = pGitsDev->aCtes[uIcId].idTargetCpu;
-                if (RT_LIKELY(idCpu < pVM->cCpus))
-                {
-                    uint16_t const uIntId = LpiMapEntry.uIntId;
-                    Assert(GIC_IS_INTR_LPI(uIntId));
-                    PVMCPUCC pVCpu = pVM->CTX_SUFF(apCpus)[idCpu];
-                    gicReDistSetLpi(pDevIns, pVCpu, uIntId, fAsserted);
-                }
-                else
-                    AssertMsgFailed(("CPU index out-of-bounds %RU32\n", idCpu));
+                PVMCPUCC pVCpu = pVM->CTX_SUFF(apCpus)[idCpu];
+                gicReDistSetLpi(pDevIns, pVCpu, uIntId, fAsserted);
+                return;
             }
             else
-                AssertMsgFailed(("ICID invalid %RU16\n", uIcId));
-            return;
+                AssertMsgFailed(("CPU index out-of-bounds %RU32\n", idCpu));
         }
     }
 
@@ -1175,7 +1379,7 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
                         {
                             /* Check that the target CPU is valid. */
                             Assert(!RT_BF_GET(pGitsDev->uTypeReg.u, GITS_BF_CTRL_REG_TYPER_PTA));
-                            VMCPUID const idCpu = pGitsDev->aCtes[uIcId].idTargetCpu;
+                            VMCPUID const idCpu = pGitsDev->aCtes[uIcId];
                             if (idCpu < pVM->cCpus)
                             {
                                 /* Set or clear the LPI pending state in the redistributor. */
@@ -1183,12 +1387,12 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
                                 gicReDistSetLpi(pDevIns, pVCpu, uIntId, fAsserted);
 
                                 /* Add the LPI to the cache. */
-                                /** @todo Consider storing the target VMCPUID in GITSLPIMAP. */
                                 GITSLPIMAPENTRY LpiMapEntry;
                                 LpiMapEntry.uDevIdEventId.s.Lo = uDevId;
                                 LpiMapEntry.uDevIdEventId.s.Hi = uEventId;
                                 LpiMapEntry.uIntId             = uIntId;
                                 LpiMapEntry.uIcId              = uIcId;
+                                LpiMapEntry.idCpu              = idCpu;
                                 gitsLpiCacheAdd(pGitsDev, &LpiMapEntry);
                             }
                             else

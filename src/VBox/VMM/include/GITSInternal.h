@@ -60,7 +60,7 @@ RT_BF_ASSERT_COMPILE_CHECKS(GITS_BF_DTE_, UINT64_C(0), UINT64_MAX,
                             (ITT_RANGE, RSVD_11_5, ITT_ADDR, RSVD_62_52, VALID));
 #define GITS_DTE_VALID_MASK                         (UINT64_MAX & ~(GITS_BF_DTE_RSVD_11_4_MASK | GITS_BF_DTE_RSVD_62_52_MASK));
 
-/** GITS DTE. */
+/** GITS Device Table Entry (DTE). */
 typedef uint64_t GITSDTE;
 /** @} */
 
@@ -86,7 +86,7 @@ typedef uint64_t GITSDTE;
 RT_BF_ASSERT_COMPILE_CHECKS(GITS_BF_ITE_, UINT64_C(0), UINT64_MAX,
                             (VPEID, ICID, HYPER_INTID, INTID, IS_PHYS, VALID));
 
-/** GITS ITE. */
+/** GITS Interrupt-Translation Table Entry (ITE). */
 typedef uint64_t GITSITE;
 /** @} */
 
@@ -104,6 +104,10 @@ RT_BF_ASSERT_COMPILE_CHECKS(GITS_BF_CTE_, UINT32_C(0), UINT32_MAX,
 /** GITS CTE: Size of the CTE in bytes. */
 #define GITS_CTE_SIZE                               4
 /** @} */
+#else
+/** GITS Collection Table Entry (CTE). */
+typedef VMCPUID GITSCTE;
+AssertCompileSizeAlignment(GITSCTE, 4);
 #endif
 
 /**
@@ -156,50 +160,6 @@ typedef enum GITSDIAG
 } GITSDIAG;
 AssertCompileSize(GITSDIAG, 4);
 
-#if 0
-typedef struct GITSITE
-{
-    uint32_t        uDevId;
-    uint32_t        uEventId;
-    uint16_t        uIntId;
-    uint8_t         uIcId;
-    uint8_t         afPadding;
-} GITSITE;
-AssertCompileSizeAlignment(GITSITE, 4);
-
-/**
- * Device Table Entry (DTE).
- */
-#pragma pack(1)
-typedef struct GITSDTE
-{
-    /** Whether this entry is valid. */
-    uint8_t         fValid;
-    /** Padding. */
-    uint8_t         afPadding;
-    /** The index of the cached interrupt translation table. */
-    uint16_t        idxItt;
-    /** The device ID. */
-    uint32_t        uDevId;
-    /** The physical address of the interrupt translation table. */
-    RTGCPHYS        GCPhysItt;
-    /** The size of the interrupt translation table in bytes. */
-    uint32_t        cbItt;
-} GITSDTE;
-#pragma pack()
-/** Pointer to a GITS device table entry. */
-typedef GITSDTE *PGITSDTE;
-/** Pointer to a const GITS device table entry. */
-typedef GITSDTE const *PCGITSDTE;
-AssertCompileSize(GITSDTE, 20);
-#endif
-
-typedef struct GITSCTE
-{
-    VMCPUID         idTargetCpu;
-} GITSCTE;
-AssertCompileSizeAlignment(GITSCTE, 4);
-
 /** Number of supported device ID bits. */
 #define GITS_DEV_ID_BITS                16
 /** The last valid device ID value. */
@@ -230,6 +190,8 @@ typedef struct GITSLPIMAP
     uint16_t        uIcId[GITS_LPI_MAP_CACHE_COUNT];
     /** The physical interrupt ID of the LPI. */
     uint16_t        uIntId[GITS_LPI_MAP_CACHE_COUNT];
+    /** The target VCPU ID of the LPI. */
+    VMCPUID         idCpu[GITS_LPI_MAP_CACHE_COUNT];
 } GITSLPIMAP;
 /** Pointer to GITS LPI map. */
 typedef GITSLPIMAP *PGITSLPIMAP;
@@ -237,6 +199,7 @@ typedef GITSLPIMAP *PGITSLPIMAP;
 typedef GITSLPIMAP const *PCGITSLPIMAP;
 AssertCompileSizeAlignment(GITSLPIMAP, 4);
 AssertCompileMemberSize(GITSLPIMAP, uDevIdEventId, GITS_LPI_MAP_CACHE_COUNT * (GITS_DEV_ID_BITS + GITS_EVENT_ID_BITS) / 8);
+AssertCompileMemberAlignment(GITSLPIMAP, idCpu, sizeof(VMCPUID));
 
 /**
  * GITS LPI map entry.
@@ -245,10 +208,12 @@ typedef struct GITSLPIMAPENTRY
 {
     /** The device ID (low) and event ID (high). */
     RTUINT32U       uDevIdEventId;
-    /** The physical interrupt ID of the LPI. */
-    uint16_t        uIntId;
     /** The interrupt collection ID of the LPI. */
     uint16_t        uIcId;
+    /** The physical interrupt ID of the LPI. */
+    uint16_t        uIntId;
+    /** The target VCPU ID of the LPI. */
+    VMCPUID         idCpu;
 } GITSLPIMAPENTRY;
 /** Pointer to GITS LPI map entry. */
 typedef GITSLPIMAPENTRY *PGITSLPIMAPENTRY;
@@ -256,6 +221,7 @@ typedef GITSLPIMAPENTRY *PGITSLPIMAPENTRY;
 typedef GITSLPIMAPENTRY const *PCGITSLPIMAPENTRY;
 AssertCompileSizeAlignment(GITSLPIMAPENTRY, 4);
 AssertCompileMemberSize(GITSLPIMAPENTRY, uDevIdEventId, (GITS_DEV_ID_BITS + GITS_EVENT_ID_BITS) / 8);
+AssertCompileMemberAlignment(GITSLPIMAPENTRY, idCpu, sizeof(VMCPUID));
 
 /**
  * The GITS device state.
@@ -282,6 +248,15 @@ typedef struct GITSDEV
 
     /** @name Interrupt translation space.
      * @{ */
+    /* This is currently not written directly by the guest (via MMIO) but its MMIO address
+       and data is written via MSI. If in the future some guests writes to it directly, we
+       would need to honor it. */
+#if 0
+    /** The ITS translater registers (GITS_TRANSLATER). */
+    uint32_t                uTranslaterReg;
+    /** Padding. */
+    uint32_t                auPadding;
+#endif
     /** @} */
 
     /** @name Command queue.
@@ -303,11 +278,12 @@ typedef struct GITSDEV
 
     /** @name ITS cache.
      * @{ */
+    /** The LPI map cache. */
     GITSLPIMAP              LpiMap;
     /** Index of the entry to use while adding an entry to the LPI map cache. */
-    uint32_t                idxLpiMap;
+    uint8_t                idxLpiMap;
     /** Number of valid items in the LPI map cache. */
-    uint32_t                cLpiMap;
+    uint8_t                cLpiMap;
     /** @} */
 
     /** @name Configurables.
@@ -315,12 +291,12 @@ typedef struct GITSDEV
     /** The ITS architecture (GITS_PIDR2.ArchRev). */
     uint8_t                 uArchRev;
     /** Padding. */
-    uint8_t                 afPadding0[7];
+    uint8_t                 afPadding1[5];
     /** @} */
 
+#ifdef VBOX_WITH_STATISTICS
     /** @name Statistics.
      * @{ */
-#ifdef VBOX_WITH_STATISTICS
     STAMCOUNTER             StatCmdMapd;
     STAMCOUNTER             StatCmdMapc;
     STAMCOUNTER             StatCmdMapi;
@@ -331,8 +307,8 @@ typedef struct GITSDEV
     STAMCOUNTER             StatLpiCacheHit;
     STAMCOUNTER             StatLpiCacheMiss;
     STAMCOUNTER             StatLpiCacheAdd;
-#endif
     /** @} */
+#endif
 } GITSDEV;
 /** Pointer to a GITS device. */
 typedef GITSDEV *PGITSDEV;
@@ -342,30 +318,32 @@ AssertCompileSizeAlignment(GITSDEV, 8);
 AssertCompileMemberAlignment(GITSDEV, aItsTableRegs, 8);
 AssertCompileMemberAlignment(GITSDEV, uCmdReadReg, 4);
 AssertCompileMemberAlignment(GITSDEV, uCmdWriteReg, 4);
-AssertCompileMemberAlignment(GITSDEV, hEvtCmdQueue, 4);
-AssertCompileMemberAlignment(GITSDEV, aCtes, 4);
-AssertCompileMemberAlignment(GITSDEV, uArchRev, 4);
-AssertCompileMemberSize(GITSDEV, aCtes, RT_ELEMENTS(GITSDEV::aCtes) * sizeof(GITSCTE));
+AssertCompileMemberAlignment(GITSDEV, pCmdQueueThread, 8);
+AssertCompileMemberAlignment(GITSDEV, hEvtCmdQueue, 8);
+AssertCompileMemberAlignment(GITSDEV, aCtes, sizeof(GITSCTE));
+AssertCompileMemberAlignment(GITSDEV, LpiMap, RT_SIZEOFMEMB(GITSLPIMAPENTRY, uDevIdEventId));
+AssertCompileMemberAlignment(GITSDEV, idxLpiMap, 4);
+#ifdef VBOX_WITH_STATISTICS
+AssertCompileMemberAlignment(GITSDEV, StatCmdMapd, 8);
+#endif
 
-DECLHIDDEN(void)            gitsInit(PGITSDEV pGitsDev);
-DECLHIDDEN(void)            gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId,
-                                       bool fAsserted);
-DECLHIDDEN(uint64_t)        gitsMmioReadCtrl(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb);
-DECLHIDDEN(uint64_t)        gitsMmioReadTranslate(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb);
-DECLHIDDEN(void)            gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb);
-DECLHIDDEN(void)            gitsMmioWriteTranslate(PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb);
+DECLHIDDEN(void)         gitsInit(PGITSDEV pGitsDev);
+DECLHIDDEN(uint64_t)     gitsMmioReadCtrl(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb);
+DECLHIDDEN(uint64_t)     gitsMmioReadTranslate(PCGITSDEV pGitsDev, uint16_t offReg, unsigned cb);
+DECLHIDDEN(void)         gitsMmioWriteCtrl(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb);
+DECLHIDDEN(void)         gitsMmioWriteTranslate(PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb);
 
-DECLHIDDEN(void)            gitsLpiCacheInvalidateAll(PGITSDEV pGitsDev);
+DECLHIDDEN(void)         gitsLpiCacheInvalidateAll(PGITSDEV pGitsDev);
+DECLHIDDEN(void)         gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDevId, uint32_t uEventId,
+                                    bool fAsserted);
 
 #ifdef IN_RING3
-DECL_HIDDEN_CALLBACK(void)  gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp);
-DECLHIDDEN(int)             gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf);
+DECLHIDDEN(void)         gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp);
+DECLHIDDEN(int)          gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, void *pvBuf, uint32_t cbBuf);
 #endif
 
-#ifdef LOG_ENABLED
-DECLHIDDEN(const char *)    gitsGetCtrlRegDescription(uint16_t offReg);
-DECLHIDDEN(const char *)    gitsGetTranslationRegDescription(uint16_t offReg);
-#endif
+DECLHIDDEN(const char *) gitsGetCtrlRegDescription(uint16_t offReg);
+DECLHIDDEN(const char *) gitsGetTranslationRegDescription(uint16_t offReg);
 
 /** @} */
 

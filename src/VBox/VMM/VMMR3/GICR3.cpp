@@ -554,7 +554,7 @@ static DECLCALLBACK(int) gicR3SaveExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM)
         /* We store the count followed by the data because we support only a fixed number of hardware-internal CTEs. */
         pHlp->pfnSSMPutU32(pSSM, RT_ELEMENTS(pGitsDev->aCtes));
         for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
-            pHlp->pfnSSMPutU32(pSSM, pGitsDev->aCtes[i].idTargetCpu);
+            pHlp->pfnSSMPutU32(pSSM, pGitsDev->aCtes[i]);
         pHlp->pfnSSMPutU8(pSSM, pGitsDev->uArchRev);
     }
 
@@ -690,7 +690,7 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
             return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Config mismatch: CTE table count: got=%u expected=%u"),
                                            cCtes, RT_ELEMENTS(pGitsDev->aCtes));
         for (unsigned i = 0; i < RT_ELEMENTS(pGitsDev->aCtes); i++)
-            pHlp->pfnSSMGetU32(pSSM, &pGitsDev->aCtes[i].idTargetCpu);
+            pHlp->pfnSSMGetU32(pSSM, &pGitsDev->aCtes[i]);
         pHlp->pfnSSMGetU8(pSSM, &pGitsDev->uArchRev);
     }
 
