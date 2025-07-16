@@ -1915,6 +1915,7 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
     uint64_t       bmLpiPending     = pGicCpu->LpiPending.au64[idxPending];
     uint8_t const  idxPendingBit    = idxIntr % cIntrsPerElement;
     bool const     fIntrLevel       = RT_BOOL(bmLpiPending & RT_BIT_64(idxPendingBit));
+    AssertCompile(sizeof(bmLpiPending) * 8 == cIntrsPerElement);
 
     if (fAsserted != fIntrLevel)
     {
