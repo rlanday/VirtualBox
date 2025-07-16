@@ -704,6 +704,54 @@ HRESULT NATNetwork::getPortForwardRules6(std::vector<com::Utf8Str> &aPortForward
     return S_OK;
 }
 
+HRESULT NATNetwork::setLocalhostReachable(BOOL fLocalhostReachable)
+{
+    RT_NOREF(fLocalhostReachable);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::getLocalhostReachable(BOOL *pfLocalhostReachable)
+{
+    RT_NOREF(pfLocalhostReachable);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::setForwardBroadcast(BOOL fForwardBroadcast)
+{
+    RT_NOREF(pfLocalhostReachable);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::getForwardBroadcast(BOOL *pfForwardBroadcast)
+{
+    RT_NOREF(pfLocalhostReachable);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::setNatMTU(ULONG uMTU)
+{
+    RT_NOREF(uMTU);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::getNatMTU(ULONG *puMTU)
+{
+    RT_NOREF(puMTU);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::setNatMRU(ULONG uMRU)
+{
+    RT_NOREF(uMRU);
+    return E_NOTIMPL;
+}
+
+HRESULT NATNetwork::getNatMRU(ULONG *puMRU)
+{
+    RT_NOREF(puMRU);
+    return E_NOTIMPL;
+}
+
 HRESULT NATNetwork::addPortForwardRule(BOOL aIsIpv6,
                                        const com::Utf8Str &aPortForwardRuleName,
                                        NATProtocol_T aProto,

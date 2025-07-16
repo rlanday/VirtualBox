@@ -78,6 +78,12 @@ private:
     HRESULT getForwardBroadcast(BOOL *pfForwardBroadcast);
     HRESULT setEnableTFTP(BOOL fEnableTFTP);
     HRESULT getEnableTFTP(BOOL *pfEnableTFTP);
+    HRESULT setNatMRU(ULONG uMRU);
+    HRESULT getNatMRU(ULONG *puMRU);
+    HRESULT setIPv6Enabled(BOOL fEnableIPv6);
+    HRESULT getIPv6Enabled(BOOL *pfEnableIPv6);
+    HRESULT setIPv6Prefix(const com::Utf8Str &aIPv6Prefix);
+    HRESULT getIPv6Prefix(com::Utf8Str &aIPv6Prefix);
     /* TFTP properties */
     HRESULT setTFTPPrefix(const com::Utf8Str &aTFTPPrefix);
     HRESULT getTFTPPrefix(com::Utf8Str &aTFTPPrefix);

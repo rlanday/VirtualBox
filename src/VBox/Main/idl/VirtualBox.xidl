@@ -2012,10 +2012,10 @@
   -->
 
   <interface name="INATNetwork" extends="$unknown"
-    uuid="4fdebbf0-be30-49c0-b315-e9749e1bded1"
+    uuid="90b89e78-1a61-4e66-af61-b9d2532e5632"
     wsmap="managed"
     rest="managed"
-    reservedMethods="2" reservedAttributes="8"
+    reservedMethods="4" reservedAttributes="8"
     >
 
     <attribute name="networkName" type="wstring">
@@ -2065,6 +2065,20 @@
     <attribute name="localMappings" type="wstring" readonly="yes" safearray="yes">
       <desc>Array of mappings (address,offset),e.g. ("127.0.1.1=4") maps 127.0.1.1 to networkid + 4.
       </desc>
+    </attribute>
+    <attribute name="localhostReachable" type="boolean">
+      <desc>Whether traffic from the guest directed to 10.0.2.2 will reach the
+        host's loopback interface, i.e. localhost or 127.0.0.1.</desc>
+    </attribute>
+    <attribute name="forwardBroadcast" type="boolean">
+      <desc>Forwards broadcast packets sent by the guest to the host machine as
+        such. IP address will show to host as 255.255.255.255.</desc>
+    </attribute>
+    <attribute name="natMTU" type="unsigned long">
+      <desc>MTU (maximum transmission unit) of the NAT engine in bytes.</desc>
+    </attribute>
+    <attribute name="natMRU" type="unsigned long">
+      <desc>MRU (maximum receive unit) of the NAT engine in bytes.</desc>
     </attribute>
 
     <method name="addLocalMapping">
@@ -26441,7 +26455,7 @@ Snapshot 1 (B.vdi)            Snapshot 1 (B.vdi)
 
   <interface
     name="INATEngine" extends="$unknown"
-    uuid="00aaaf38-5571-4d85-b338-bde82612d973"
+    uuid="55f6cedb-141d-41bb-9995-ee2fc7f9101a"
     wsmap="managed"
     rest="managed"
     reservedMethods="4" reservedAttributes="6"
@@ -26460,16 +26474,21 @@ Snapshot 1 (B.vdi)            Snapshot 1 (B.vdi)
     </attribute>
     <attribute name="TFTPPrefix" type="wstring">
       <desc>TFTP prefix attribute which is used with the built-in DHCP server to fill
-        the corresponding fields of DHCP leases.</desc>
+        the corresponding fields of DHCP leases.
+        <note>Ignored if TFTP is disabled.</note>
+      </desc>
     </attribute>
     <attribute name="TFTPBootFile" type="wstring">
       <desc>TFTP boot file attribute which is used with the built-in DHCP server to fill
-        the corresponding fields of DHCP leases.</desc>
+        the corresponding fields of DHCP leases.
+        <note>Ignored if TFTP is disabled.</note>
+      </desc>
     </attribute>
     <attribute name="TFTPNextServer" type="wstring">
       <desc>TFTP server attribute which is used with the built-in DHCP server to fill
         the corresponding fields of DHCP leases.
         <note>The preferred form is IPv4 addresses.</note>
+        <note>Ignored if TFTP is disabled.</note>
       </desc>
     </attribute>
     <attribute name="aliasMode" type="unsigned long">
@@ -26501,6 +26520,26 @@ Snapshot 1 (B.vdi)            Snapshot 1 (B.vdi)
     <attribute name="enableTFTP" type="boolean">
       <desc>Enables TFTP functionality, and related configuration options.</desc>
     </attribute>
+<!-- TODO r=jack: Consider this instead of setNetworkSettings.
+    <attribute name="natMTU" type="boolean">
+      <desc>MTU (maximum transmission unit) of the NAT engine in bytes.</desc>
+    </attribute> -->
+    <attribute name="natMRU" type="unsigned long">
+      <desc>MRU (maximum receive unit) of the NAT engine in bytes.</desc>
+    </attribute>
+    <attribute name="IPv6Enabled" type="boolean">
+      <desc>
+        This attribute define whether gateway will support IPv6 or not.
+      </desc>
+    </attribute>
+    <attribute name="IPv6Prefix" type="wstring">
+      <desc>
+        This a CIDR IPv6 defining prefix for link-local addresses
+        autoconfiguration within network. Note: ignored if attribute
+        IPv6Enabled is false.
+      </desc>
+    </attribute>
+
     <method name="setNetworkSettings">
       <desc>Sets network configuration of the NAT engine.</desc>
       <param name="mtu" type="unsigned long" dir="in">
