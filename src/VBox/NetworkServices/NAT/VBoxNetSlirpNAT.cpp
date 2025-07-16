@@ -1842,7 +1842,7 @@ void VBoxNetSlirpNAT::slirpNotifyPollThread(const char *pszWho)
 {
     VBoxNetSlirpNAT *pThis = static_cast<VBoxNetSlirpNAT *>(opaque);
     RT_NOREF(pThis);
-    //drvNATNotifyNATThread(pThis, "drvNAT_NotifyCb");
+    // pThis->slirpNotifyPollThread("slirpNotifyCb");
 }
 
 /**
@@ -2004,7 +2004,7 @@ VBoxNetSlirpNAT::pollThread(RTTHREAD hThreadSelf, void *pvUser)
 
     /* The first polling entry is for the control/wakeup pipe. */
 #ifdef RT_OS_WINDOWS
-    pThis->polls[0].fd = pThis->m_ahWakeupSockPair[1];
+    pThis->slirpAddPollCb(pThis->m_ahWakeupSockPair[1], SLIRP_POLL_IN | SLIRP_POLL_HUP, pThis);
 #else
     unsigned int cPollNegRet = 0;
     RTHCINTPTR const i64NativeReadPipe = RTPipeToNative(pThis->m_hPipeRead);
