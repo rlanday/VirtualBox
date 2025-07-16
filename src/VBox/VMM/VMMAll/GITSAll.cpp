@@ -418,6 +418,7 @@ DECLHIDDEN(uint64_t) gitsMmioReadCtrl(PCGITSDEV pGitsDev, uint16_t offReg, unsig
 /**
  * Writes a register in the control registers MMIO region.
  *
+ * @param   pDevIns     The device instance.
  * @param   pGitsDev    The GIC ITS state.
  * @param   offReg      The offset of the register being written.
  * @param   uValue      The register value.
@@ -534,6 +535,7 @@ DECLHIDDEN(uint64_t) gitsMmioReadTranslate(PCGITSDEV pGitsDev, uint16_t offReg, 
  * @param   pGitsDev    The GIC ITS state.
  * @param   offReg      The offset of the register being written.
  * @param   uValue      The register value.
+ * @param   cb          Number of bytes written.
  */
 DECLHIDDEN(void) gitsMmioWriteTranslate(PGITSDEV pGitsDev, uint16_t offReg, uint64_t uValue, unsigned cb)
 {
@@ -890,7 +892,7 @@ static int gitsR3DteGetAddr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDev
  * @param   pDevIns     The device instance.
  * @param   pGitsDev    The GIC ITS state.
  * @param   uDevId      The device ID.
- * @param   uDte        Where to store the device-table entry.
+ * @param   puDte       Where to store the device-table entry.
  */
 static int gitsR3DteRead(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE *puDte)
 {
