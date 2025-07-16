@@ -633,8 +633,7 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
                 {
                     uint16_t const cIntrsPerElement = sizeof(bmIntr) * 8;
                     uint16_t const idxPending       = i * cIntrsPerElement + idxIntrInElement;
-                    /** @todo Paranoia, remove or make it debug later. */
-                    AssertReleaseMsg(idxPending < RT_ELEMENTS(pGicCpu->abIntrPriority), ("idx=%u\n", idxPending));
+                    Assert(idxPending < RT_ELEMENTS(pGicCpu->abIntrPriority));
                     if (pGicCpu->abIntrPriority[idxPending] < bPriority)
                     {
                         idxHighest = idxPending;
@@ -677,8 +676,7 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
                         /* We don't support dual security states, hence priority is -not- shifted */
                         uint16_t const cIntrsPerElement = sizeof(bmLpiPending) * 8;
                         uint16_t const idxLpi           = i * cIntrsPerElement + idxLpiInElement;
-                        /** @todo Paranoia, remove or make it debug later. */
-                        AssertReleaseMsg(idxLpi < RT_ELEMENTS(pGicDev->abLpiConfig), ("idx=%u\n", idxLpi));
+                        Assert(idxLpi < RT_ELEMENTS(pGicDev->abLpiConfig));
                         uint8_t const  bLpiPriority    = pGicDev->abLpiConfig[idxLpi] & GIC_BF_LPI_CTE_PRIORITY_MASK;
                         bool const     fLpiEnabled     = pGicDev->abLpiConfig[idxLpi] & GIC_BF_LPI_CTE_ENABLE_MASK;
                         if (   fLpiEnabled
@@ -763,8 +761,7 @@ static uint16_t gicDistGetHighestPriorityPendingIntr(PCGICDEV pGicDev, PCVMCPUCC
             {
                 uint16_t const cIntrsPerElement = sizeof(bmIntr) * 8;
                 uint16_t const idxPending       = i * cIntrsPerElement + idxIntrInElement;
-                /** @todo Paranoia, remove or make it debug later. */
-                AssertReleaseMsg(idxPending < RT_ELEMENTS(pGicDev->abIntrPriority), ("idx=%u\n", idxPending));
+                Assert(idxPending < RT_ELEMENTS(pGicDev->abIntrPriority));
                 if (   pGicDev->abIntrPriority[idxPending] < bPriority
                     && pGicDev->au32IntrRouting[idxPending] == pVCpu->idCpu)
                 {
