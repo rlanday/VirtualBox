@@ -376,7 +376,7 @@ typedef struct GICCPU
     /** @name LPIs.
      * @{ */
     /** LPI pending bitmap. */
-    GICLPIBMP                   bmLpiPending;
+    GICLPIBMP                   LpiPending;
     /** @} */
 
 #ifdef VBOX_WITH_STATISTICS
@@ -415,8 +415,8 @@ typedef GICCPU *PGICCPU;
 /** Pointer to a const GIC VMCPU instance data. */
 typedef GICCPU const *PCGICCPU;
 /* Ensure the LPI pending bitmap's capacity is sufficient for the number of LPIs we support. */
-AssertCompileMemberSize(GICCPU, bmLpiPending, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
-AssertCompileMemberAlignment(GICCPU, bmLpiPending, 8);
+AssertCompileMemberSize(GICCPU, LpiPending, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
+AssertCompileMemberAlignment(GICCPU, LpiPending, 8);
 
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioRead(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void *pv, unsigned cb);
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioWrite(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void const *pv, unsigned cb);

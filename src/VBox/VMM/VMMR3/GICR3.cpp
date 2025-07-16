@@ -411,14 +411,14 @@ static DECLCALLBACK(void) gicR3DbgInfoLpi(PVM pVM, PCDBGFINFOHLP pHlp, const cha
     /* Pending LPI registers. */
     PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     pHlp->pfnPrintf(pHlp, "  VCPU[%u] LPI pending bitmap:\n", pVCpu->idCpu);
-    for (uint32_t i = 0; i < RT_ELEMENTS(pGicCpu->bmLpiPending.au64); i += sizeof(pGicCpu->bmLpiPending.au64[0]))
+    for (uint32_t i = 0; i < RT_ELEMENTS(pGicCpu->LpiPending.au64); i += sizeof(pGicCpu->LpiPending.au64[0]))
     {
         pHlp->pfnPrintf(pHlp, "    [%3u..%-3u] = %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64 %08RX64\n",
                               i,                                  i + 7,
-                              pGicCpu->bmLpiPending.au64[i],      pGicCpu->bmLpiPending.au64[i + 1],
-                              pGicCpu->bmLpiPending.au64[i + 2],  pGicCpu->bmLpiPending.au64[i + 3],
-                              pGicCpu->bmLpiPending.au64[i + 4],  pGicCpu->bmLpiPending.au64[i + 5],
-                              pGicCpu->bmLpiPending.au64[i + 6],  pGicCpu->bmLpiPending.au64[i + 7]);
+                              pGicCpu->LpiPending.au64[i],      pGicCpu->LpiPending.au64[i + 1],
+                              pGicCpu->LpiPending.au64[i + 2],  pGicCpu->LpiPending.au64[i + 3],
+                              pGicCpu->LpiPending.au64[i + 4],  pGicCpu->LpiPending.au64[i + 5],
+                              pGicCpu->LpiPending.au64[i + 6],  pGicCpu->LpiPending.au64[i + 7]);
     }
 }
 
@@ -539,7 +539,7 @@ static DECLCALLBACK(int) gicR3SaveExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM)
 
     /* LPI state. */
     /* We store the size followed by the data (per-VCPU) because we don't support the full LPI range. */
-    pHlp->pfnSSMPutU32(pSSM,  RT_SIZEOFMEMB(GICCPU, bmLpiPending));
+    pHlp->pfnSSMPutU32(pSSM,  RT_SIZEOFMEMB(GICCPU, LpiPending));
     pHlp->pfnSSMPutU32(pSSM,  sizeof(pGicDev->abLpiConfig));
     pHlp->pfnSSMPutMem(pSSM,  &pGicDev->abLpiConfig[0], sizeof(pGicDev->abLpiConfig));
     pHlp->pfnSSMPutU64(pSSM,  pGicDev->uLpiConfigBaseReg.u);
@@ -593,7 +593,7 @@ static DECLCALLBACK(int) gicR3SaveExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM)
         pHlp->pfnSSMPutU32(pSSM,  pGicCpu->fIntrGroupMask);
 
         /* LPI state. */
-        pHlp->pfnSSMPutMem(pSSM, &pGicCpu->bmLpiPending.au64[0], sizeof(pGicCpu->bmLpiPending));
+        pHlp->pfnSSMPutMem(pSSM, &pGicCpu->LpiPending.au64[0], sizeof(pGicCpu->LpiPending));
     }
 
     /* Marker. */
@@ -660,9 +660,9 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
         uint32_t cbData = 0;
         int const rc = pHlp->pfnSSMGetU32(pSSM, &cbData);
         AssertRCReturn(rc, rc);
-        if (cbData != RT_SIZEOFMEMB(GICCPU, bmLpiPending))
+        if (cbData != RT_SIZEOFMEMB(GICCPU, LpiPending))
             return pHlp->pfnSSMSetCfgError(pSSM, RT_SRC_POS, N_("Config mismatch: LPI pending bitmap size: got=%u expected=%u"),
-                                           cbData, RT_SIZEOFMEMB(GICCPU, bmLpiPending));
+                                           cbData, RT_SIZEOFMEMB(GICCPU, LpiPending));
     }
     /* LPI config table. */
     {
@@ -729,7 +729,7 @@ static DECLCALLBACK(int) gicR3LoadExec(PPDMDEVINS pDevIns, PSSMHANDLE pSSM, uint
         pHlp->pfnSSMGetU32(pSSM,  &pGicCpu->fIntrGroupMask);
 
         /* LPI state. */
-        pHlp->pfnSSMGetMem(pSSM, &pGicCpu->bmLpiPending.au64[0], sizeof(pGicCpu->bmLpiPending));
+        pHlp->pfnSSMGetMem(pSSM, &pGicCpu->LpiPending.au64[0], sizeof(pGicCpu->LpiPending));
     }
 
     /*

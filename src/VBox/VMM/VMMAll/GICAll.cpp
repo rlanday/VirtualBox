@@ -665,9 +665,9 @@ static uint16_t gicReDistGetHighestPriorityPendingIntr(PCVMCPUCC pVCpu, uint32_t
         if (pGicDev->fEnableLpis)
         {
             uint16_t idxHighest = UINT16_MAX;
-            for (uint16_t i = 0; i < RT_ELEMENTS(pGicCpu->bmLpiPending.au64); i++)
+            for (uint16_t i = 0; i < RT_ELEMENTS(pGicCpu->LpiPending.au64); i++)
             {
-                uint64_t bmLpiPending    = pGicCpu->bmLpiPending.au64[i];
+                uint64_t bmLpiPending    = pGicCpu->LpiPending.au64[i];
                 uint16_t idxLpiInElement = 0;
                 while (bmLpiPending)
                 {
@@ -858,11 +858,11 @@ static void gicDistHasIrqPendingForVCpu(PCVMCPUCC pVCpu, bool *pfIrq, bool *pfFi
 {
     PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
     PCGICDEV   pGicDev = PDMDEVINS_2_DATA(pDevIns, PCGICDEV);
+    PCGICCPU   pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     uint32_t const fIntrGroupMask = pGicDev->fIntrGroupMask;
     LogFlowFunc(("fIntrGroupMask=%#RX32\n", fIntrGroupMask));
 
     /* Quick bailout if all interrupts are fully masked or if the active interrupt is at the highest priority. */
-    PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
     if (   pGicCpu->bIntrPriorityMask
         && pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority]
         && fIntrGroupMask)
@@ -947,8 +947,8 @@ static void gicReDistReadLpiPendingTableFromMem(PPDMDEVINS pDevIns, PVMCPU pVCpu
         /* Read the LPI pending bitmap from guest memory to our cache. */
         RTGCPHYS const GCPhysLpiPendingTable = (pGicDev->uLpiPendingBaseReg.u & GIC_BF_REDIST_REG_PENDBASER_PHYS_ADDR_MASK)
                                              + GIC_INTID_RANGE_LPI_START;  /* Skip first 1KB (since LPI INTIDs start at 8192). */
-        uint32_t const cbLpiPendingTable     = sizeof(pGicCpu->bmLpiPending);
-        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingTable, (void *)&pGicCpu->bmLpiPending.au64[0],
+        uint32_t const cbLpiPendingTable     = sizeof(pGicCpu->LpiPending);
+        int const rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysLpiPendingTable, (void *)&pGicCpu->LpiPending.au64[0],
                                              cbLpiPendingTable);
         if (RT_SUCCESS(rc))
             return;
@@ -957,7 +957,7 @@ static void gicReDistReadLpiPendingTableFromMem(PPDMDEVINS pDevIns, PVMCPU pVCpu
 
     /* If the guest indicates the table is zero'ed OR if we failed to read the table for whatever reason,
        clear our LPI pending cache. */
-    RT_ZERO(pGicCpu->bmLpiPending);
+    RT_ZERO(pGicCpu->LpiPending);
 }
 
 
@@ -1909,12 +1909,12 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
 
     /* Get the particular bit that represents the pending state of the LPI. */
     uint16_t const idxIntr          = uIntId - GIC_INTID_RANGE_LPI_START;
-    uint16_t const cIntrs           = sizeof(pGicCpu->bmLpiPending) * 8;
-    uint64_t       bmLpiPending     = pGicCpu->bmLpiPending.au64[idxIntr / cIntrs];
-    uint16_t const cIntrsPerElement = sizeof(bmLpiPending) * 8;
+    Assert(idxIntr < sizeof(pGicCpu->LpiPending) * 8);
+    uint16_t const cIntrsPerElement = sizeof(pGicCpu->LpiPending.au64[0]) * 8;
+    uint16_t const idxPending       = idxIntr / cIntrsPerElement;
+    uint64_t       bmLpiPending     = pGicCpu->LpiPending.au64[idxPending];
     uint8_t const  idxPendingBit    = idxIntr % cIntrsPerElement;
     bool const     fIntrLevel       = RT_BOOL(bmLpiPending & RT_BIT_64(idxPendingBit));
-    Assert(idxIntr < cIntrs);
 
     if (fAsserted != fIntrLevel)
     {
@@ -1923,7 +1923,7 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
         bmLpiPending |= (!!fAsserted << idxPendingBit);
 
         /* Update the pending state of the LPI in our cache. */
-        pGicCpu->bmLpiPending.au64[idxIntr / cIntrs] = bmLpiPending;
+        pGicCpu->LpiPending.au64[idxPending] = bmLpiPending;
 
         /*
          * There is no guarantee that GICR_CTLR.EnableLPIs=0 causes the LPI pending table
@@ -2797,7 +2797,7 @@ DECLINLINE(VBOXSTRICTRC) gicReDistWriteRegister(PPDMDEVINS pDevIns, PVMCPUCC pVC
                 else
                 {
                     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-                    RT_ZERO(pGicCpu->bmLpiPending);
+                    RT_ZERO(pGicCpu->LpiPending);
                 }
                 gitsLpiCacheInvalidateAll(&pGicDev->Gits);
             }
@@ -3562,7 +3562,7 @@ static void gicInitCpu(PPDMDEVINS pDevIns, PVMCPUCC pVCpu)
     pGicCpu->bBinaryPtGroup0    = 0;
     pGicCpu->bBinaryPtGroup1    = 1; /* We don't support dual security state, minimum value is 1. */
     pGicCpu->fIntrGroupMask     = 0;
-    RT_ZERO(pGicCpu->bmLpiPending);
+    RT_ZERO(pGicCpu->LpiPending);
 }
 
 
