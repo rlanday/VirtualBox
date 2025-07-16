@@ -718,13 +718,13 @@ HRESULT NATNetwork::getLocalhostReachable(BOOL *pfLocalhostReachable)
 
 HRESULT NATNetwork::setForwardBroadcast(BOOL fForwardBroadcast)
 {
-    RT_NOREF(pfLocalhostReachable);
+    RT_NOREF(fForwardBroadcast);
     return E_NOTIMPL;
 }
 
 HRESULT NATNetwork::getForwardBroadcast(BOOL *pfForwardBroadcast)
 {
-    RT_NOREF(pfLocalhostReachable);
+    RT_NOREF(pfForwardBroadcast);
     return E_NOTIMPL;
 }
 
