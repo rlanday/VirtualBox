@@ -227,58 +227,50 @@ DECL_FORCE_INLINE(uint64_t) gicUnpackAltBits(uint32_t uSrc)
 }
 
 
-#if 0
 /**
  * Gets a bit in an (interrupt) bitmap.
  *
  * @returns @c true if the bit was set, @c false if the bit was clear.
- * @param   pvBitmap    The bitmap.
+ * @param   pu32Bitmap  The bitmap.
  * @param   idxBit      The index of the bit to get (from bit 0).
  *
- * @remarks The bitmap in @a pvBitmap must be 32-bit aligned. Refer remark in
- *          gicBitmapPutBit() for the reason.
+ * @remarks The bitmap is 32-bit aligned because it's ASSUMED 32-bit would yield
+ *          marginally better performance than byte accesses and because all
+ *          bitmaps in the GIC thus far are multiples of 32 bits.
  */
-DECL_FORCE_INLINE(bool) gicBitmapGetBit(void *pvBitmap, uint16_t idxBit)
+DECL_FORCE_INLINE(bool) gicBitmapGetBit(uint32_t const *pu32Bitmap, uint32_t idxBit)
 {
-    uint16_t const cBitsPerElement = sizeof(uint32_t) * 8;
-    uint16_t const idxElement      = idxBit / cBitsPerElement;
-    uint16_t const idxBitInElement = idxBit % cBitsPerElement;
-    uint32_t const bmElement       = *(uint32_t *)((uintptr_t)pvBitmap + idxElement);
-    bool     const fIsBitSet       = RT_BOOL(bmElement & RT_BIT_32(idxBitInElement));
+    uint32_t const cBitsPerElement = sizeof(uint32_t) << 3;
+    uint32_t const idxElement      = idxBit / cBitsPerElement;
+    uint8_t const  idxBitInElement = idxBit % cBitsPerElement;
+    uint32_t const bmElement       = pu32Bitmap[idxElement];
     AssertCompile(sizeof(bmElement) * 8 == cBitsPerElement);
-    return fIsBitSet;
+    return RT_BOOL(bmElement & RT_BIT_32(idxBitInElement));
 }
-#endif
 
 
 /**
  * Sets or clears a bit in an (interrupt) bitmap if needed.
  *
  * @returns @c true if the bit was updated, @c false otherwise.
- * @param   pvBitmap    The bitmap.
+ * @param   pu32Bitmap  The bitmap.
  * @param   idxBit      Index of the bit to set (from bit 0).
  * @param   fSet        Whether to set the bit (@c true) or to clear the bit (@c
  *                      false).
- *
- * @remarks The bitmap in @a pvBitmap must be 32-bit aligned. This is a requirement
- *          as it's ASSUMED 32-bit yields marginally better performance than using
- *          byte accesses -AND- because all bitmaps in the GIC thus far are
- *          multiples of 32 bits.
  */
-DECL_FORCE_INLINE(bool) gicBitmapPutBit(void *pvBitmap, uint16_t idxBit, bool fSet)
+DECL_FORCE_INLINE(bool) gicBitmapPutBit(uint32_t *pu32Bitmap, uint32_t idxBit, bool fSet)
 {
-    Assert(!((uintptr_t)pvBitmap & 3));
-    uint16_t const cBitsPerElement = sizeof(uint32_t) * 8;
-    uint16_t const idxElement      = idxBit / cBitsPerElement;
-    uint16_t const idxBitInElement = idxBit % cBitsPerElement;
-    uint32_t       bmElement       = ((uint32_t *)pvBitmap)[idxElement];
+    uint32_t const cBitsPerElement = sizeof(uint32_t) << 3;
+    uint32_t const idxElement      = idxBit / cBitsPerElement;
+    uint8_t const  idxBitInElement = idxBit % cBitsPerElement;
+    uint32_t       bmElement       = pu32Bitmap[idxElement];
     bool     const fAlreadySet     = RT_BOOL(bmElement & RT_BIT_32(idxBitInElement));
     AssertCompile(sizeof(bmElement) * 8 == cBitsPerElement);
     if (fAlreadySet != fSet)
     {
         bmElement &= ~RT_BIT_32(idxBitInElement);
         bmElement |= ((uint32_t)fSet << idxBitInElement);
-        ((uint32_t *)pvBitmap)[idxElement] = bmElement;
+        pu32Bitmap[idxElement] = bmElement;
         return true;
     }
     return false;
@@ -1090,7 +1082,7 @@ static VBOXSTRICTRC gicDistReadIntrRoutingReg(PCGICDEV pGicDev, uint16_t idxReg,
     if (!(idxReg % 2))
     {
         /* Lower 32-bits. */
-        uint8_t const fIrm = ASMBitTest(&pGicDev->IntrRoutingMode.au32[0], idxReg);
+        uint8_t const fIrm = gicBitmapGetBit(&pGicDev->IntrRoutingMode.au32[0], idxReg);
         *puValue = GIC_DIST_REG_IROUTERn_SET(fIrm, pGicDev->au32IntrRouting[idxReg]);
     }
     else
@@ -1124,9 +1116,9 @@ static VBOXSTRICTRC gicDistWriteIntrRoutingReg(PGICDEV pGicDev, uint16_t idxReg,
         /* Lower 32-bits. */
         bool const fIrm = GIC_DIST_REG_IROUTERn_IRM_GET(uValue);
         if (fIrm)
-            ASMBitSet(&pGicDev->IntrRoutingMode.au32[0], idxReg);
+            gicBitmapPutBit(&pGicDev->IntrRoutingMode.au32[0], idxReg, true /* fSet */);
         else
-            ASMBitClear(&pGicDev->IntrRoutingMode.au32[0], idxReg);
+            gicBitmapPutBit(&pGicDev->IntrRoutingMode.au32[0], idxReg, false /* fSet */);
         uint32_t const fAff3 = pGicDev->au32IntrRouting[idxReg] & 0xff000000;
         pGicDev->au32IntrRouting[idxReg] = fAff3 | (uValue & 0x00ffffff);
     }
@@ -1347,7 +1339,7 @@ static VBOXSTRICTRC gicDistWriteIntrPriorityReg(PVM pVM, PGICDEV pGicDev, uint16
         {
             uint8_t const cShift    = i << 3;
             uint8_t const uPriority = uValue >> cShift;
-            bool const    fGroup1   = ASMBitTest(&pGicDev->IntrGroup.au32[0], idxPriority + i);
+            bool const    fGroup1   = gicBitmapGetBit(&pGicDev->IntrGroup.au32[0], idxPriority + i);
             if (fGroup1)
             {
                 /*
@@ -1608,7 +1600,7 @@ static VBOXSTRICTRC gicReDistWriteIntrPriorityReg(PVMCPUCC pVCpu, uint16_t idxRe
     {
         uint8_t const cShift    = i << 3;
         uint8_t const uPriority = uValue >> cShift;
-        bool const    fGroup1   = ASMBitTest(&pGicDev->IntrGroup.au32[0], idxPriority + i);
+        bool const    fGroup1   = gicBitmapGetBit(&pGicDev->IntrGroup.au32[0], idxPriority + i);
         if (fGroup1)
             pGicCpu->abIntrPriority[idxPriority + i] = uPriority << 1;
         else
@@ -2087,9 +2079,9 @@ static void gicReDistSetActiveIntrPriority(PGICCPU pGicCpu, uint16_t uIntId, uin
     AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
     uint8_t const idxPreemptionLevel = bIntrPriority >> 1;
     if (fIntrGroupMask & GIC_INTR_GROUP_0)
-        ASMBitSet(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel);
+        gicBitmapPutBit(&pGicCpu->bmActivePriorityGroup0[0], idxPreemptionLevel, true /* fSet */);
     else
-        ASMBitSet(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
+        gicBitmapPutBit(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel, true /* fSet */);
 
     /* Set running priority of the active interrupt. */
     if (RT_LIKELY(pGicCpu->idxRunningPriority < RT_ELEMENTS(pGicCpu->abRunningPriorities) - 1))
@@ -2155,12 +2147,12 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
         || GIC_IS_INTR_EXT_PPI(uIntId))
     {
         AssertMsg(idxIntr < sizeof(pGicCpu->bmIntrActive) * 8, ("idxIntr=%u\n", idxIntr));
-        ASMBitSet(&pGicCpu->bmIntrActive[0], idxIntr);
+        gicBitmapPutBit(&pGicCpu->bmIntrActive[0], idxIntr, true /* fSet */);
 
         AssertMsg(idxIntr < sizeof(pGicCpu->bmIntrConfig) * 8, ("idxIntr=%u\n", idxIntr));
-        bool const fEdgeTriggered = ASMBitTest(&pGicCpu->bmIntrConfig[0], idxIntr);
+        bool const fEdgeTriggered = gicBitmapGetBit(&pGicCpu->bmIntrConfig[0], idxIntr);
         if (fEdgeTriggered)
-            ASMBitClear(&pGicCpu->bmIntrPending[0], idxIntr);
+            gicBitmapPutBit(&pGicCpu->bmIntrPending[0], idxIntr, false /* fSet */);
 
         /* SGIs are always edge-triggered. */
         Assert(!GIC_IS_INTR_SGI(uIntId) || fEdgeTriggered);
@@ -2175,12 +2167,12 @@ static uint16_t gicAckHighestPriorityPendingIntr(PVMCPUCC pVCpu, uint32_t fIntrG
         Assert(GIC_IS_INTR_SPI(uIntId) || GIC_IS_INTR_EXT_SPI(uIntId));
 
         Assert(idxIntr < sizeof(pGicDev->IntrActive) * 8);
-        ASMBitSet(&pGicDev->IntrActive.au32[0], idxIntr);
+        gicBitmapPutBit(&pGicDev->IntrActive.au32[0], idxIntr, true /* fSet */);
 
         AssertMsg(idxIntr < sizeof(pGicDev->IntrConfig) * 8, ("idxIntr=%u\n", idxIntr));
-        bool const fEdgeTriggered = ASMBitTest(&pGicDev->IntrConfig.au32[0], idxIntr);
+        bool const fEdgeTriggered = gicBitmapGetBit(&pGicDev->IntrConfig.au32[0], idxIntr);
         if (fEdgeTriggered)
-            ASMBitClear(&pGicDev->IntrPending.au32[0], idxIntr);
+            gicBitmapPutBit(&pGicDev->IntrPending.au32[0], idxIntr, false /* fSet */);
 
         gicReDistSetActiveIntrPriority(pGicCpu, uIntId, bIntrPriority, fIntrGroupMask);
         gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
@@ -2990,12 +2982,9 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
     PGIC       pGic    = VM_TO_GIC(pVM);
     PPDMDEVINS pDevIns = pGic->CTX_SUFF(pDevIns);
     PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-#ifdef VBOX_WITH_STATISTICS
-    PVMCPU     pVCpu   = VMMGetCpuById(pVM, 0);
-    PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-#endif
+
+    STAM_PROFILE_START(&pGicDev->StatProfSetSpi, a);
     STAM_COUNTER_INC(&pGicDev->StatSetSpi);
-    STAM_PROFILE_START(&pGicCpu->StatProfSetSpi, a);
 
     uint16_t const uIntId  = GIC_INTID_RANGE_SPI_START + uSpiIntId;
     uint16_t const idxIntr = gicDistGetIndexFromIntId(uIntId);
@@ -3010,7 +2999,7 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
 
 #if 0
     /* For edge-triggered we should probably only update on 0 to 1 transition. */
-    bool const fEdgeTriggered = ASMBitTest(&pGicDev->IntrConfig.au32[0], idxIntr);
+    bool const fEdgeTriggered = gicBitmapGetBit(&pGicDev->IntrConfig.au32[0], idxIntr);
     Assert(!fEdgeTriggered); NOREF(fEdgeTriggered);
 #endif
     bool const fUpdated = gicBitmapPutBit(&pGicDev->IntrLevel.au32[0], idxIntr, fAsserted);
@@ -3019,7 +3008,8 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
                   : VINF_SUCCESS;
 
     GIC_CRIT_SECT_LEAVE(pDevIns);
-    STAM_PROFILE_STOP(&pGicCpu->StatProfSetSpi, a); RT_NOREF(pGicCpu);
+
+    STAM_PROFILE_STOP(&pGicDev->StatProfSetSpi, a);
     return rc;
 }
 
@@ -3054,7 +3044,7 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
 
 #if 0
     /* For edge-triggered we should probably only update on 0 to 1 transition. */
-    bool const fEdgeTriggered = ASMBitTest(&pGicCpu->bmIntrConfig[0], idxIntr);
+    bool const fEdgeTriggered = gicBitmapGetBit(&pGicCpu->bmIntrConfig[0], idxIntr);
     Assert(!fEdgeTriggered); NOREF(fEdgeTriggered);
 #endif
 
@@ -3409,7 +3399,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
                 /* SPIs. */
                 uint16_t const idxIntr = /*gicDistGetIndexFromIntId*/(uIntId);
                 AssertReturn(idxIntr < sizeof(pGicDev->IntrActive) * 8, VERR_BUFFER_OVERFLOW);
-                ASMBitClear(&pGicDev->IntrActive.au32[0], idxIntr);
+                gicBitmapPutBit(&pGicDev->IntrActive.au32[0], idxIntr, false /* fSet */);
                 fIsRedistIntId = false;
             }
             else if (uIntId <= GIC_INTID_RANGE_SPECIAL_NO_INTERRUPT)
@@ -3423,14 +3413,14 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
                 /* Extended PPIs. */
                 uint16_t const idxIntr = gicReDistGetIndexFromIntId(uIntId);
                 AssertReturn(idxIntr < sizeof(pGicCpu->bmIntrActive) * 8, VERR_BUFFER_OVERFLOW);
-                ASMBitClear(&pGicCpu->bmIntrActive[0], idxIntr);
+                gicBitmapPutBit(&pGicCpu->bmIntrActive[0], idxIntr, false /* fSet */);
             }
             else if (uIntId <= GIC_INTID_RANGE_EXT_SPI_LAST)
             {
                 /* Extended SPIs. */
                 uint16_t const idxIntr = gicDistGetIndexFromIntId(uIntId);
                 AssertReturn(idxIntr < sizeof(pGicDev->IntrActive) * 8, VERR_BUFFER_OVERFLOW);
-                ASMBitClear(&pGicDev->IntrActive.au32[0], idxIntr);
+                gicBitmapPutBit(&pGicDev->IntrActive.au32[0], idxIntr, false /* fSet */);
                 fIsRedistIntId = false;
             }
             else if (uIntId <= GIC_INTID_RANGE_LPI_START + RT_ELEMENTS(pGicDev->abLpiConfig) - 1)
@@ -3462,7 +3452,7 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
                  */
                 uint8_t const idxPreemptionLevel = pGicCpu->abRunningPriorities[pGicCpu->idxRunningPriority] >> 1;
                 AssertCompile(sizeof(pGicCpu->bmActivePriorityGroup1) * 8 >= 128);
-                ASMBitClear(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel);
+                gicBitmapPutBit(&pGicCpu->bmActivePriorityGroup1[0], idxPreemptionLevel, false /* fSet */);
 
                 pGicCpu->idxRunningPriority--;
                 Assert(pGicCpu->abRunningPriorities[0] == GIC_IDLE_PRIORITY);

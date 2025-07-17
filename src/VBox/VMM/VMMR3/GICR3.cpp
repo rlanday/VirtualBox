@@ -1156,19 +1156,23 @@ DECLCALLBACK(int) gicR3Construct(PPDMDEVINS pDevIns, int iInstance, PCFGMNODE pC
      * Statistics.
      */
 #ifdef VBOX_WITH_STATISTICS
+# define GIC_REG_COUNTER(a_pvReg, a_pszNameFmt, a_pszDesc) \
+         PDMDevHlpSTAMRegisterF(pDevIns, a_pvReg, STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_OCCURENCES, \
+                                a_pszDesc, a_pszNameFmt)
+# define GIC_PROF_COUNTER(a_pvReg, a_pszNameFmt, a_pszDesc) \
+         PDMDevHlpSTAMRegisterF(pDevIns, a_pvReg, STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_TICKS_PER_CALL, \
+                                a_pszDesc, a_pszNameFmt)
 # define GICCPU_REG_COUNTER(a_pvReg, a_pszNameFmt, a_pszDesc) \
          PDMDevHlpSTAMRegisterF(pDevIns, a_pvReg, STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_OCCURENCES, \
                                 a_pszDesc, a_pszNameFmt, idCpu)
 # define GICCPU_PROF_COUNTER(a_pvReg, a_pszNameFmt, a_pszDesc) \
          PDMDevHlpSTAMRegisterF(pDevIns, a_pvReg, STAMTYPE_PROFILE, STAMVISIBILITY_ALWAYS, STAMUNIT_TICKS_PER_CALL, \
                                 a_pszDesc, a_pszNameFmt, idCpu)
-# define GIC_REG_COUNTER(a_pvReg, a_pszNameFmt, a_pszDesc) \
-         PDMDevHlpSTAMRegisterF(pDevIns, a_pvReg, STAMTYPE_COUNTER, STAMVISIBILITY_ALWAYS, STAMUNIT_OCCURENCES, \
-                                a_pszDesc, a_pszNameFmt)
 
     /* Distributor. */
-    GIC_REG_COUNTER(&pGicDev->StatSetSpi, "SetSpi", "Number of set SPI callbacks.");
-    GIC_REG_COUNTER(&pGicDev->StatSetLpi, "SetLpi", "Number of set LPI callbacks.");
+    GIC_REG_COUNTER(&pGicDev->StatSetSpi,      "SetSpi",      "Number of set SPI callbacks.");
+    GIC_REG_COUNTER(&pGicDev->StatSetLpi,      "SetLpi",      "Number of set LPI callbacks.");
+    GIC_PROF_COUNTER(&pGicDev->StatProfSetSpi, "Prof/SetSpi", "Profiling of set SPI callback.");
 
     /* Redistributor. */
     for (VMCPUID idCpu = 0; idCpu < pVM->cCpus; idCpu++)
@@ -1185,10 +1189,9 @@ DECLCALLBACK(int) gicR3Construct(PPDMDEVINS pDevIns, int iInstance, PCFGMNODE pC
         GICCPU_REG_COUNTER(&pGicCpu->StatIntrAck,     "%u/IntrAck",      "Number of interrupts acknowledged.");
         GICCPU_REG_COUNTER(&pGicCpu->StatIntrEoi,     "%u/IntrEoi",      "Number of interrupts EOI'd.");
 
-        GICCPU_PROF_COUNTER(&pGicCpu->StatProfIntrAck, "%u/Prof/IntrAck", "Profiling of interrupt acknowledge (IAR).");
-        GICCPU_PROF_COUNTER(&pGicCpu->StatProfSetSpi,  "%u/Prof/SetSpi",  "Profiling of set SPI callback.");
-        GICCPU_PROF_COUNTER(&pGicCpu->StatProfSetPpi,  "%u/Prof/SetPpi",  "Profiling of set PPI callback.");
-        GICCPU_PROF_COUNTER(&pGicCpu->StatProfSetSgi,  "%u/Prof/SetSgi",  "Profiling of SGIs generated.");
+        GICCPU_PROF_COUNTER(&pGicCpu->StatProfIntrAck, "Prof/%u/IntrAck", "Profiling of interrupt acknowledge (IAR).");
+        GICCPU_PROF_COUNTER(&pGicCpu->StatProfSetPpi,  "Prof/%u/SetPpi",  "Profiling of set PPI callback.");
+        GICCPU_PROF_COUNTER(&pGicCpu->StatProfSetSgi,  "Prof/%u/SetSgi",  "Profiling of SGIs generated.");
     }
 
     /* ITS. */
@@ -1204,9 +1207,10 @@ DECLCALLBACK(int) gicR3Construct(PPDMDEVINS pDevIns, int iInstance, PCFGMNODE pC
     GIC_REG_COUNTER(&pGitsDev->StatLpiCacheMiss, "ITS/Cache/Miss",      "Number of LPI cache misses.");
     GIC_REG_COUNTER(&pGitsDev->StatLpiCacheAdd,  "ITS/Cache/Add",       "Number of LPI cache additions.");
 
+# undef GIC_REG_COUNTER
+# undef GIC_PROF_COUNTER
 # undef GICCPU_REG_COUNTER
 # undef GICCPU_PROF_COUNTER
-# undef GIC_REG_COUNTER
 #endif  /* VBOX_WITH_STATISTICS */
 
     gicR3Reset(pDevIns);

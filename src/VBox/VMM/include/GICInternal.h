@@ -282,6 +282,8 @@ typedef struct GICDEV
     STAMCOUNTER                 StatSetSpi;
     /** Number of set LPI callbacks. */
     STAMCOUNTER                 StatSetLpi;
+    /** Profiling of set SPI callback. */
+    STAMPROFILE                 StatProfSetSpi;
     /** @} */
 #endif
 } GICDEV;
@@ -401,8 +403,6 @@ typedef struct GICCPU
 
     /** Profiling of interrupt acknowledge (IAR). */
     STAMPROFILE                 StatProfIntrAck;
-    /** Profiling of set SPI callback. */
-    STAMPROFILE                 StatProfSetSpi;
     /** Profiling of set PPI callback. */
     STAMPROFILE                 StatProfSetPpi;
     /** Profiling of set SGI function. */
