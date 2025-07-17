@@ -47,11 +47,11 @@
 RTDECL(void) RTLogWriteStdOut(const char *pch, size_t cb)
 {
     /** @todo should flush the stdout stream first... */
-    HANDLE hStdErr = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (hStdErr != NULL && hStdErr != INVALID_HANDLE_VALUE)
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hStdOut != NULL && hStdOut != INVALID_HANDLE_VALUE)
     {
         DWORD cbIgn; /* NT3.1 requires the return size parameter. */
-        WriteFile(hStdErr, pch, (DWORD)cb, &cbIgn, NULL); /** @todo do we need to translate \\n to \\r\\n? */
+        WriteFile(hStdOut, pch, (DWORD)cb, &cbIgn, NULL); /** @todo do we need to translate \\n to \\r\\n? */
     }
 }
 RT_EXPORT_SYMBOL(RTLogWriteStdOut);
