@@ -227,6 +227,64 @@ DECL_FORCE_INLINE(uint64_t) gicUnpackAltBits(uint32_t uSrc)
 }
 
 
+#if 0
+/**
+ * Gets a bit in an (interrupt) bitmap.
+ *
+ * @returns @c true if the bit was set, @c false if the bit was clear.
+ * @param   pvBitmap    The bitmap.
+ * @param   idxBit      The index of the bit to get (from bit 0).
+ *
+ * @remarks The bitmap in @a pvBitmap must be 32-bit aligned. Refer remark in
+ *          gicBitmapPutBit() for the reason.
+ */
+DECL_FORCE_INLINE(bool) gicBitmapGetBit(void *pvBitmap, uint16_t idxBit)
+{
+    uint16_t const cBitsPerElement = sizeof(uint32_t) * 8;
+    uint16_t const idxElement      = idxBit / cBitsPerElement;
+    uint16_t const idxBitInElement = idxBit % cBitsPerElement;
+    uint32_t const bmElement       = *(uint32_t *)((uintptr_t)pvBitmap + idxElement);
+    bool     const fIsBitSet       = RT_BOOL(bmElement & RT_BIT_32(idxBitInElement));
+    AssertCompile(sizeof(bmElement) * 8 == cBitsPerElement);
+    return fIsBitSet;
+}
+#endif
+
+
+/**
+ * Sets or clears a bit in an (interrupt) bitmap if needed.
+ *
+ * @returns @c true if the bit was updated, @c false otherwise.
+ * @param   pvBitmap    The bitmap.
+ * @param   idxBit      Index of the bit to set (from bit 0).
+ * @param   fSet        Whether to set the bit (@c true) or to clear the bit (@c
+ *                      false).
+ *
+ * @remarks The bitmap in @a pvBitmap must be 32-bit aligned. This is a requirement
+ *          as it's ASSUMED 32-bit yields marginally better performance than using
+ *          byte accesses -AND- because all bitmaps in the GIC thus far are
+ *          multiples of 32 bits.
+ */
+DECL_FORCE_INLINE(bool) gicBitmapPutBit(void *pvBitmap, uint16_t idxBit, bool fSet)
+{
+    Assert(!((uintptr_t)pvBitmap & 3));
+    uint16_t const cBitsPerElement = sizeof(uint32_t) * 8;
+    uint16_t const idxElement      = idxBit / cBitsPerElement;
+    uint16_t const idxBitInElement = idxBit % cBitsPerElement;
+    uint32_t       bmElement       = ((uint32_t *)pvBitmap)[idxElement];
+    bool     const fAlreadySet     = RT_BOOL(bmElement & RT_BIT_32(idxBitInElement));
+    AssertCompile(sizeof(bmElement) * 8 == cBitsPerElement);
+    if (fAlreadySet != fSet)
+    {
+        bmElement &= ~RT_BIT_32(idxBitInElement);
+        bmElement |= ((uint32_t)fSet << idxBitInElement);
+        ((uint32_t *)pvBitmap)[idxElement] = bmElement;
+        return true;
+    }
+    return false;
+}
+
+
 /**
  * Gets the description of a redistributor register given it's register offset.
  *
@@ -1894,38 +1952,21 @@ DECL_FORCE_INLINE(VMCPUID) gicGetCpuIdFromAffinity(uint8_t idCpuInterface, uint8
  * Updates the pending state of the specified LPI in the redistributor and updates
  * the LPI pending table in guest memory if needed.
  *
- * @returns VBox status code.
- * @retval VINF_SUCCESS if the pending state was changed.
- * @retval VINF_NO_CHANGE if the pending state was not changed.
- *
+ * @returns @c true if the LPI pending state was updated, @c false otherwise.
  * @param   pVCpu       The cross context virtual CPU structure.
  * @param   uIntId      The interrupt ID.
  * @param   fAsserted   Flag whether to mark the interrupt as asserted/de-asserted.
  */
-static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
+static bool gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsserted)
 {
     Assert(GIC_IS_INTR_LPI(uIntId));
     PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 
     /* Get the particular bit that represents the pending state of the LPI. */
-    uint16_t const idxIntr          = uIntId - GIC_INTID_RANGE_LPI_START;
-    Assert(idxIntr < sizeof(pGicCpu->LpiPending) * 8);
-    uint16_t const cIntrsPerElement = sizeof(pGicCpu->LpiPending.au64[0]) * 8;
-    uint16_t const idxPending       = idxIntr / cIntrsPerElement;
-    uint64_t       bmLpiPending     = pGicCpu->LpiPending.au64[idxPending];
-    uint8_t const  idxPendingBit    = idxIntr % cIntrsPerElement;
-    bool const     fIntrLevel       = RT_BOOL(bmLpiPending & RT_BIT_64(idxPendingBit));
-    AssertCompile(sizeof(bmLpiPending) * 8 == cIntrsPerElement);
-
-    if (fAsserted != fIntrLevel)
+    uint16_t const idxIntr  = uIntId - GIC_INTID_RANGE_LPI_START;
+    bool const     fUpdated = gicBitmapPutBit(&pGicCpu->LpiPending.au32[0], idxIntr, fAsserted);
+    if (fUpdated)
     {
-        /* Update the pending state bit for the LPI. */
-        bmLpiPending &= ~RT_BIT_64(idxPendingBit);
-        bmLpiPending |= (!!fAsserted << idxPendingBit);
-
-        /* Update the pending state of the LPI in our cache. */
-        pGicCpu->LpiPending.au64[idxPending] = bmLpiPending;
-
         /*
          * There is no guarantee that GICR_CTLR.EnableLPIs=0 causes the LPI pending table
          * to be updated in (guest) memory. It's my understanding that software cannot rely
@@ -1943,9 +1984,8 @@ static int gicReDistUpdateLpiPending(PVMCPUCC pVCpu, uint16_t uIntId, bool fAsse
         uint16_t const offPending  = (uIntId / cIntrsPerElement);
         PDMDevHlpPhysWriteMeta(pDevIns, GCPhysLpiPt + offPending, (const void *)&bmLpiPending, sizeof(bmLpiPending));
 #endif
-        return VINF_SUCCESS;
     }
-    return VINF_NO_CHANGE;
+    return fUpdated;
 }
 
 
@@ -2933,8 +2973,8 @@ DECLHIDDEN(void) gicReDistSetLpi(PPDMDEVINS pDevIns, PVMCPUCC pVCpu, uint16_t uI
     Assert(GIC_IS_INTR_LPI(uIntId));
     Log4Func(("[%u] uIntId=%RU32 fAsserted=%RTbool\n", pVCpu->idCpu, uIntId, fAsserted));
 
-    int const rc = gicReDistUpdateLpiPending(pVCpu, uIntId, fAsserted);
-    if (   rc == VINF_SUCCESS
+    bool const fUpdated = gicReDistUpdateLpiPending(pVCpu, uIntId, fAsserted);
+    if (   fUpdated
         && fAsserted)
         gicReDistUpdateIrqState(pVCpu);
 }
@@ -2950,12 +2990,9 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
     PGIC       pGic    = VM_TO_GIC(pVM);
     PPDMDEVINS pDevIns = pGic->CTX_SUFF(pDevIns);
     PGICDEV    pGicDev = PDMDEVINS_2_DATA(pDevIns, PGICDEV);
-
 #ifdef VBOX_WITH_STATISTICS
-    PVMCPU pVCpu = VMMGetCpuById(pVM, 0);
-    PGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrConfig) == RT_ELEMENTS(pGicCpu->bmIntrPending));
-    AssertCompile(sizeof(pGicCpu->bmIntrConfig) == sizeof(pGicCpu->bmIntrPending));
+    PVMCPU     pVCpu   = VMMGetCpuById(pVM, 0);
+    PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 #endif
     STAM_COUNTER_INC(&pGicDev->StatSetSpi);
     STAM_PROFILE_START(&pGicCpu->StatProfSetSpi, a);
@@ -2964,26 +3001,25 @@ static DECLCALLBACK(int) gicSetSpi(PVMCC pVM, uint32_t uSpiIntId, bool fAsserted
     uint16_t const idxIntr = gicDistGetIndexFromIntId(uIntId);
 
     Assert(idxIntr >= GIC_INTID_RANGE_SPI_START);
-    AssertMsgReturn(idxIntr < sizeof(pGicDev->IntrPending) * 8,
+    AssertMsgReturn(idxIntr < sizeof(pGicDev->IntrLevel) * 8,
                     ("out-of-range SPI interrupt ID %RU32 (%RU32)\n", uIntId, uSpiIntId),
                     VERR_INVALID_PARAMETER);
     Assert(GIC_IS_INTR_SPI(uIntId) || GIC_IS_INTR_EXT_SPI(uIntId));
 
     GIC_CRIT_SECT_ENTER(pDevIns);
 
+#if 0
     /* For edge-triggered we should probably only update on 0 to 1 transition. */
     bool const fEdgeTriggered = ASMBitTest(&pGicDev->IntrConfig.au32[0], idxIntr);
     Assert(!fEdgeTriggered); NOREF(fEdgeTriggered);
+#endif
+    bool const fUpdated = gicBitmapPutBit(&pGicDev->IntrLevel.au32[0], idxIntr, fAsserted);
+    int const  rc = fUpdated
+                  ? VBOXSTRICTRC_VAL(gicDistUpdateIrqState(pVM))
+                  : VINF_SUCCESS;
 
-    /* Update the interrupt level state. */
-    if (fAsserted)
-        ASMBitSet(&pGicDev->IntrLevel.au32[0], idxIntr);
-    else
-        ASMBitClear(&pGicDev->IntrLevel.au32[0], idxIntr);
-
-    int const rc = VBOXSTRICTRC_VAL(gicDistUpdateIrqState(pVM));
     GIC_CRIT_SECT_LEAVE(pDevIns);
-    STAM_PROFILE_STOP(&pGicCpu->StatProfSetSpi, a);
+    STAM_PROFILE_STOP(&pGicCpu->StatProfSetSpi, a); RT_NOREF(pGicCpu);
     return rc;
 }
 
@@ -2997,6 +3033,8 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
 
     PPDMDEVINS pDevIns = VMCPU_TO_DEVINS(pVCpu);
     PGICCPU    pGicCpu = VMCPU_TO_GICCPU(pVCpu);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrConfig) == RT_ELEMENTS(pGicCpu->bmIntrPending));
+    AssertCompile(sizeof(pGicCpu->bmIntrConfig) == sizeof(pGicCpu->bmIntrPending));
 
     STAM_COUNTER_INC(&pVCpu->gic.s.StatSetPpi);
     STAM_PROFILE_START(&pGicCpu->StatProfSetPpi, b);
@@ -3014,20 +3052,19 @@ static DECLCALLBACK(int) gicSetPpi(PVMCPUCC pVCpu, uint32_t uPpiIntId, bool fAss
 
     GIC_CRIT_SECT_ENTER(pDevIns);
 
+#if 0
     /* For edge-triggered we should probably only update on 0 to 1 transition. */
     bool const fEdgeTriggered = ASMBitTest(&pGicCpu->bmIntrConfig[0], idxIntr);
     Assert(!fEdgeTriggered); NOREF(fEdgeTriggered);
+#endif
 
-    /* Update the interrupt level state. */
-    if (fAsserted)
-        ASMBitSet(&pGicCpu->bmIntrLevel[0], idxIntr);
-    else
-        ASMBitClear(&pGicCpu->bmIntrLevel[0], idxIntr);
-
-    int const rc = VBOXSTRICTRC_VAL(gicReDistUpdateIrqState(pVCpu));
-    STAM_PROFILE_STOP(&pGicCpu->StatProfSetPpi, b);
+    bool const fUpdated = gicBitmapPutBit(&pGicCpu->bmIntrLevel[0], idxIntr, fAsserted);
+    int const rc = fUpdated
+                 ? VBOXSTRICTRC_VAL(gicReDistUpdateIrqState(pVCpu))
+                 : VINF_SUCCESS;
 
     GIC_CRIT_SECT_LEAVE(pDevIns);
+    STAM_PROFILE_STOP(&pGicCpu->StatProfSetPpi, b);
     return rc;
 }
 
