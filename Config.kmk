@@ -661,6 +661,10 @@ ifdef VBOX_WITH_VMSVGA3D
  if1of ($(KBUILD_TARGET), linux darwin)
   VBOX_WITH_DXVK = 1
  endif
+ # Enable DXMT library for supporting VGPU10 DX on macOS
+ if1of ($(KBUILD_TARGET), darwin)
+  VBOX_WITH_DXMT =
+ endif
 endif
 # Enable video decoding in DXVK library
 ifdef VBOX_WITH_DXVK
@@ -5094,6 +5098,16 @@ ifdef VBOX_WITH_DXVK
  SDK_VBoxDxVk_INCS             ?= $(SDK_VBoxDxVk_DEFAULT_INCS)
  # Loaded dynamically
  SDK_VBoxDxVk_LIBS             ?=
+endif
+
+ifdef VBOX_WITH_DXMT
+ SDK_VBoxDxMt                  := Direct3D 9/10/11 to Metal - for dll linking.
+ SDK_VBoxDxMt_DEFAULT_INCS     := \
+  $(PATH_ROOT)/src/libs/dxmt-0.60/include/native/directx \
+  $(PATH_ROOT)/src/libs/dxmt-0.60/include/native/windows
+ SDK_VBoxDxMt_INCS             ?= $(SDK_VBoxDxMt_DEFAULT_INCS)
+ # Loaded dynamically
+ SDK_VBoxDxMt_LIBS             ?=
 endif
 
 ifdef VBOX_WITH_LIBCURL
