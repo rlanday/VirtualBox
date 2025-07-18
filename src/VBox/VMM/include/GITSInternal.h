@@ -135,11 +135,11 @@ typedef enum GITSDIAG
     kGitsDiag_CmdQueue_Cmd_Mapc_Icid_Invalid,
 
     /* Command: MAPD. */
-    kGitsDiag_CmdQueue_Cmd_Mapd_DevId_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapd_DevId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapd_Size_Invalid,
 
     /* Command: MAPI. */
-    kGitsDiag_CmdQueue_Cmd_Mapi_DevId_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapi_DevId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapi_DevId_Unmapped,
     kGitsDiag_CmdQueue_Cmd_Mapi_Dte_Rd_Failed,
     kGitsDiag_CmdQueue_Cmd_Mapi_EventId_Invalid,
@@ -148,7 +148,7 @@ typedef enum GITSDIAG
     kGitsDiag_CmdQueue_Cmd_Mapi_Lpi_Invalid,
 
     /* Command: MAPTI. */
-    kGitsDiag_CmdQueue_Cmd_Mapti_DevId_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapti_DevId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapti_DevId_Unmapped,
     kGitsDiag_CmdQueue_Cmd_Mapti_Dte_Rd_Failed,
     kGitsDiag_CmdQueue_Cmd_Mapti_EventId_Invalid,
@@ -304,6 +304,7 @@ typedef struct GITSDEV
     STAMCOUNTER             StatCmdSync;
     STAMCOUNTER             StatCmdInv;
     STAMCOUNTER             StatCmdInvall;
+    STAMCOUNTER             StatCmdDiscard;
     STAMCOUNTER             StatLpiCacheHit;
     STAMCOUNTER             StatLpiCacheMiss;
     STAMCOUNTER             StatLpiCacheAdd;
