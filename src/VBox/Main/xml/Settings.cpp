@@ -4578,14 +4578,27 @@ MachineConfigFile::MachineConfigFile(const Utf8Str *pstrFilename, PCVBOXCRYPTOIF
         // the ConfigFileBase constructor has loaded the XML file, so now
         // we need only analyze what is in there
 
+        bool fValidRootTag = false;
         xml::NodesLoop nlRootChildren(*m->pelmRoot);
         const xml::ElementNode *pelmRootChild;
         while ((pelmRootChild = nlRootChildren.forAllNodes()))
         {
             if (pelmRootChild->nameEquals("MachineEncrypted"))
+            {
                 readMachineEncrypted(*pelmRootChild, pCryptoIf, pszPassword);
+                /* This will be not reached (thanks to throwing an exception
+                 * skipping all remaining code in this function) if
+                 * readMachine() thinks the config is invalid. */
+                fValidRootTag = true;
+            }
             if (pelmRootChild->nameEquals("Machine"))
+            {
                 readMachine(*pelmRootChild);
+                /* This will be not reached (thanks to throwing an exception
+                 * skipping all remaining code in this function) if
+                 * readMachine() thinks the config is invalid. */
+                fValidRootTag = true;
+            }
         }
 
         // clean up memory allocated by XML engine
@@ -4593,6 +4606,9 @@ MachineConfigFile::MachineConfigFile(const Utf8Str *pstrFilename, PCVBOXCRYPTOIF
 
         if (enmParseState == ParseState_NotParsed)
             enmParseState = ParseState_Parsed;
+
+        if (!fValidRootTag)
+            throw ConfigFileError(this, m->pelmRoot, N_("Root element in Machine settings file must be \"Machine\""));
     }
 }
 
