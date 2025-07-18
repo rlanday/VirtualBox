@@ -178,12 +178,6 @@ AssertCompileSize(GICDISTINTRBMP, 256);
 AssertCompileMembersSameSize(GICDISTINTRBMP, au64, GICDISTINTRBMP, au32);
 AssertCompileMemberAlignment(GICDISTINTRBMP, au32, 4);
 
-/** GIC LPI pending-table entry. */
-typedef uint64_t GICLPIPTE;
-
-/** GIC LPI config-table entry. */
-typedef uint64_t GICLPICTE;
-
 /**
  * GIC PDM instance data (per-VM).
  */
