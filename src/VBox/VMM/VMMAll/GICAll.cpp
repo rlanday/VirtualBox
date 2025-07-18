@@ -3460,10 +3460,14 @@ static DECLCALLBACK(VBOXSTRICTRC) gicWriteSysReg(PVMCPUCC pVCpu, uint32_t u32Reg
             }
             else
                 AssertReleaseMsgFailed(("Index of running-priority interrupt out-of-bounds %u\n", pGicCpu->idxRunningPriority));
-            if (fIsRedistIntId)
-                rcStrict = gicReDistUpdateIrqState(pVCpu);
-            else
-                rcStrict = gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
+
+            /*
+             * Always update the full state here as there might not have been anything
+             * pending in the distributor but now might be. Just because a redistributor
+             * interrupt was EOI'd doesn't mean we might not be in a situation that
+             * requires flagging of a distributor interrupt.
+             */
+            rcStrict = gicDistUpdateIrqState(pVCpu->CTX_SUFF(pVM));
             break;
         }
 
