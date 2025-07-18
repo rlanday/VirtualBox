@@ -1,3 +1,9 @@
+#ifdef VBOX
+/* LLVM uses PIC as an identifier which clashes with our define. */ 
+# ifdef PIC
+#  undef PIC
+# endif
+#endif
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/IRBuilder.h"
