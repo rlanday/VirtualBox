@@ -129,10 +129,10 @@ typedef enum GITSDIAG
 
     /* Command: INVALL. */
     kGitsDiag_CmdQueue_Cmd_Invall_Cte_Unmapped,
-    kGitsDiag_CmdQueue_Cmd_Invall_Icid_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Invall_IcId_OutOfRange,
 
     /* Command: MAPC. */
-    kGitsDiag_CmdQueue_Cmd_Mapc_Icid_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapc_IcId_OutOfRange,
 
     /* Command: MAPD. */
     kGitsDiag_CmdQueue_Cmd_Mapd_DevId_OutOfRange,
@@ -142,19 +142,19 @@ typedef enum GITSDIAG
     kGitsDiag_CmdQueue_Cmd_Mapi_DevId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapi_DevId_Unmapped,
     kGitsDiag_CmdQueue_Cmd_Mapi_Dte_Rd_Failed,
-    kGitsDiag_CmdQueue_Cmd_Mapi_EventId_Invalid,
-    kGitsDiag_CmdQueue_Cmd_Mapi_IcId_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapi_EventId_OutOfRange,
+    kGitsDiag_CmdQueue_Cmd_Mapi_IcId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapi_Ite_Wr_Failed,
-    kGitsDiag_CmdQueue_Cmd_Mapi_Lpi_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapi_PhysLpi_OutOfRange,
 
     /* Command: MAPTI. */
     kGitsDiag_CmdQueue_Cmd_Mapti_DevId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapti_DevId_Unmapped,
     kGitsDiag_CmdQueue_Cmd_Mapti_Dte_Rd_Failed,
-    kGitsDiag_CmdQueue_Cmd_Mapti_EventId_Invalid,
-    kGitsDiag_CmdQueue_Cmd_Mapti_IcId_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapti_EventId_OutOfRange,
+    kGitsDiag_CmdQueue_Cmd_Mapti_IcId_OutOfRange,
     kGitsDiag_CmdQueue_Cmd_Mapti_Ite_Wr_Failed,
-    kGitsDiag_CmdQueue_Cmd_Mapti_Lpi_Invalid,
+    kGitsDiag_CmdQueue_Cmd_Mapti_PhysLpi_OutOfRange,
 
     kGitsDiag_End,
 } GITSDIAG;

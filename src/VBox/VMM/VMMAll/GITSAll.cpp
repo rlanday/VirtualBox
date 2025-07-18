@@ -66,10 +66,10 @@ static const char *const g_apszGitsDiagDesc[] =
 
     /* Command: INVALL. */
     GITSDIAG_DESC(CmdQueue_Cmd_Invall_Cte_Unmapped),
-    GITSDIAG_DESC(CmdQueue_Cmd_Invall_Icid_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Invall_IcId_OutOfRange),
 
     /* Command: MAPV. */
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapc_Icid_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapc_IcId_OutOfRange),
 
     /* Command: MAPD. */
     GITSDIAG_DESC(CmdQueue_Cmd_Mapd_DevId_OutOfRange),
@@ -79,19 +79,19 @@ static const char *const g_apszGitsDiagDesc[] =
     GITSDIAG_DESC(CmdQueue_Cmd_Mapi_DevId_OutOfRange),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapi_DevId_Unmapped),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapi_Dte_Rd_Failed),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_EventId_Invalid),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_IcId_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_EventId_OutOfRange),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_IcId_OutOfRange),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapi_Ite_Wr_Failed),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_Lpi_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapi_PhysLpi_OutOfRange),
 
     /* Command: MAPTI. */
     GITSDIAG_DESC(CmdQueue_Cmd_Mapti_DevId_OutOfRange),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapti_DevId_Unmapped),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapti_Dte_Rd_Failed),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_EventId_Invalid),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_IcId_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_EventId_OutOfRange),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_IcId_OutOfRange),
     GITSDIAG_DESC(CmdQueue_Cmd_Mapti_Ite_Wr_Failed),
-    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_Lpi_Invalid),
+    GITSDIAG_DESC(CmdQueue_Cmd_Mapti_PhysLpi_OutOfRange),
 
     /* kGitsDiag_End */
 };
@@ -999,8 +999,8 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
                 if (RT_SUCCESS(rc))
                 {
                     /* Check that the device ID mapping is valid. */
-                    bool const fValid = RT_BF_GET(uDte, GITS_BF_DTE_VALID);
-                    if (fValid)
+                    bool const fDteValid = RT_BF_GET(uDte, GITS_BF_DTE_VALID);
+                    if (fDteValid)
                     {
                         /* Check that the event ID (which is the index) is within range. */
                         uint32_t const cEntries = RT_BIT_32(RT_BF_GET(uDte, GITS_BF_DTE_ITT_RANGE) + 1);
@@ -1018,7 +1018,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
                             GITS_CMD_QUEUE_SET_ERR_RET(Ite_Wr_Failed);
                         }
                         else
-                            GITS_CMD_QUEUE_SET_ERR_RET(EventId_Invalid);
+                            GITS_CMD_QUEUE_SET_ERR_RET(EventId_OutOfRange);
                     }
                     else
                         GITS_CMD_QUEUE_SET_ERR_RET(DevId_Unmapped);
@@ -1027,10 +1027,10 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
                     GITS_CMD_QUEUE_SET_ERR_RET(Dte_Rd_Failed);
             }
             else
-                GITS_CMD_QUEUE_SET_ERR_RET(Lpi_Invalid);
+                GITS_CMD_QUEUE_SET_ERR_RET(PhysLpi_OutOfRange);
         }
         else
-            GITS_CMD_QUEUE_SET_ERR_RET(IcId_Invalid);
+            GITS_CMD_QUEUE_SET_ERR_RET(IcId_OutOfRange);
     }
     else
         GITS_CMD_QUEUE_SET_ERR_RET(DevId_OutOfRange);
@@ -1138,7 +1138,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                 GIC_CRIT_SECT_LEAVE(pDevIns);
                             }
                             else
-                                gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Mapc_Icid_Invalid,
+                                gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Mapc_IcId_OutOfRange,
                                                      false /* fStall */);
                             STAM_COUNTER_INC(&pGitsDev->StatCmdMapc);
                             break;
@@ -1261,7 +1261,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                                          false /* fStall */);
                             }
                             else
-                                gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Invall_Icid_Invalid,
+                                gitsCmdQueueSetError(pDevIns, pGitsDev, kGitsDiag_CmdQueue_Cmd_Invall_IcId_OutOfRange,
                                                      false /* fStall */);
                             STAM_COUNTER_INC(&pGitsDev->StatCmdInvall);
                             break;
