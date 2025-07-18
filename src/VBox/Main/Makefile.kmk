@@ -1604,6 +1604,7 @@ ifdef VBOX_WITH_MAIN_NLS
 	$(call MSG_L1,lupdate all languages (nls/*.ts))
 	$(QUIET)$(TOOL_QT6_LUPDATE) \
 		$^ \
+		-locations none \
 		-ts \
 		$(filter-out nls/VirtualBoxAPI_en.ts, $(VirtualBoxAPI_QT_TRANSLATIONS)) \
 		$(VBOX_PATH_MAIN_SRC)/nls/VirtualBoxAPI_xx_YY.ts
@@ -1626,6 +1627,7 @@ ifdef VBOX_WITH_MAIN_NLS
 	$(call MSG_L1,lupdate $@)
 	$(QUIET)$(TOOL_QT6_LUPDATE) \
 		$^ \
+		-locations none \
 		-ts \
 		"$@"
 	$(QUIET)$(SED) -n -i \
