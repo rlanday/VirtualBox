@@ -353,24 +353,22 @@ typedef struct GICCPU
      * @{ */
     /** Control register (ICC_CTLR_EL1). */
     uint64_t                    uIccCtlr;
+    /** Mask of enabled interrupt groups (see GIC_INTR_GROUP_XXX). */
+    uint32_t                    fIntrGroupMask;
     /** Interrupt priority mask of the CPU interface (ICC_PMR_EL1). */
     uint8_t                     bIntrPriorityMask;
     /** Index to the current running priority. */
     uint8_t                     idxRunningPriority;
+    /** Binary point register for group 0 interrupts. */
+    uint8_t                     bBinaryPtGroup0;
+    /** Binary point register for group 1 interrupts. */
+    uint8_t                     bBinaryPtGroup1;
     /** Running priorities caused by preemption. */
     uint8_t                     abRunningPriorities[256];
     /** Active priorities group 0 bitmap. */
     uint32_t                    bmActivePriorityGroup0[4];
     /** Active priorities group 1 bitmap. */
     uint32_t                    bmActivePriorityGroup1[4];
-    /** Binary point register for group 0 interrupts. */
-    uint8_t                     bBinaryPtGroup0;
-    /** Binary point register for group 1 interrupts. */
-    uint8_t                     bBinaryPtGroup1;
-    /** Alignment. */
-    bool                        afPadding1[2];
-    /** Mask of enabled interrupt groups (see GIC_INTR_GROUP_XXX). */
-    uint32_t                    fIntrGroupMask;
     /** INTID of the running interrupts (for debugging). */
     uint16_t                    abRunningIntId[256];
     /** @} */
@@ -416,7 +414,10 @@ typedef GICCPU *PGICCPU;
 typedef GICCPU const *PCGICCPU;
 /* Ensure the LPI pending bitmap's capacity is sufficient for the number of LPIs we support. */
 AssertCompileMemberSize(GICCPU, LpiPending, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
-AssertCompileMemberAlignment(GICCPU, LpiPending, 8);
+AssertCompileMemberAlignment(GICCPU, abIntrPriority,      8);
+AssertCompileMemberAlignment(GICCPU, uIccCtlr,            8);
+AssertCompileMemberAlignment(GICCPU, abRunningPriorities, 8);
+AssertCompileMemberAlignment(GICCPU, LpiPending,          8);
 AssertCompileMemberSize(GICCPU, bmIntrGroup,     12);
 AssertCompileMemberSize(GICCPU, bmIntrConfig,    12);
 AssertCompileMemberSize(GICCPU, bmIntrEnabled,   12);
@@ -424,6 +425,7 @@ AssertCompileMemberSize(GICCPU, bmIntrPending,   12);
 AssertCompileMemberSize(GICCPU, bmIntrActive,    12);
 AssertCompileMemberSize(GICCPU, bmIntrLevel,     12);
 AssertCompileMemberSize(GICCPU, abIntrPriority,  RT_SIZEOFMEMB(GICCPU, bmIntrGroup) * 8);
+AssertCompileMemberAlignment(GICCPU, bmIntrGroup, 8);
 
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioRead(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void *pv, unsigned cb);
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioWrite(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void const *pv, unsigned cb);
