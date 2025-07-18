@@ -514,9 +514,7 @@ if !defined(VBOX_ONLY_EXTPACKS) && "$(intersects $(KBUILD_TARGET_ARCH),$(VBOX_SU
     VBoxDD_SOURCES.linux += \
     	$(PATH_ROOT)/src/VBox/ExtPacks/Puel/UsbWebcam/DrvHostWebcam/HostWebcam-v4l2.cpp
     VBoxDD_LIBS += \
-    	$(PATH_STAGE_LIB)/VBox-libjpeg$(VBOX_SUFF_LIB) \
-    	$(PATH_STAGE_LIB)/VBox-libjpeg12$(VBOX_SUFF_LIB) \
-    	$(PATH_STAGE_LIB)/VBox-libjpeg16$(VBOX_SUFF_LIB)
+    	$(PATH_STAGE_LIB)/VBox-libjpeg$(VBOX_SUFF_LIB)
    endif
   endif
 
