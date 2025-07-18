@@ -95,9 +95,9 @@ VBox-DxMtNativeUtil_INCS           = \
 	$(VBOX_PATH_DXMT) \
 	$(VBOX_PATH_DXMT)/include/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx
 VBox-DxMtNativeUtil_SOURCES        = \
 	src/util/util_env.cpp \
 	src/util/util_string.cpp \
@@ -154,9 +154,9 @@ VBox-DxMtNativeDxbcParser_INCS           = \
 	$(VBOX_PATH_DXMT) \
 	$(VBOX_PATH_DXMT)/include/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx
 VBox-DxMtNativeDxbcParser_SOURCES        = \
 	libs/DXBCParser/BlobContainer.cpp \
 	libs/DXBCParser/DXBCUtils.cpp \
@@ -182,10 +182,10 @@ VBox-DxMtNativeDxMt_INCS           = \
 	$(VBOX_PATH_DXMT)/src/dxmt/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
 	$(VBOX_PATH_DXMT)/src/winemetal/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx \
- 	$(VBOX_LLVM_PATH)/include
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx \
+	$(VBOX_LLVM_PATH)/include
 VBox-DxMtNativeDxMt_SOURCES        = \
 	src/airconv/air_operations.cpp \
 	src/airconv/air_signature.cpp \
@@ -244,9 +244,9 @@ VBox-DxMtNativeD3D10_INCS            = \
 	$(VBOX_PATH_DXMT)/src/dxmt/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
 	$(VBOX_PATH_DXMT)/src/winemetal/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx
 VBox-DxMtNativeD3D10_SOURCES        = \
 	src/d3d10/d3d10_buffer.cpp \
 	src/d3d10/d3d10_device.cpp \
@@ -276,9 +276,9 @@ VBox-DxMtNativeD3D11_INCS            = \
 	$(VBOX_PATH_DXMT)/src/dxmt/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
 	$(VBOX_PATH_DXMT)/src/winemetal/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx
 VBox-DxMtNativeD3D11_SOURCES        = \
 	src/d3d11/d3d11.cpp \
 	src/d3d11/d3d11_buffer.cpp \
@@ -321,9 +321,9 @@ VBoxDxMt_INCS     = \
 	$(VBOX_PATH_DXMT) \
 	$(VBOX_PATH_DXMT)/include/ \
 	$(VBOX_PATH_DXMT)/src/util/ \
- 	$(VBOX_PATH_DXMT)/include/native/ \
- 	$(VBOX_PATH_DXMT)/include/native/windows \
- 	$(VBOX_PATH_DXMT)/include/native/directx
+	$(VBOX_PATH_DXMT)/include/native/ \
+	$(VBOX_PATH_DXMT)/include/native/windows \
+	$(VBOX_PATH_DXMT)/include/native/directx
 VBoxDxMt_SOURCES = \
 	VBoxDxMtDeps.cpp
 VBoxDxMt_LIBS    = \
