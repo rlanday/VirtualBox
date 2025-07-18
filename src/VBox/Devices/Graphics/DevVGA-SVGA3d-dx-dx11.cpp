@@ -378,14 +378,20 @@ static HRESULT BlitInit(D3D11BLITTER *pBlitter, ID3D11Device1 *pDevice, ID3D11De
 static void BlitRelease(D3D11BLITTER *pBlitter);
 
 
+#if defined(VBOX_WITH_DXVK)
+# define VBOX_DX_LIBRARY "VBoxDxVk"
+#elif defined(VBOX_WITH_DXMT)
+# define VBOX_DX_LIBRARY "VBoxDxMt"
+#endif
+
 static int dxLoadD3D11Library(RTLDRMOD *phD3D11)
 {
-#if defined(VBOX_WITH_DXVK)
+#if defined(VBOX_DX_LIBRARY)
     RTERRINFOSTATIC ErrInfo;
-    int rc = SUPR3HardenedLdrLoadAppPriv("VBoxDxVk", phD3D11, RTLDRLOAD_FLAGS_LOCAL, RTErrInfoInitStatic(&ErrInfo));
+    int rc = SUPR3HardenedLdrLoadAppPriv(VBOX_DX_LIBRARY, phD3D11, RTLDRLOAD_FLAGS_LOCAL, RTErrInfoInitStatic(&ErrInfo));
     if (RT_FAILURE(rc))
     {
-        LogRel(("VMSVGA: Failed to load dxvk: %Rrc\n", rc));
+        LogRel(("VMSVGA: Failed to load %s: %Rrc\n", VBOX_DX_LIBRARY, rc));
         if (RTErrInfoIsSet(&ErrInfo.Core))
             LogRel(("VMSVGA: %#RTeic\n", &ErrInfo.Core));
     }
