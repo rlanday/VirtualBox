@@ -51,10 +51,10 @@ typedef signed int INT32;
 #endif
 #define XMD_H                   /* prevent jmorecfg.h from redefining it */
 
-#else
+//#else
 
 /* Define if your (broken) compiler shifts signed values as if they were
    unsigned. */
-#define RIGHT_SHIFT_IS_UNSIGNED 1
+//#define RIGHT_SHIFT_IS_UNSIGNED 1
 
 #endif
