@@ -8,7 +8,9 @@
 #include <exception>
 
 namespace dxmt {
+#ifndef VBOX
 Logger Logger::s_instance("d3d11.log");
+#endif
 
 extern "C" HRESULT WINAPI
 D3D11CoreCreateDevice(IDXGIFactory *pFactory, IDXGIAdapter *pAdapter,
@@ -169,6 +171,9 @@ extern "C" HRESULT WINAPI D3D11CreateDeviceAndSwapChain(
   return S_OK;
 }
 
+#ifdef VBOX
+__attribute__((visibility("default")))
+#endif
 extern "C" HRESULT WINAPI D3D11CreateDevice(
     IDXGIAdapter *pAdapter, D3D_DRIVER_TYPE DriverType, HMODULE Software,
     UINT Flags, const D3D_FEATURE_LEVEL *pFeatureLevels, UINT FeatureLevels,
