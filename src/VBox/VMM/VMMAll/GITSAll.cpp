@@ -700,6 +700,145 @@ DECLHIDDEN(void) gitsInit(PGITSDEV pGitsDev)
 }
 
 
+
+/**
+ * Gets the guest physical address of the device-table entry given its device ID.
+ * This handles the device table being a flat (direct) or a two-level (indirect)
+ * structure.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns         The device instance.
+ * @param   pGitsDev        The GIC ITS state.
+ * @param   uDevId          The device ID.
+ * @param   pGCPhysDte      Where to store the guest physical address of the
+ *                          device-table entry.
+ */
+static int gitsR3DteGetAddr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, PRTGCPHYS pGCPhysDte)
+{
+    uint64_t const uBaseReg       = pGitsDev->aItsTableRegs[0].u;
+    bool const     fIndirect      = RT_BF_GET(uBaseReg, GITS_BF_CTRL_REG_BASER_INDIRECT);
+    RTGCPHYS       GCPhysDevTable = gitsGetBaseRegPhysAddr(uBaseReg);
+    if (!fIndirect)
+    {
+        *pGCPhysDte = GCPhysDevTable + uDevId * sizeof(GITSDTE);
+        return VINF_SUCCESS;
+    }
+
+    RTGCPHYS offDte = 0;
+    static uint32_t const s_acbPageSizes[]    = { _4K, _16K, _64K, _64K };
+    static uint64_t const s_auPhysAddrMasks[] =
+    {
+        UINT64_C(0x000ffffffffff000), /*  4K bits[51:12] */
+        UINT64_C(0x000fffffffffc000), /* 16K bits[51:14] */
+        UINT64_C(0x000fffffffff0000), /* 64K bits[51:16] */
+        UINT64_C(0x000fffffffff0000)  /* 64K bits[51:16] */
+    };
+
+    uint8_t const  idxPageSize = RT_BF_GET(uBaseReg, GITS_BF_CTRL_REG_BASER_PAGESIZE);
+    uint32_t const cbPage      = s_acbPageSizes[idxPageSize];
+
+    /* Read the the level 1 table device-table entry. */
+    uint32_t const cLevel1Entries = cbPage / GITS_ITE_INDIRECT_LVL1_SIZE;
+    RTGCPHYS const offLevel1Dte   = (uDevId % cLevel1Entries) * GITS_ITE_INDIRECT_LVL1_SIZE;
+    uint64_t       uLevel1Dte     = 0;
+    int rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysDevTable + offLevel1Dte, &uLevel1Dte, sizeof(uLevel1Dte));
+    if (RT_SUCCESS(rc))
+    {
+        /* Check if the entry is valid. */
+        bool const fValid = RT_BF_GET(uLevel1Dte, GITS_BF_ITE_INDIRECT_LVL1_4K_VALID);
+        if (fValid)
+        {
+            /* Compute the physical address of the device-table entry from the level 1 entry. */
+            uint32_t const cEntries = cbPage / sizeof(GITSDTE);
+            GCPhysDevTable          = uLevel1Dte & s_auPhysAddrMasks[idxPageSize];
+            offDte                  = (uDevId % cEntries) * sizeof(GITSDTE);
+
+            *pGCPhysDte = GCPhysDevTable + offDte;
+            return VINF_SUCCESS;
+        }
+        rc = VERR_NOT_FOUND;
+    }
+
+    /* Something went wrong (usually shouldn't happen but could be faulty/misbehaving guest). */
+    *pGCPhysDte = NIL_RTGCPHYS;
+    return rc;
+}
+
+
+/**
+ * Reads a device-table entry (DTE) from guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID.
+ * @param   puDte       Where to store the device-table entry.
+ */
+static int gitsDteRead(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE *puDte)
+{
+    RTGCPHYS GCPhysDte;
+    int const rc = gitsR3DteGetAddr(pDevIns, pGitsDev, uDevId, &GCPhysDte);
+    if (RT_SUCCESS(rc))
+        return PDMDevHlpPhysReadMeta(pDevIns, GCPhysDte, (void *)puDte, sizeof(*puDte));
+    AssertMsgFailed(("Failed to get device-table entry address for device ID %#RX16 rc=%Rrc\n", uDevId, rc));
+    return rc;
+}
+
+
+/**
+ * Writes a device-table entry (DTE) to guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   pGitsDev    The GIC ITS state.
+ * @param   uDevId      The device ID.
+ * @param   uDte        The device-table entry.
+ */
+static int gitsDteWrite(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE uDte)
+{
+    RTGCPHYS GCPhysDte;
+    int const rc = gitsR3DteGetAddr(pDevIns, pGitsDev, uDevId, &GCPhysDte);
+    if (RT_SUCCESS(rc))
+        return PDMDevHlpPhysWriteMeta(pDevIns, GCPhysDte, (const void *)&uDte, sizeof(uDte));
+    AssertMsgFailed(("Failed to get device-table entry address for device ID %#RX16 rc=%Rrc\n", uDevId, rc));
+    return rc;
+}
+
+
+/**
+ * Reads an interrupt-translation table entry (ITE) from guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   uDte        The device-table entry.
+ * @param   uEventId    The event ID.
+ * @param   puIte       Where to store the interrupt-translation table entry.
+ */
+static int gitsIteRead(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE *puIte)
+{
+    RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
+    RTGCPHYS const GCPhysIte       = GCPhysIntrTable + uEventId * sizeof(GITSITE);
+    return PDMDevHlpPhysReadMeta(pDevIns, GCPhysIte, (void *)puIte, sizeof(*puIte));
+}
+
+
+/**
+ * Writes an interrupt-translation table entry (ITE) to guest memory.
+ *
+ * @returns VBox status code.
+ * @param   pDevIns     The device instance.
+ * @param   uDte        The device-table entry.
+ * @param   uEventId    The event ID.
+ * @param   uIte        The interrupt-translation table entry.
+ */
+static int gitsIteWrite(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE uIte)
+{
+    RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
+    RTGCPHYS const GCPhysIte       = GCPhysIntrTable + uEventId * sizeof(GITSITE);
+    return PDMDevHlpPhysWriteMeta(pDevIns, GCPhysIte, (const void *)&uIte, sizeof(uIte));
+}
+
+
 #ifdef IN_RING3
 /**
  * Dumps GIC ITS information.
@@ -822,144 +961,6 @@ DECL_HIDDEN_CALLBACK(void) gitsR3DbgInfo(PCGITSDEV pGitsDev, PCDBGFINFOHLP pHlp)
 
 
 /**
- * Gets the guest physical address of the device-table entry given its device ID.
- * This handles the device table being a flat (direct) or a two-level (indirect)
- * structure.
- *
- * @returns VBox status code.
- * @param   pDevIns         The device instance.
- * @param   pGitsDev        The GIC ITS state.
- * @param   uDevId          The device ID.
- * @param   pGCPhysDte      Where to store the guest physical address of the
- *                          device-table entry.
- */
-static int gitsR3DteGetAddr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, PRTGCPHYS pGCPhysDte)
-{
-    uint64_t const uBaseReg       = pGitsDev->aItsTableRegs[0].u;
-    bool const     fIndirect      = RT_BF_GET(uBaseReg, GITS_BF_CTRL_REG_BASER_INDIRECT);
-    RTGCPHYS       GCPhysDevTable = gitsGetBaseRegPhysAddr(uBaseReg);
-    if (!fIndirect)
-    {
-        *pGCPhysDte = GCPhysDevTable + uDevId * sizeof(GITSDTE);
-        return VINF_SUCCESS;
-    }
-
-    RTGCPHYS offDte = 0;
-    static uint32_t const s_acbPageSizes[]    = { _4K, _16K, _64K, _64K };
-    static uint64_t const s_auPhysAddrMasks[] =
-    {
-        UINT64_C(0x000ffffffffff000), /*  4K bits[51:12] */
-        UINT64_C(0x000fffffffffc000), /* 16K bits[51:14] */
-        UINT64_C(0x000fffffffff0000), /* 64K bits[51:16] */
-        UINT64_C(0x000fffffffff0000)  /* 64K bits[51:16] */
-    };
-
-    uint8_t const  idxPageSize = RT_BF_GET(uBaseReg, GITS_BF_CTRL_REG_BASER_PAGESIZE);
-    uint32_t const cbPage      = s_acbPageSizes[idxPageSize];
-
-    /* Read the the level 1 table device-table entry. */
-    uint32_t const cLevel1Entries = cbPage / GITS_ITE_INDIRECT_LVL1_SIZE;
-    RTGCPHYS const offLevel1Dte   = (uDevId % cLevel1Entries) * GITS_ITE_INDIRECT_LVL1_SIZE;
-    uint64_t       uLevel1Dte     = 0;
-    int rc = PDMDevHlpPhysReadMeta(pDevIns, GCPhysDevTable + offLevel1Dte, &uLevel1Dte, sizeof(uLevel1Dte));
-    if (RT_SUCCESS(rc))
-    {
-        /* Check if the entry is valid. */
-        bool const fValid = RT_BF_GET(uLevel1Dte, GITS_BF_ITE_INDIRECT_LVL1_4K_VALID);
-        if (fValid)
-        {
-            /* Compute the physical address of the device-table entry from the level 1 entry. */
-            uint32_t const cEntries = cbPage / sizeof(GITSDTE);
-            GCPhysDevTable          = uLevel1Dte & s_auPhysAddrMasks[idxPageSize];
-            offDte                  = (uDevId % cEntries) * sizeof(GITSDTE);
-
-            *pGCPhysDte = GCPhysDevTable + offDte;
-            return VINF_SUCCESS;
-        }
-        rc = VERR_NOT_FOUND;
-    }
-
-    /* Something went wrong (usually shouldn't happen but could be faulty/misbehaving guest). */
-    *pGCPhysDte = NIL_RTGCPHYS;
-    return rc;
-}
-
-
-/**
- * Reads a device-table entry (DTE) from guest memory.
- *
- * @returns VBox status code.
- * @param   pDevIns     The device instance.
- * @param   pGitsDev    The GIC ITS state.
- * @param   uDevId      The device ID.
- * @param   puDte       Where to store the device-table entry.
- */
-static int gitsR3DteRead(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE *puDte)
-{
-    RTGCPHYS GCPhysDte;
-    int const rc = gitsR3DteGetAddr(pDevIns, pGitsDev, uDevId, &GCPhysDte);
-    if (RT_SUCCESS(rc))
-        return PDMDevHlpPhysReadMeta(pDevIns, GCPhysDte, (void *)puDte, sizeof(*puDte));
-    AssertMsgFailed(("Failed to get device-table entry address for device ID %#RX16 rc=%Rrc\n", uDevId, rc));
-    return rc;
-}
-
-
-/**
- * Writes a device-table entry (DTE) to guest memory.
- *
- * @returns VBox status code.
- * @param   pDevIns     The device instance.
- * @param   pGitsDev    The GIC ITS state.
- * @param   uDevId      The device ID.
- * @param   uDte        The device-table entry.
- */
-static int gitsR3DteWrite(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint16_t uDevId, GITSDTE uDte)
-{
-    RTGCPHYS GCPhysDte;
-    int const rc = gitsR3DteGetAddr(pDevIns, pGitsDev, uDevId, &GCPhysDte);
-    if (RT_SUCCESS(rc))
-        return PDMDevHlpPhysWriteMeta(pDevIns, GCPhysDte, (const void *)&uDte, sizeof(uDte));
-    AssertMsgFailed(("Failed to get device-table entry address for device ID %#RX16 rc=%Rrc\n", uDevId, rc));
-    return rc;
-}
-
-
-/**
- * Reads an interrupt-translation table entry (ITE) from guest memory.
- *
- * @returns VBox status code.
- * @param   pDevIns     The device instance.
- * @param   uDte        The device-table entry.
- * @param   uEventId    The event ID.
- * @param   puIte       Where to store the interrupt-translation table entry.
- */
-static int gitsR3IteRead(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE *puIte)
-{
-    RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
-    RTGCPHYS const GCPhysIte       = GCPhysIntrTable + uEventId * sizeof(GITSITE);
-    return PDMDevHlpPhysReadMeta(pDevIns, GCPhysIte, (void *)puIte, sizeof(*puIte));
-}
-
-
-/**
- * Writes an interrupt-translation table entry (ITE) to guest memory.
- *
- * @returns VBox status code.
- * @param   pDevIns     The device instance.
- * @param   uDte        The device-table entry.
- * @param   uEventId    The event ID.
- * @param   uIte        The interrupt-translation table entry.
- */
-static int gitsR3IteWrite(PPDMDEVINS pDevIns, GITSDTE uDte, uint16_t uEventId, GITSITE uIte)
-{
-    RTGCPHYS const GCPhysIntrTable = uDte & GITS_BF_DTE_ITT_ADDR_MASK;
-    RTGCPHYS const GCPhysIte       = GCPhysIntrTable + uEventId * sizeof(GITSITE);
-    return PDMDevHlpPhysWriteMeta(pDevIns, GCPhysIte, (const void *)&uIte, sizeof(uIte));
-}
-
-
-/**
  * MAPTI and MAPI command workers.
  *
  * @param   pDevIns     The device instance.
@@ -994,7 +995,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
             {
                 /* Read the device-table entry. */
                 GITSDTE uDte = 0;
-                int rc = gitsR3DteRead(pDevIns, pGitsDev, uDevId, &uDte);
+                int rc = gitsDteRead(pDevIns, pGitsDev, uDevId, &uDte);
                 if (RT_SUCCESS(rc))
                 {
                     /* Check that the device ID mapping is valid. */
@@ -1011,7 +1012,7 @@ static void gitsR3CmdMapIntr(PPDMDEVINS pDevIns, PGITSDEV pGitsDev, uint32_t uDe
                                                | RT_BF_MAKE(GITS_BF_ITE_IS_PHYS, 1)
                                                | RT_BF_MAKE(GITS_BF_ITE_VALID,   1);
                             Log4Func(("uDte=%#RX64 uIte=%#RX64 uIcId=%RU16 uIntId=%RU16\n", uDte, uIte, uIcId, uIntId));
-                            rc = gitsR3IteWrite(pDevIns, uDte, uEventId, uIte);
+                            rc = gitsIteWrite(pDevIns, uDte, uEventId, uIte);
                             if (RT_SUCCESS(rc))
                                 return;
                             GITS_CMD_QUEUE_SET_ERR_RET(Ite_Wr_Failed);
@@ -1165,7 +1166,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                                            | (GCPhysItt & GITS_BF_DTE_ITT_ADDR_MASK);
 
                                         GIC_CRIT_SECT_ENTER(pDevIns);
-                                        rc = gitsR3DteWrite(pDevIns, pGitsDev, uDevId, uDte);
+                                        rc = gitsDteWrite(pDevIns, pGitsDev, uDevId, uDte);
                                         GIC_CRIT_SECT_LEAVE(pDevIns);
                                         AssertRC(rc);
                                     }
@@ -1177,7 +1178,7 @@ DECLHIDDEN(int) gitsR3CmdQueueProcess(PCVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV p
                                 {
                                     uint64_t const uDte = 0;
                                     GIC_CRIT_SECT_ENTER(pDevIns);
-                                    rc = gitsR3DteWrite(pDevIns, pGitsDev, uDevId, uDte);
+                                    rc = gitsDteWrite(pDevIns, pGitsDev, uDevId, uDte);
                                     /*
                                      * Well-behaving guests don't typically keep modifying the device ID mapping,
                                      * so we simply invalidate the whole cache here. If the need arises, perform
@@ -1367,7 +1368,7 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
 
     /* Read the DTE */
     GITSDTE uDte;
-    int rc = gitsR3DteRead(pDevIns, pGitsDev, uDevId, &uDte);
+    int rc = gitsDteRead(pDevIns, pGitsDev, uDevId, &uDte);
     if (RT_SUCCESS(rc))
     {
         /* Check if the DTE is mapped (valid). */
@@ -1380,7 +1381,7 @@ DECLHIDDEN(void) gitsLpiSet(PVMCC pVM, PPDMDEVINS pDevIns, PGITSDEV pGitsDev, ui
             {
                 /* Read the interrupt-translation entry from guest memory. */
                 GITSITE uIte;
-                rc = gitsR3IteRead(pDevIns, uDte, uEventId, &uIte);
+                rc = gitsIteRead(pDevIns, uDte, uEventId, &uIte);
                 if (RT_SUCCESS(rc))
                 {
                     /* Check if the interrupt ID is within range. */

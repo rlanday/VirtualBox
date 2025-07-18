@@ -246,7 +246,7 @@ typedef struct GICDEV
     /** Whether LPIs are enabled (GICR_CTLR.EnableLpis of all redistributors). */
     bool                        fEnableLpis;
     /** Padding. */
-    bool                        afPadding1[1];
+    bool                        afPadding0;
     /** ITS device state. */
     GITSDEV                     Gits;
     /** LPI config table. */
