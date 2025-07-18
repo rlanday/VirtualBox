@@ -219,12 +219,12 @@ static DECLCALLBACK(void) gicR3DbgInfoReDist(PVM pVM, PCDBGFINFOHLP pHlp, const 
     PCGICCPU pGicCpu = VMCPU_TO_GICCPU(pVCpu);
 
     pHlp->pfnPrintf(pHlp, "VCPU[%u] Redistributor:\n", pVCpu->idCpu);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrGroup)   >= 3);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrEnabled) >= 3);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrPending) >= 3);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrActive)  >= 3);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrLevel)   >= 3);
-    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrConfig)  >= 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrGroup)   == 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrEnabled) == 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrPending) == 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrActive)  == 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrLevel)   == 3);
+    AssertCompile(RT_ELEMENTS(pGicCpu->bmIntrConfig)  == 3);
 
 #define GIC_DBGFINFO_REDIST_INTR_BITMAPS_3(a_bmIntr) pGicCpu->a_bmIntr[0], pGicCpu->a_bmIntr[1], pGicCpu->a_bmIntr[2]
     pHlp->pfnPrintf(pHlp, "  bmIntrGroup[0..2]   = %#010x %#010x %#010x\n", GIC_DBGFINFO_REDIST_INTR_BITMAPS_3(bmIntrGroup));

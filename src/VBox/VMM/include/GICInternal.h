@@ -204,12 +204,12 @@ typedef struct GICDEV
     GICDISTINTRBMP              IntrActive;
     /** Interrupt line-level bitmap. */
     GICDISTINTRBMP              IntrLevel;
+    /** Interrupt priorities. */
+    uint8_t                     abIntrPriority[2048];
     /** Interrupt routine mode bitmap. */
     GICDISTINTRBMP              IntrRoutingMode;
     /** Interrupt routing info. */
     uint32_t                    au32IntrRouting[2048];
-    /** Interrupt priorities. */
-    uint8_t                     abIntrPriority[2048];
     /** Mask of enabled interrupt groups (see GIC_INTR_GROUP_XXX). */
     uint32_t                    fIntrGroupMask;
     /** Flag whether affinity routing is enabled. */
@@ -292,10 +292,10 @@ typedef GICDEV *PGICDEV;
 /** Pointer to a const GIC device. */
 typedef GICDEV const *PCGICDEV;
 AssertCompileMemberAlignment(GICDEV, au32IntrRouting, 4);
-AssertCompileMemberAlignment(GICDEV, abIntrPriority, 4);
-AssertCompileMemberSizeAlignment(GICDEV, Gits, 8);
-AssertCompileMemberAlignment(GICDEV, abLpiConfig, 8);
-AssertCompileMemberAlignment(GICDEV, hMmioDist, 8);
+AssertCompileMemberAlignment(GICDEV, abIntrPriority,  4);
+AssertCompileMemberAlignment(GICDEV, Gits,            8);
+AssertCompileMemberAlignment(GICDEV, abLpiConfig,     8);
+AssertCompileMemberAlignment(GICDEV, hMmioDist,       8);
 
 /**
  * GIC VM Instance data.
@@ -344,7 +344,7 @@ typedef struct GICCPU
     /** Interrupt active bitmap. */
     uint32_t                    bmIntrActive[3];
     /** Interrupt line-level bitmap. */
-    uint32_t                    bmIntrLevel[64];
+    uint32_t                    bmIntrLevel[3];
     /** Interrupt priorities. */
     uint8_t                     abIntrPriority[96];
     /** @} */
@@ -417,6 +417,13 @@ typedef GICCPU const *PCGICCPU;
 /* Ensure the LPI pending bitmap's capacity is sufficient for the number of LPIs we support. */
 AssertCompileMemberSize(GICCPU, LpiPending, RT_ELEMENTS(GICDEV::abLpiConfig) / 8);
 AssertCompileMemberAlignment(GICCPU, LpiPending, 8);
+AssertCompileMemberSize(GICCPU, bmIntrGroup,     12);
+AssertCompileMemberSize(GICCPU, bmIntrConfig,    12);
+AssertCompileMemberSize(GICCPU, bmIntrEnabled,   12);
+AssertCompileMemberSize(GICCPU, bmIntrPending,   12);
+AssertCompileMemberSize(GICCPU, bmIntrActive,    12);
+AssertCompileMemberSize(GICCPU, bmIntrLevel,     12);
+AssertCompileMemberSize(GICCPU, abIntrPriority,  RT_SIZEOFMEMB(GICCPU, bmIntrGroup) * 8);
 
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioRead(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void *pv, unsigned cb);
 DECL_HIDDEN_CALLBACK(VBOXSTRICTRC) gicDistMmioWrite(PPDMDEVINS pDevIns, void *pvUser, RTGCPHYS off, void const *pv, unsigned cb);
