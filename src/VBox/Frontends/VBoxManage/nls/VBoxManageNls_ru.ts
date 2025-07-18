@@ -4,151 +4,151 @@
 <context>
     <name>Appliance</name>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="266"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1597"/>
+        <location filename="../VBoxManageAppliance.cpp" line="267"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1602"/>
         <source>Option &quot;%s&quot; can&apos;t be used together with &quot;--cloud&quot; option.</source>
         <translation>Опция &quot;%s&quot; не может быть использована вместе с &quot;--cloud&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="269"/>
-        <location filename="../VBoxManageAppliance.cpp" line="344"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1600"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1683"/>
+        <location filename="../VBoxManageAppliance.cpp" line="270"/>
+        <location filename="../VBoxManageAppliance.cpp" line="345"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1605"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1688"/>
         <source>Value of option &quot;%s&quot; is out of range.</source>
         <translation>Значение опции &quot;%s&quot; выходит за границы диапазона.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="278"/>
-        <location filename="../VBoxManageAppliance.cpp" line="285"/>
-        <location filename="../VBoxManageAppliance.cpp" line="299"/>
-        <location filename="../VBoxManageAppliance.cpp" line="313"/>
-        <location filename="../VBoxManageAppliance.cpp" line="327"/>
-        <location filename="../VBoxManageAppliance.cpp" line="334"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1608"/>
+        <location filename="../VBoxManageAppliance.cpp" line="279"/>
+        <location filename="../VBoxManageAppliance.cpp" line="286"/>
+        <location filename="../VBoxManageAppliance.cpp" line="300"/>
+        <location filename="../VBoxManageAppliance.cpp" line="314"/>
+        <location filename="../VBoxManageAppliance.cpp" line="328"/>
+        <location filename="../VBoxManageAppliance.cpp" line="335"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1613"/>
         <source>Option &quot;%s&quot; requires preceding --vsys or --cloud option.</source>
         <translation>Опция &quot;%s&quot; требует наличия предшествуещего --vsys или --cloud.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="292"/>
-        <location filename="../VBoxManageAppliance.cpp" line="306"/>
-        <location filename="../VBoxManageAppliance.cpp" line="320"/>
-        <location filename="../VBoxManageAppliance.cpp" line="341"/>
-        <location filename="../VBoxManageAppliance.cpp" line="352"/>
-        <location filename="../VBoxManageAppliance.cpp" line="362"/>
-        <location filename="../VBoxManageAppliance.cpp" line="372"/>
-        <location filename="../VBoxManageAppliance.cpp" line="382"/>
-        <location filename="../VBoxManageAppliance.cpp" line="392"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1615"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1622"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1629"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1636"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1643"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1650"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1657"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1664"/>
+        <location filename="../VBoxManageAppliance.cpp" line="293"/>
+        <location filename="../VBoxManageAppliance.cpp" line="307"/>
+        <location filename="../VBoxManageAppliance.cpp" line="321"/>
+        <location filename="../VBoxManageAppliance.cpp" line="342"/>
+        <location filename="../VBoxManageAppliance.cpp" line="353"/>
+        <location filename="../VBoxManageAppliance.cpp" line="363"/>
+        <location filename="../VBoxManageAppliance.cpp" line="373"/>
+        <location filename="../VBoxManageAppliance.cpp" line="383"/>
+        <location filename="../VBoxManageAppliance.cpp" line="393"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1620"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1627"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1634"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1641"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1648"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1655"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1662"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1669"/>
         <source>Option &quot;%s&quot; requires preceding --vsys option.</source>
         <translation>Опция &quot;%s&quot; требует наличия предшествуещего --vsys.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="355"/>
-        <location filename="../VBoxManageAppliance.cpp" line="365"/>
-        <location filename="../VBoxManageAppliance.cpp" line="375"/>
-        <location filename="../VBoxManageAppliance.cpp" line="385"/>
-        <location filename="../VBoxManageAppliance.cpp" line="395"/>
+        <location filename="../VBoxManageAppliance.cpp" line="356"/>
+        <location filename="../VBoxManageAppliance.cpp" line="366"/>
+        <location filename="../VBoxManageAppliance.cpp" line="376"/>
+        <location filename="../VBoxManageAppliance.cpp" line="386"/>
+        <location filename="../VBoxManageAppliance.cpp" line="396"/>
         <source>Option &quot;%s&quot; requires preceding --unit option.</source>
         <translation>Опция &quot;%s&quot; требует наличия предшествуещего --unit.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="402"/>
+        <location filename="../VBoxManageAppliance.cpp" line="403"/>
         <source>Invalid import options &apos;%s&apos;
 </source>
         <translation>Недопустимые опции импорта &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="411"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1680"/>
+        <location filename="../VBoxManageAppliance.cpp" line="412"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1685"/>
         <source>Option &quot;%s&quot; can&apos;t be used together with &quot;--vsys&quot; option.</source>
         <translation>Опция &quot;%s&quot; не может быть использована вместе с &quot;--vsys&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="420"/>
-        <location filename="../VBoxManageAppliance.cpp" line="427"/>
-        <location filename="../VBoxManageAppliance.cpp" line="434"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1692"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1699"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1706"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1713"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1720"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1727"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1734"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1741"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1748"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1755"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1762"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1769"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1776"/>
+        <location filename="../VBoxManageAppliance.cpp" line="421"/>
+        <location filename="../VBoxManageAppliance.cpp" line="428"/>
+        <location filename="../VBoxManageAppliance.cpp" line="435"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1697"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1704"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1711"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1718"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1725"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1732"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1739"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1746"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1753"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1760"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1767"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1774"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1781"/>
         <source>Option &quot;%s&quot; requires preceding --cloud option.</source>
         <translation>Опция &quot;%s&quot; требует наличия предшествуещего --cloud.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="443"/>
+        <location filename="../VBoxManageAppliance.cpp" line="444"/>
         <source>Invalid parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="450"/>
+        <location filename="../VBoxManageAppliance.cpp" line="451"/>
         <source>Invalid option -%c</source>
         <translation>Недопустимая опция -%c</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="452"/>
+        <location filename="../VBoxManageAppliance.cpp" line="453"/>
         <source>Invalid option case %i</source>
         <translation>Недопустимый вариант опции %i</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="455"/>
+        <location filename="../VBoxManageAppliance.cpp" line="456"/>
         <source>unknown option: %s
 </source>
         <translation>Неизвестная опция: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="459"/>
+        <location filename="../VBoxManageAppliance.cpp" line="460"/>
         <source>error: %Rrs</source>
         <translation>Ошибка: %Rrs</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="465"/>
+        <location filename="../VBoxManageAppliance.cpp" line="466"/>
         <source>Not enough arguments for &quot;import&quot; command.</source>
         <translation>Недостаточно аргументов для команды &quot;import&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="487"/>
+        <location filename="../VBoxManageAppliance.cpp" line="488"/>
         <source>Not enough arguments for import from the Cloud.</source>
         <translation>Недостаточно аргументов для импорта из облака.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="510"/>
+        <location filename="../VBoxManageAppliance.cpp" line="511"/>
         <source>Appliance read failed</source>
         <translation>Не удалось прочесть конфигурацию</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="522"/>
+        <location filename="../VBoxManageAppliance.cpp" line="523"/>
         <source>Interpreting %ls...
 </source>
         <translation>Интерпретация %ls...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="554"/>
+        <location filename="../VBoxManageAppliance.cpp" line="555"/>
         <source>Disks:
 </source>
         <translation>Диски:
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="575"/>
+        <location filename="../VBoxManageAppliance.cpp" line="576"/>
         <source>Invalid index %RI32 with -vsys option; the OVF contains only %zu virtual system(s).</source>
         <translation>
             <numerusform>Недопустимый индекс %RI32 у опциии -vsys; OVF содержит только %zu виртуальную систему.</numerusform>
@@ -157,21 +157,21 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="610"/>
+        <location filename="../VBoxManageAppliance.cpp" line="611"/>
         <source>Virtual system %u:
 </source>
         <translation>Виртуальная система %u:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="640"/>
+        <location filename="../VBoxManageAppliance.cpp" line="641"/>
         <source>%2u: OS type specified with --ostype: &quot;%ls&quot;
 </source>
         <translation>%2u: Тип ОС указанный через --ostype: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="644"/>
+        <location filename="../VBoxManageAppliance.cpp" line="645"/>
         <source>%2u: Suggested OS type: &quot;%ls&quot;
     (change with &quot;--vsys %u --ostype &lt;type&gt;&quot;; use &quot;list ostypes&quot; to list all possible values)
 </source>
@@ -180,14 +180,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="653"/>
+        <location filename="../VBoxManageAppliance.cpp" line="654"/>
         <source>%2u: VM name specified with --vmname: &quot;%ls&quot;
 </source>
         <translation>%2u: Имя ВМ, указанное через --vmname: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="657"/>
+        <location filename="../VBoxManageAppliance.cpp" line="658"/>
         <source>%2u: Suggested VM name &quot;%ls&quot;
     (change with &quot;--vsys %u --vmname &lt;name&gt;&quot;)
 </source>
@@ -196,49 +196,49 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="663"/>
+        <location filename="../VBoxManageAppliance.cpp" line="664"/>
         <source>%2u: Product (ignored): %ls
 </source>
         <translation>%2u: Продукт (проигнорирован): %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="668"/>
+        <location filename="../VBoxManageAppliance.cpp" line="669"/>
         <source>%2u: ProductUrl (ignored): %ls
 </source>
         <translation>%2u: Url продукта (проигнорирован): %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="673"/>
+        <location filename="../VBoxManageAppliance.cpp" line="674"/>
         <source>%2u: Vendor (ignored): %ls
 </source>
         <translation>%2u: Поставщик (проигнорирован): %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="678"/>
+        <location filename="../VBoxManageAppliance.cpp" line="679"/>
         <source>%2u: VendorUrl (ignored): %ls
 </source>
         <translation>%2u: Url поставщика (проигнорирован): %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="683"/>
+        <location filename="../VBoxManageAppliance.cpp" line="684"/>
         <source>%2u: Version (ignored): %ls
 </source>
         <translation>%2u: Версия (проигнорирована): %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="691"/>
+        <location filename="../VBoxManageAppliance.cpp" line="692"/>
         <source>%2u: Description specified with --description: &quot;%ls&quot;
 </source>
         <translation>%2u: Описание, указанное через --description: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="695"/>
+        <location filename="../VBoxManageAppliance.cpp" line="696"/>
         <source>%2u: Description &quot;%ls&quot;
     (change with &quot;--vsys %u --description &lt;desc&gt;&quot;)
 </source>
@@ -247,7 +247,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="706"/>
+        <location filename="../VBoxManageAppliance.cpp" line="707"/>
         <source>%2u: End-user license agreement
     (accept with &quot;--vsys %u --eula accept&quot;):
 
@@ -262,19 +262,19 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="713"/>
+        <location filename="../VBoxManageAppliance.cpp" line="714"/>
         <source>%2u: End-user license agreement (accepted)
 </source>
         <translation>%2u: Лицензионное соглашение (принято)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="718"/>
+        <location filename="../VBoxManageAppliance.cpp" line="719"/>
         <source>Argument to --eula must be either &quot;show&quot; or &quot;accept&quot;.</source>
         <translation>Аргумент к  --eula должен быть или &quot;show&quot; или &quot;accept&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="721"/>
+        <location filename="../VBoxManageAppliance.cpp" line="722"/>
         <source>%2u: End-user license agreement
     (display with &quot;--vsys %u --eula show&quot;;
     accept with &quot;--vsys %u --eula accept&quot;)
@@ -285,19 +285,19 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="737"/>
+        <location filename="../VBoxManageAppliance.cpp" line="738"/>
         <source>%2u: No. of CPUs specified with --cpus: %ls
 </source>
         <translation>%2u: Число ЦПУ указанных через --cpus: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="741"/>
+        <location filename="../VBoxManageAppliance.cpp" line="742"/>
         <source>Argument to --cpus option must be a number greater than %d and less than %d.</source>
         <translation>Аргумент к --cpus дожен быть числом больше %d и меньше %d.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="745"/>
+        <location filename="../VBoxManageAppliance.cpp" line="746"/>
         <source>%2u: Number of CPUs: %ls
     (change with &quot;--vsys %u --cpus &lt;n&gt;&quot;)
 </source>
@@ -312,7 +312,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="767"/>
+        <location filename="../VBoxManageAppliance.cpp" line="768"/>
         <source>Argument to --memory option must be a non-negative number.</source>
         <translation>Аргумент к --memory должен быть неотрицательным числом.</translation>
     </message>
@@ -325,14 +325,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="782"/>
+        <location filename="../VBoxManageAppliance.cpp" line="783"/>
         <source>%2u: IDE controller, type %ls -- disabled
 </source>
         <translation>%2u: IDE контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="788"/>
+        <location filename="../VBoxManageAppliance.cpp" line="789"/>
         <source>%2u: IDE controller, type %ls
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -341,14 +341,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="798"/>
+        <location filename="../VBoxManageAppliance.cpp" line="799"/>
         <source>%2u: SATA controller, type %ls -- disabled
 </source>
         <translation>%2u: SATA контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="804"/>
+        <location filename="../VBoxManageAppliance.cpp" line="805"/>
         <source>%2u: SATA controller, type %ls
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -357,14 +357,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="814"/>
+        <location filename="../VBoxManageAppliance.cpp" line="815"/>
         <source>%2u: SAS controller, type %ls -- disabled
 </source>
         <translation>%2u: SAS контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="820"/>
+        <location filename="../VBoxManageAppliance.cpp" line="821"/>
         <source>%2u: SAS controller, type %ls
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -373,21 +373,21 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="830"/>
+        <location filename="../VBoxManageAppliance.cpp" line="831"/>
         <source>%2u: SCSI controller, type %ls -- disabled
 </source>
         <translation>%2u: SCSI контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="841"/>
+        <location filename="../VBoxManageAppliance.cpp" line="842"/>
         <source>%2u: SCSI controller, type set with --unit %u --scsitype: &quot;%ls&quot;
 </source>
         <translation>%2u: SCSI контроллер, тип установлен через --unit %u --scsitype: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="847"/>
+        <location filename="../VBoxManageAppliance.cpp" line="848"/>
         <source>%2u: SCSI controller, type %ls
     (change with &quot;--vsys %u --unit %u --scsitype {BusLogic|LsiLogic}&quot;;
     disable with &quot;--vsys %u --unit %u --ignore&quot;)
@@ -398,14 +398,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="859"/>
+        <location filename="../VBoxManageAppliance.cpp" line="860"/>
         <source>%2u: VirtioSCSI controller, type %ls -- disabled
 </source>
         <translation>%2u: VirtioSCSI контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="865"/>
+        <location filename="../VBoxManageAppliance.cpp" line="866"/>
         <source>%2u: VirtioSCSI controller, type %ls
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -414,7 +414,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="891"/>
+        <location filename="../VBoxManageAppliance.cpp" line="892"/>
         <source>%2u: Hard disk image: source image=%ls -- disabled
 </source>
         <translation>%2u: Образ жесткого диска: образ источника=%ls -- отключен
@@ -441,14 +441,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="757"/>
+        <location filename="../VBoxManageAppliance.cpp" line="758"/>
         <source>%2u: Guest memory specified with --memory: %RU32 MB
 </source>
         <translation>%2u: Размер памяти гостевой системы, указанный через --memory: %RU32 МБ
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="773"/>
+        <location filename="../VBoxManageAppliance.cpp" line="774"/>
         <source>%2u: Guest memory: %RU64 MB
     (change with &quot;--vsys %u --memory &lt;MB&gt;&quot;)
 </source>
@@ -457,14 +457,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="875"/>
+        <location filename="../VBoxManageAppliance.cpp" line="876"/>
         <source>%2u: NVMe controller, type %ls -- disabled
 </source>
         <translation>%2u: NVMe контроллер, тип %ls -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="881"/>
+        <location filename="../VBoxManageAppliance.cpp" line="882"/>
         <source>%2u: NVMe controller, type %ls
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -473,48 +473,48 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="906"/>
+        <location filename="../VBoxManageAppliance.cpp" line="907"/>
         <source>Option --ImportToVDI can not be used together with a manually set target path.</source>
         <translation>Опция --ImportToVDI не должна использоваться вместе с путем назначения, указанным вручную.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="934"/>
+        <location filename="../VBoxManageAppliance.cpp" line="935"/>
         <source>Invalid controller value: &apos;%s&apos;</source>
         <translation>Недопустимое значение контроллера &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="939"/>
-        <location filename="../VBoxManageAppliance.cpp" line="1006"/>
+        <location filename="../VBoxManageAppliance.cpp" line="940"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1007"/>
         <source>Invalid storage controller specified: %u</source>
         <translation>Недопустимый контроллер носителей %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="952"/>
+        <location filename="../VBoxManageAppliance.cpp" line="953"/>
         <source>Invalid port value: &apos;%s&apos;</source>
         <translation>Недопустимое значение порта: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="967"/>
+        <location filename="../VBoxManageAppliance.cpp" line="968"/>
         <source>Failed to extract controller value from ExtraConfig: &apos;%s&apos;</source>
         <translation>Не удалось извлечь значение контроллера из ExtraConfig: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="973"/>
+        <location filename="../VBoxManageAppliance.cpp" line="974"/>
         <source>Failed to extract channel value from ExtraConfig: &apos;%s&apos;</source>
         <translation>Не удалось извлечь значение канала из ExtraConfig: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="999"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1000"/>
         <source>Device already attached to controller %u at this port (%u) location.</source>
         <translation>Устройство уже подключено к контроллеру %u на этом порту (%u).</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1044"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1048"/>
         <source>Illegal port value: %u. For %ls controllers the only valid values are 0 to %lu (inclusive)</source>
         <translation>Неверное значение порта: %u. Для контроллеров типа %ls значения должны быть в диапазоне от 0 до %lu (включительно)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1066"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1070"/>
         <source>%2u: Hard disk image specified with --disk: source image=%ls, target path=%ls, %s
     (change controller with &quot;--vsys %u --unit %u --controller &lt;index&gt;&quot;;
     change controller port with &quot;--vsys %u --unit %u --port &lt;n&gt;&quot;)
@@ -525,7 +525,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1078"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1082"/>
         <source>%2u: Hard disk image specified with --disk and --controller: source image=%ls, target path=%ls, %s
     (change controller port with &quot;--vsys %u --unit %u --port &lt;n&gt;&quot;)
 </source>
@@ -534,7 +534,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1088"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1092"/>
         <source>%2u: Hard disk image specified with --disk and --port: source image=%ls, target path=%ls, %s
     (change controller with &quot;--vsys %u --unit %u --controller &lt;index&gt;&quot;)
 </source>
@@ -543,7 +543,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1098"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1102"/>
         <source>%2u: Hard disk image specified with --controller and --port: source image=%ls, target path=%ls, %s
     (change target path with &quot;--vsys %u --unit %u --disk path&quot;)
 </source>
@@ -552,7 +552,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1108"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1112"/>
         <source>%2u: Hard disk image specified with --port: source image=%ls, target path=%ls, %s
     (change target path with &quot;--vsys %u --unit %u --disk path&quot;;
     change controller with &quot;--vsys %u --unit %u --controller &lt;index&gt;&quot;)
@@ -563,7 +563,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1120"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1124"/>
         <source>%2u: Hard disk image specified with --controller: source image=%ls, target path=%ls, %s
     (change target path with &quot;--vsys %u --unit %u --disk path&quot;;
     change controller port with &quot;--vsys %u --unit %u --port &lt;n&gt;&quot;)
@@ -574,14 +574,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1132"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1136"/>
         <source>%2u: Hard disk image specified with --disk and --controller and --port: source image=%ls, target path=%ls, %s
 </source>
         <translation>%2u: Образ жесткого диска, указанный через --disk и --controller и --port: образ источника=%ls, путь назначения=%ls, %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1217"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1221"/>
         <source>%2u: Hard disk image: source image=%ls, target path=%ls, %s
     (change target path with &quot;--vsys %u --unit %u --disk path&quot;;
     change controller with &quot;--vsys %u --unit %u --controller &lt;index&gt;&quot;;
@@ -596,14 +596,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1234"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1238"/>
         <source>%2u: CD-ROM -- disabled
 </source>
         <translation>%2u: CD-ROM -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1239"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1243"/>
         <source>%2u: CD-ROM
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -612,14 +612,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1247"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1251"/>
         <source>%2u: Floppy -- disabled
 </source>
         <translation>%2u: Флоппи -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1252"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1256"/>
         <source>%2u: Floppy
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -628,21 +628,21 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1258"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1262"/>
         <source>%2u: Network adapter: orig %ls, config %ls, extra %ls
 </source>
         <translation>%2u: Сетевой адаптер: ориг. %ls, конфиг. %ls, экстра %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1268"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1272"/>
         <source>%2u: USB controller -- disabled
 </source>
         <translation>%2u: USB контроллер -- отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1273"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1277"/>
         <source>%2u: USB controller
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -651,14 +651,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1281"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1285"/>
         <source>%2u: Sound card &quot;%ls&quot; -- disabled
 </source>
         <translation>%2u: Аудио карта &quot;%ls&quot; -- отключена
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1287"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1291"/>
         <source>%2u: Sound card (appliance expects &quot;%ls&quot;, can change on import)
     (disable with &quot;--vsys %u --unit %u --ignore&quot;)
 </source>
@@ -667,14 +667,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1299"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1303"/>
         <source>%2u: VM settings file name specified with --settingsfile: &quot;%ls&quot;
 </source>
         <translation>%2u: Имя файла настроек ВМ указанное через --settingsfile: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1303"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1307"/>
         <source>%2u: Suggested VM settings file name &quot;%ls&quot;
     (change with &quot;--vsys %u --settingsfile &lt;filename&gt;&quot;)
 </source>
@@ -683,14 +683,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1312"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1316"/>
         <source>%2u: VM base folder specified with --basefolder: &quot;%ls&quot;
 </source>
         <translation>%2u: Основная папка ВМ указанная через --basefolder: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1316"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1320"/>
         <source>%2u: Suggested VM base folder &quot;%ls&quot;
     (change with &quot;--vsys %u --basefolder &lt;path&gt;&quot;)
 </source>
@@ -699,14 +699,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1325"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1329"/>
         <source>%2u: VM group specified with --group: &quot;%ls&quot;
 </source>
         <translation>%2u: Группа ВМ, указанная через --group: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1329"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1333"/>
         <source>%2u: Suggested VM group &quot;%ls&quot;
     (change with &quot;--vsys %u --group &lt;group&gt;&quot;)
 </source>
@@ -715,21 +715,21 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1335"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1339"/>
         <source>%2u: Suggested cloud shape &quot;%ls&quot;
 </source>
         <translation>%2u: Предложенная облачная форма &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1343"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1347"/>
         <source>%2u: Cloud bucket id specified with --cloudbucket: &quot;%ls&quot;
 </source>
         <translation>%2u: ID облачной корзины, указанный через  --cloudbucket: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1347"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1351"/>
         <source>%2u: Suggested cloud bucket id &quot;%ls&quot;
     (change with &quot;--cloud %u --cloudbucket &lt;id&gt;&quot;)
 </source>
@@ -738,14 +738,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1356"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1360"/>
         <source>%2u: Cloud profile name specified with --cloudprofile: &quot;%ls&quot;
 </source>
         <translation>%2u: Имя облачного профиля, указанного через --cloudprofile: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1360"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1364"/>
         <source>%2u: Suggested cloud profile name &quot;%ls&quot;
     (change with &quot;--cloud %u --cloudprofile &lt;id&gt;&quot;)
 </source>
@@ -754,14 +754,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1369"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1373"/>
         <source>%2u: Cloud instance id specified with --cloudinstanceid: &quot;%ls&quot;
 </source>
         <translation>%2u: ID облачного экземпляра, указанный через --cloudinstanceid: &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1373"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1377"/>
         <source>%2u: Suggested cloud instance id &quot;%ls&quot;
     (change with &quot;--cloud %u --cloudinstanceid &lt;id&gt;&quot;)
 </source>
@@ -770,73 +770,73 @@
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1379"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1383"/>
         <source>%2u: Suggested cloud base image id &quot;%ls&quot;
 </source>
         <translation>%2u: Предложенный ID Suggested cloud base image id &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1430"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1435"/>
         <source>Cannot import until the license agreement listed above is accepted.</source>
         <translation>Невозможно произвести импорт пока не приняты условия лицензионного соглашения, показанные выше.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1432"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1437"/>
         <source>Cannot import until the %c license agreements listed above are accepted.</source>
         <translation>Невозможно произвести импорт пока не приняты условия лицензионного соглашения %c, показанные выше.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1443"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1448"/>
         <source>Appliance import failed</source>
         <translation>Не удалось произвести импорт конфигурации</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1446"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1451"/>
         <source>Successfully imported the appliance.
 </source>
         <translation>Конфигурация импортирована успешно.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1563"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1568"/>
         <source>You can only specify --output once.</source>
         <translation>--output можно указать только один раз.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1671"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1676"/>
         <source>Invalid export options &apos;%s&apos;
 </source>
         <translation>Недопустимые опции импорта &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1797"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1802"/>
         <source>unhandled option: -%c</source>
         <translation>необработанная опция: -%c</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1799"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1804"/>
         <source>unhandled option: %i</source>
         <translation>необработанная опция: %i</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1802"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1807"/>
         <source>unknown option: %s</source>
         <translation>неизвестная опция: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1817"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1822"/>
         <source>At least one machine must be specified with the export command.</source>
         <translation>Как минимум одна машина должна быть указана в команде экспорта.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1821"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1826"/>
         <source>Missing --output argument with export command.</source>
         <translation>Отсутствует аргумент --output у команды экспорта.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="1835"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1840"/>
         <source>Invalid index %RI32 with -vsys option; you specified only %zu virtual system(s).</source>
         <translation>
             <numerusform>Недопустимый индекс %RI32 у опции -vsys option; вы указали только %zu виртуальную систему.</numerusform>
@@ -845,29 +845,29 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1924"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1929"/>
         <source>Cannot read license file &quot;%s&quot; which should be included in the virtual system %u.</source>
         <translation>Невозможно прочесть файл лицензии &quot;%s&quot;, который должен быть включен в виртуальную систему %u.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1987"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1992"/>
         <source>Enter the passwords for the following identifiers to export the apppliance:
 </source>
         <translation>Введите пароль для следующих идентификаторов, чтобы экспортировать конфигурацию:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="1994"/>
+        <location filename="../VBoxManageAppliance.cpp" line="1999"/>
         <source>Password ID %s:</source>
         <translation>ID пароля %s:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2024"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2029"/>
         <source>Appliance write failed</source>
         <translation>Не удалось записать конфигурацию</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="2027"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2032"/>
         <source>Successfully exported %d machine(s).
 </source>
         <translation>
@@ -880,160 +880,160 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2083"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2089"/>
         <source>Creating a cloud instance...
 </source>
         <translation>Создание облачного экземпляра...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2088"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2094"/>
         <source>Creating the cloud instance failed</source>
         <translation>Не удалось создать облачный экземпляр</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2100"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2106"/>
         <source>A cloud instance with id &apos;%s&apos; (provider &apos;%s&apos;) was created
 </source>
         <translation>Облачный экземпляр с ID &apos;%s&apos; (провайдер &apos;%s&apos;) создан
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2153"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2159"/>
         <source>Failed to open OVA &apos;%s&apos; for updating: %Rrc</source>
         <translation>Не удалось открыть OVA &apos;%s&apos; для обновления: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2159"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2165"/>
         <source>Failed to open OVA &apos;%s&apos; as a TAR file: %Rrc</source>
         <translation>Не удалось открыть OVA &apos;%s&apos; как файл TAR: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2166"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2172"/>
         <source>Scanning OVA &apos;%s&apos; for a manifest and signature...</source>
         <translation>Сканирование OVA &apos;%s&apos; на наличие манифеста и подписи...</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2182"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2188"/>
         <source>RTVfsFsStrmNext returned %Rrc</source>
         <translation>RTVfsFsStrmNext возвратил %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2198"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2204"/>
         <source>OVA contains multiple manifests! first: %s  second: %s</source>
         <translation>OVA содержит несколько манифестов! первый: %s  второй: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2202"/>
-        <location filename="../VBoxManageAppliance.cpp" line="2240"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2208"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2246"/>
         <source>Unsupported OVA file ordering! Signature file (&apos;%s&apos;) as succeeded by &apos;%s&apos;.</source>
         <translation>Неподдерживаемый порядок файлов OVA! Файл подписи (&apos;%s&apos;) после &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2207"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2213"/>
         <source>Found manifest file: %s</source>
         <translation>Найден файл манифеста: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2216"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2222"/>
         <source>Failed to memorize the manifest: %Rrc</source>
         <translation>Не удалось запомнить манифест: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2219"/>
-        <location filename="../VBoxManageAppliance.cpp" line="2460"/>
-        <location filename="../VBoxManageAppliance.cpp" line="2537"/>
-        <location filename="../VBoxManageAppliance.cpp" line="2696"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2225"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2466"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2543"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2702"/>
         <source>Out of memory!</source>
         <translation>Не хватает памяти!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2227"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2233"/>
         <source>Multiple signature files! (%s)</source>
         <translation>Несколько файлов подписей! (%s)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2231"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2237"/>
         <source>Found existing signature file: %s</source>
         <translation>Найден существующий файл сигнатуры: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2256"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2262"/>
         <source>The OVA contains no manifest and cannot be signed!</source>
         <translation>OVA не содержит манифеста и не может быть подписан!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2259"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2265"/>
         <source>The OVA is already signed (&apos;%s&apos;)! (Use the --force option to force re-signing it.)</source>
         <translation>OVA уже подписан (&apos;%s&apos;)! (Используйте опцию --force, чтобы заново подписать его.)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2279"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2285"/>
         <source>Writing &apos;%s&apos; to the OVA...</source>
         <translation>Запись &apos;%s&apos; в OVA...</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2289"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2295"/>
         <source>RTZipTarFsStreamTruncate failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTZipTarFsStreamTruncate завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2298"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2304"/>
         <source>RTVfsFileSeek(hVfsFileSignature) failed: %Rrc</source>
         <translation>RTVfsFileSeek(hVfsFileSignature) завершился с ошибкой: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2304"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2310"/>
         <source>RTVfsFsStrmAdd(&apos;%s&apos;) failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTVfsFsStrmAdd(&apos;%s&apos;) завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2311"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2317"/>
         <source>RTVfsFsStrmEnd failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTVfsFsStrmEnd завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2347"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2353"/>
         <source>  Successfully decoded the PKCS#7/CMS signature...</source>
         <translation>  PKCS#7/CMS подпись декодирована успешно...</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2363"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2369"/>
         <source>  Successfully verified the PKCS#7/CMS signature</source>
         <translation>  PKCS#7/CMS подпись проверена успешно</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2366"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2372"/>
         <source>Failed to verify the PKCS#7/CMS signature: %Rrc%RTeim</source>
         <translation>Не удалось проверить PKCS#7/CMS подпись: %Rrc%RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2370"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2376"/>
         <source>RTCrPkcs7SignedData_CheckSanity failed on PKCS#7/CMS signature: %Rrc%RTeim</source>
         <translation>RTCrPkcs7SignedData_CheckSanity завершена с ошибкой на PKCS#7/CMS подписи: %Rrc%RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2375"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2381"/>
         <source>PKCS#7/CMS signature inner ContentType isn&apos;t &apos;data&apos; but: %s</source>
         <translation>Внутреннее поле ContentType PKCS#7/CMS подписи является не данными, а: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2379"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2385"/>
         <source>PKCS#7/CMD signature is not &apos;signedData&apos;: %s</source>
         <translation>PKCS#7/CMD подпись не &apos;signedData&apos;: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2420"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2426"/>
         <source>RTCrPkcs7ContentInfo_Clone failed: %Rrc</source>
         <translation>RTCrPkcs7ContentInfo_Clone завершен с ошибкой: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2424"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2430"/>
         <source>RTCrPkcs7ContentInfo_DecodeAsn1 failed to decode PKCS#7/CMS signature: %Rrc%RTemi</source>
         <translation>RTCrPkcs7ContentInfo_DecodeAsn1 не смог декодировать PKCS#7/CMS подпись: %Rrc%RTemi</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="2455"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2461"/>
         <source>Manifest is too big: %#RX64 bytes, max 4MiB</source>
         <translation>
             <numerusform>Манифест слишком большой: %#RX64 байт, максимально 4MiB</numerusform>
@@ -1042,17 +1042,17 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2480"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2486"/>
         <source>RTCrStoreCertAddFromFile failed on &apos;%s&apos;: %Rrc%#RTeim</source>
         <translation>RTCrStoreCertAddFromFile завершился с ошибкой на &apos;%s&apos;: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2487"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2493"/>
         <source>RTCrStoreCreateInMem failed: %Rrc</source>
         <translation>RTCrStoreCreateInMem завершился с ошибкой: %Rrc</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="2520"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2526"/>
         <source>Created PKCS#7/CMS signature: %zu bytes, %s.</source>
         <translation>
             <numerusform>PKCS#7/CMS подпись создана: %zu байт, %s.</numerusform>
@@ -1061,37 +1061,37 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2523"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2529"/>
         <source>Using SHA-1 instead of SHA-3 for the PKCS#7/CMS signature.</source>
         <translation>Используется SHA-1 вместо SHA-3 для PKCS#7/CMS подписи.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2532"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2538"/>
         <source>RTCrPemWriteBlobToVfsFile failed: %Rrc</source>
         <translation>RTCrPemWriteBlobToVfsFile завершился с ошибкой: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2540"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2546"/>
         <source>RTCrPkcs7SimpleSignSignedData failed: %Rrc%#RTeim</source>
         <translation>RTCrPkcs7SimpleSignSignedData завершился с ошибкой: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2544"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2550"/>
         <source>RTVfsFileReadAt failed: %Rrc</source>
         <translation>RTVfsFileReadAt завершился с ошибкой: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2597"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2603"/>
         <source>Unsupported digest type: %s</source>
         <translation>Неподдерживаемый тип дайджеста: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2606"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2612"/>
         <source>Failed to create digest for %s: %Rrc</source>
         <translation>Не удалось создать дайджест для %s: %Rrc</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageAppliance.cpp" line="2632"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2638"/>
         <source>Created OVA signature: %zu bytes, %s</source>
         <translation>
             <numerusform>Подпись OVA создана: %zu байт, %s</numerusform>
@@ -1100,29 +1100,29 @@
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2645"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2651"/>
         <source>  Successfully decoded and verified the OVA signature.
 </source>
         <translation>  Сигнатура OVA декодирована и проверена успешно.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2676"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2682"/>
         <source>Failed to write certificate to signature file: %Rrc%#RTeim</source>
         <translation>Не удалось записать сертификат в файл подписи: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2680"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2686"/>
         <source>Failed to produce signature file: %Rrc</source>
         <translation>Не удалось сделать файл сигнатуры: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2684"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2690"/>
         <source>RTVfsMemFileCreate failed: %Rrc</source>
         <translation>RTVfsMemFileCreate завершен с ошибкой: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2687"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2693"/>
         <source>Encountered a problem when validating the signature we just created: %Rrc%#RTeim
 Please make sure the certificate and private key matches.</source>
         <translation>Столкнулись с проблемой при проверке только что созданной подписи: %Rrc%#RTeim
@@ -1135,83 +1135,83 @@ Plase make sure the certificate and private key matches.</source>
 Пожалуйста, убедитесь, что сертификат и приватный ключ соответствуют друг другу.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2692"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2698"/>
         <source>2nd RTCrPkixPubKeySignDigest call failed: %Rrc%#RTeim</source>
         <translation>Второй вызов RTCrPkixPubKeySignDigest завершился с ошибкой: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2699"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2705"/>
         <source>RTCrPkixPubKeySignDigest failed: %Rrc%#RTeim</source>
         <translation>RTCrPkixPubKeySignDigest завершился с ошибкой: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2702"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2708"/>
         <source>Failed to create digest %s: %Rrc</source>
         <translation>Не удалось создать дайджест %s: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2766"/>
-        <location filename="../VBoxManageAppliance.cpp" line="2773"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2772"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2779"/>
         <source>Password is given more than once.</source>
         <translation>Пароль указан несколько раз.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2791"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2797"/>
         <source>Unknown digest type: %s</source>
         <translation>Неизвестный тип дайджеста: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2804"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2810"/>
         <source>Too many intermediate certificates: max %zu</source>
         <translation>Слишком много промежуточных сертификатов: максимально %zu</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2840"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2846"/>
         <source>No OVA file was specified!</source>
         <translation>Не указан файл OVA!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2842"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2848"/>
         <source>No signing certificate (--certificate=&lt;file&gt;) was specified!</source>
         <translation>Не указан сертификат (--certificate=&lt;файл&gt;)!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2844"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2850"/>
         <source>No signing private key (--private-key=&lt;file&gt;) was specified!</source>
         <translation>Не указан приватный ключ (--private-key=&lt;файл&gt;)!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2848"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2854"/>
         <source>The specified OVA file was not found: %s</source>
         <translation>Не найден указанный файл OVA: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2850"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2856"/>
         <source>The specified certificate file was not found: %s</source>
         <translation>Указанный файл сертификата не найден: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2852"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2858"/>
         <source>The specified private key file was not found: %s</source>
         <translation>Указанный файл приватного ключа не найден: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2873"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2879"/>
         <source>Error reading certificate from &apos;%s&apos;: %Rrc%#RTeim</source>
         <translation>Ошибка чтения сертификата из &apos;%s&apos;: %Rrc%#RTeim</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2882"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2888"/>
         <source>Successfully read the certificate and private key.</source>
         <translation>Успешно прочтены сертификат и приватный ключ.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2908"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2914"/>
         <source>Successfully signed &apos;%s&apos;.</source>
         <translation>&apos;%s&apos; подписан успешно.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageAppliance.cpp" line="2914"/>
+        <location filename="../VBoxManageAppliance.cpp" line="2920"/>
         <source>Error reading the private key from %s: %Rrc%#RTeim</source>
         <translation>Ошибка чтения приватного ключа из %s: %Rrc%#RTeim</translation>
     </message>
@@ -3161,7 +3161,7 @@ Try &apos;--help&apos; for more information.</source>
     </message>
     <message>
         <location filename="../VBoxManageControlVM.cpp" line="359"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1386"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1383"/>
         <source>Not enough parameters.</source>
         <translation>Недостаточно параметров.</translation>
     </message>
@@ -3176,32 +3176,32 @@ Try &apos;--help&apos; for more information.</source>
         <location filename="../VBoxManageControlVM.cpp" line="433"/>
         <location filename="../VBoxManageControlVM.cpp" line="501"/>
         <location filename="../VBoxManageControlVM.cpp" line="572"/>
-        <location filename="../VBoxManageControlVM.cpp" line="796"/>
-        <location filename="../VBoxManageControlVM.cpp" line="816"/>
-        <location filename="../VBoxManageControlVM.cpp" line="854"/>
-        <location filename="../VBoxManageControlVM.cpp" line="898"/>
-        <location filename="../VBoxManageControlVM.cpp" line="939"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1033"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1095"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1145"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1174"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1186"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1198"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1211"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1222"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1251"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1280"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1311"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1332"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2028"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2153"/>
+        <location filename="../VBoxManageControlVM.cpp" line="793"/>
+        <location filename="../VBoxManageControlVM.cpp" line="813"/>
+        <location filename="../VBoxManageControlVM.cpp" line="851"/>
+        <location filename="../VBoxManageControlVM.cpp" line="895"/>
+        <location filename="../VBoxManageControlVM.cpp" line="936"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1030"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1092"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1142"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1171"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1183"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1195"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1208"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1219"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1248"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1277"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1308"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1329"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2025"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2150"/>
         <source>Missing argument to &apos;%s&apos;.</source>
         <translation>Отсутствует аргумент к &apos;%s&apos;.</translation>
     </message>
     <message>
         <location filename="../VBoxManageControlVM.cpp" line="455"/>
         <location filename="../VBoxManageControlVM.cpp" line="482"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2264"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2261"/>
         <source>Invalid value &apos;%s&apos;.</source>
         <translation>Недопустимое значение &apos;%s&apos;.</translation>
     </message>
@@ -3246,317 +3246,317 @@ Try &apos;--help&apos; for more information.</source>
     </message>
     <message>
         <location filename="../VBoxManageControlVM.cpp" line="679"/>
-        <location filename="../VBoxManageControlVM.cpp" line="714"/>
-        <location filename="../VBoxManageControlVM.cpp" line="768"/>
-        <location filename="../VBoxManageControlVM.cpp" line="789"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1492"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1514"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1638"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1672"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1769"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2037"/>
+        <location filename="../VBoxManageControlVM.cpp" line="711"/>
+        <location filename="../VBoxManageControlVM.cpp" line="765"/>
+        <location filename="../VBoxManageControlVM.cpp" line="786"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1489"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1511"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1635"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1669"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1766"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2034"/>
         <source>Guest not running.</source>
         <translation>Гостевая ОС не запущена.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="700"/>
+        <location filename="../VBoxManageControlVM.cpp" line="698"/>
         <source>Current installed Guest Additions don&apos;t support rebooting the guest.</source>
         <translation>Текущие установленные Дополнения Гостевой ОС не поддерживают перезагрузку гостевой ОС.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="702"/>
+        <location filename="../VBoxManageControlVM.cpp" line="700"/>
         <source>Current installed Guest Additions don&apos;t support shutting down the guest.</source>
         <translation>Текущие установленные Дополнения Гостевой ОС не поддерживают завершение работы гостевой ОС.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="721"/>
+        <location filename="../VBoxManageControlVM.cpp" line="718"/>
         <source>Missing argument to &apos;%s&apos;. Expected IBM PC AT set 2 keyboard scancode(s).</source>
         <translation>Отсутствует аргумент к &apos;%s&apos;. Ожидаются сканкоды клавиатуры IBM PC AT set 2.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="741"/>
+        <location filename="../VBoxManageControlVM.cpp" line="738"/>
         <source>Converting &apos;%s&apos; returned %Rrc!</source>
         <translation>Преобразование &apos;%s&apos; вернуло %Rrc!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="750"/>
+        <location filename="../VBoxManageControlVM.cpp" line="747"/>
         <source>&apos;%s&apos; is not a hex byte!</source>
         <translation>&apos;%s&apos; не является hex байтом!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="775"/>
+        <location filename="../VBoxManageControlVM.cpp" line="772"/>
         <source>Missing argument to &apos;%s&apos;. Expected ASCII string(s).</source>
         <translation>Отсутствует аргумент к &apos;%s&apos;. Ожидается строка ASCII.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="828"/>
+        <location filename="../VBoxManageControlVM.cpp" line="825"/>
         <source>Invalid link state &apos;%s&apos;.</source>
         <translation>Недопустимое состояние подключения &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="874"/>
+        <location filename="../VBoxManageControlVM.cpp" line="871"/>
         <source>Filename not specified for NIC %lu.</source>
         <translation>Не указано имя файла NIC %lu.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="882"/>
+        <location filename="../VBoxManageControlVM.cpp" line="879"/>
         <source>The NIC %d is currently disabled and thus its tracefile can&apos;t be changed.</source>
         <translation>NIC %d в настоящее время отключен и поэтому его трассировочный файл не может быть изменен.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="915"/>
+        <location filename="../VBoxManageControlVM.cpp" line="912"/>
         <source>Invalid nictrace%lu argument &apos;%s&apos;.</source>
         <translation>Недопустимый аргумент к nictrace%lu: &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="923"/>
+        <location filename="../VBoxManageControlVM.cpp" line="920"/>
         <source>The NIC %d is currently disabled and thus its trace flag can&apos;t be changed.</source>
         <translation>NIC %d в настоящее время отключен и поэтому его трассировочный флаг не может быть изменен.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="975"/>
+        <location filename="../VBoxManageControlVM.cpp" line="972"/>
         <source>Missing or invalid argument to &apos;%s&apos;.</source>
         <translation>Отсутствует или недопустимый аргумент к &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1010"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1007"/>
         <source>Wrong rule proto &apos;%s&apos; specified -- only &apos;udp&apos; and &apos;tcp&apos; are allowed.</source>
         <translation>Указан неправильный протокол правила &apos;%s&apos; -- разрешены только &apos;udp&apos; и &apos;tcp&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1064"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1061"/>
         <source>Invalid nicproperty%d argument &apos;%s&apos;.</source>
         <translation>Недопустимый аргумент к nicproperty%d: &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1071"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1068"/>
         <source>Failed to allocate memory for nicproperty%d &apos;%s&apos;.</source>
         <translation>Не удалось выделить память для nicproperty%d &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1079"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1076"/>
         <source>The NIC %d is currently disabled and thus its properties can&apos;t be changed.</source>
         <translation>NIC %d отключен в настоящее время, и поэтому невозможно изменить его свойства.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1119"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1116"/>
         <source>Unknown promiscuous mode policy &apos;%s&apos;.</source>
         <translation>Неизвестная политика неразборчивого режима &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1129"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1126"/>
         <source>The NIC %d is currently disabled and thus its promiscuous mode can&apos;t be changed.</source>
         <translation>NIC %d отключен в настоящее время, и поэтому невозможно изменить его неразборчивый режим.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1231"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1228"/>
         <source>Invalid type &apos;%s&apos; specfied for NIC %lu.</source>
         <translation>Указан недопустимый тип &apos;%s&apos; для NIC %lu.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1239"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1236"/>
         <source>The NIC %d is currently disabled and thus its attachment type can&apos;t be changed.</source>
         <translation>NIC %d отключен в настоящее время, и поэтому невозможно изменить его тип подключения.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1247"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1244"/>
         <source>&apos;vrdp&apos; is deprecated. Use &apos;vrde&apos;.</source>
         <translation>&apos;vrdp&apos; устарел. Используйте &apos;vrde&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1263"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1260"/>
         <source>Invalid remote desktop server state &apos;%s&apos;.</source>
         <translation>Недопустимое состояние сервера удаленного рабочего стола &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1276"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1273"/>
         <source>&apos;vrdpport&apos; is deprecated. Use &apos;vrdeport&apos;.</source>
         <translation>&apos;vrdpport&apos; устарел. Используйте &apos;vrdeport&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1307"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1304"/>
         <source>&apos;vrdpvideochannelquality&apos; is deprecated. Use &apos;vrdevideochannelquality&apos;.</source>
         <translation>&apos;vrdpvideochannelquality&apos; устарел. Используйте &apos;vrdevideochannelquality&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1358"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1355"/>
         <source>Invalid vrdeproperty argument &apos;%s&apos;.</source>
         <translation>Недопустимый аргумент к vrdeproperty &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1365"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1362"/>
         <source>Failed to allocate memory for VRDE property &apos;%s&apos;.</source>
         <translation>Не удалось выделить память для свойства VRDE &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1392"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1389"/>
         <source>Wrong number of arguments.</source>
         <translation>Неправильное количество аргументов.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1406"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1601"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2297"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1403"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1598"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2294"/>
         <source>Invalid parameter &apos;%s&apos;.</source>
         <translation>Недопустимый параметр &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1439"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1436"/>
         <source>Zero UUID argument &apos;%s&apos;.</source>
         <translation>Нулевой UUID аргумент &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1458"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1505"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1556"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1613"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1652"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1749"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1806"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1866"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1884"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1897"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1930"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1951"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1972"/>
-        <location filename="../VBoxManageControlVM.cpp" line="1993"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2014"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2084"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2129"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1455"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1502"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1553"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1610"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1649"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1746"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1803"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1863"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1881"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1894"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1927"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1948"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1969"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1990"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2011"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2081"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2126"/>
         <source>Incorrect number of parameters.</source>
         <translation>Некорректное количество параметров.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1476"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1473"/>
         <source>Either &quot;yes&quot; or &quot;no&quot; is expected.</source>
         <translation>Ожидается только &quot;yes&quot; или &quot;no&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1541"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1538"/>
         <source>Display status must be &lt;on&gt; or &lt;off&gt;.</source>
         <translation>Статус экрана должен быть &lt;on&gt; или &lt;off&gt;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1661"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1658"/>
         <source>Error parsing guest memory balloon size &apos;%s&apos;.</source>
         <translation>Ошибка разбора размера balloon памяти гостевой ОС &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1742"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1739"/>
         <source>Teleportation failed</source>
         <translation>Не удалось произвести портирование</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1760"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1757"/>
         <source>Error parsing display number &apos;%s&apos;.</source>
         <translation>Ошибка разбора номера экрана &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1783"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1780"/>
         <source>Failed to create file &apos;%s&apos; (%Rrc).</source>
         <translation>Не удалось создать файл &apos;%s&apos; (%Rrc).</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1790"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1787"/>
         <source>Failed to write screenshot to file &apos;%s&apos; (%Rrc).</source>
         <translation>Не удалось записать снимок экрана в файл &apos;%s&apos; (%Rrc).</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1802"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1799"/>
         <source>Sub command &apos;videocap&apos; is deprecated -- please use &apos;recording&apos; instead .</source>
         <translation>Подкоманда &apos;videocap&apos; устарела -- пожалуйста, используйте &apos;recording&apos; .</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1828"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1825"/>
         <source>Recording enabled. Use &apos;start&apos; to start recording.
 </source>
         <translation>Запись включена. Используйте &apos;start&apos; для запуска записи.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1842"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1839"/>
         <source>Recording failed.</source>
         <translation>Ошибка записи.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1845"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1842"/>
         <source>Recording started (detacted).
 </source>
         <translation>Запись запущена.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1872"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1869"/>
         <source>Error parsing list of screen IDs &apos;%s&apos;.</source>
         <translation>Ошибка при разборе списка ID дисплеев &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1906"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1903"/>
         <source>Error parsing video width &apos;%s&apos;.</source>
         <translation>Ошибка при разборе ширины видео &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1915"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1912"/>
         <source>Error parsing video height &apos;%s&apos;.</source>
         <translation>Ошибка при разборе высоты видео &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1939"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1936"/>
         <source>Error parsing video rate &apos;%s&apos;.</source>
         <translation>Ошибка при разборе битрейта видео &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1960"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1957"/>
         <source>Error parsing video FPS &apos;%s&apos;.</source>
         <translation>Ошибка при разборе FPS видео &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="1981"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1978"/>
         <source>Error parsing maximum time &apos;%s&apos;.</source>
         <translation>Ошибка при разборе максимального времени &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2002"/>
+        <location filename="../VBoxManageControlVM.cpp" line="1999"/>
         <source>Error parsing maximum file size &apos;%s&apos;.</source>
         <translation>Ошибка при разборе максимального размера файла &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2073"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2070"/>
         <source>Invalid argument to &apos;%s&apos;.</source>
         <translation>Недопустимый аргумент к &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2095"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2092"/>
         <source>Invalid parameters.</source>
         <translation>Недопустимые параметры.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2108"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2105"/>
         <source>Enter password:</source>
         <translation>Введите пароль:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2117"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2114"/>
         <source>Failed to read new password from file.</source>
         <translation>Не удалось прочесть новый пароль из файла.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2167"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2182"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2223"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2236"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2257"/>
-        <location filename="../VBoxManageControlVM.cpp" line="2277"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2164"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2179"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2220"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2233"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2254"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2274"/>
         <source>Incorrect arguments to &apos;%s&apos;.</source>
         <translation>Некорректные аргументы к &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2243"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2240"/>
         <source>Invalid vm-process-priority &apos;%s&apos;.</source>
         <translation>Недопустимый vm-process-priority &apos;%s&apos;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageControlVM.cpp" line="2286"/>
+        <location filename="../VBoxManageControlVM.cpp" line="2283"/>
         <source>Invalid autostart delay number &apos;%s&apos;.</source>
         <translation>Недопустимое время задержки автостарта &apos;%s&apos;.</translation>
     </message>
@@ -3984,18 +3984,18 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         <location filename="../VBoxManageDisk.cpp" line="334"/>
         <location filename="../VBoxManageDisk.cpp" line="340"/>
         <location filename="../VBoxManageDisk.cpp" line="346"/>
-        <location filename="../VBoxManageDisk.cpp" line="707"/>
-        <location filename="../VBoxManageDisk.cpp" line="713"/>
-        <location filename="../VBoxManageDisk.cpp" line="719"/>
+        <location filename="../VBoxManageDisk.cpp" line="706"/>
+        <location filename="../VBoxManageDisk.cpp" line="712"/>
+        <location filename="../VBoxManageDisk.cpp" line="718"/>
         <location filename="../VBoxManageDisk.cpp" line="1036"/>
         <location filename="../VBoxManageDisk.cpp" line="1042"/>
         <location filename="../VBoxManageDisk.cpp" line="1048"/>
         <location filename="../VBoxManageDisk.cpp" line="1685"/>
         <location filename="../VBoxManageDisk.cpp" line="1691"/>
         <location filename="../VBoxManageDisk.cpp" line="1697"/>
-        <location filename="../VBoxManageDisk.cpp" line="1797"/>
-        <location filename="../VBoxManageDisk.cpp" line="1803"/>
-        <location filename="../VBoxManageDisk.cpp" line="1809"/>
+        <location filename="../VBoxManageDisk.cpp" line="1796"/>
+        <location filename="../VBoxManageDisk.cpp" line="1802"/>
+        <location filename="../VBoxManageDisk.cpp" line="1808"/>
         <source>Only one command can be specified: &apos;%s&apos;</source>
         <translation>Может быть указана только одна команда: &apos;%s&apos;</translation>
     </message>
@@ -4033,45 +4033,45 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         <location filename="../VBoxManageDisk.cpp" line="439"/>
         <location filename="../VBoxManageDisk.cpp" line="1071"/>
         <location filename="../VBoxManageDisk.cpp" line="1270"/>
-        <location filename="../VBoxManageDisk.cpp" line="2610"/>
+        <location filename="../VBoxManageDisk.cpp" line="2612"/>
         <source>Invalid medium variant &apos;%s&apos;</source>
         <translation>Недопустимый вариант носителя &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../VBoxManageDisk.cpp" line="443"/>
-        <location filename="../VBoxManageDisk.cpp" line="807"/>
+        <location filename="../VBoxManageDisk.cpp" line="805"/>
         <location filename="../VBoxManageDisk.cpp" line="1085"/>
         <location filename="../VBoxManageDisk.cpp" line="1286"/>
         <location filename="../VBoxManageDisk.cpp" line="1705"/>
-        <location filename="../VBoxManageDisk.cpp" line="1821"/>
-        <location filename="../VBoxManageDisk.cpp" line="2033"/>
+        <location filename="../VBoxManageDisk.cpp" line="1820"/>
+        <location filename="../VBoxManageDisk.cpp" line="2035"/>
         <source>Invalid parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../VBoxManageDisk.cpp" line="449"/>
-        <location filename="../VBoxManageDisk.cpp" line="814"/>
+        <location filename="../VBoxManageDisk.cpp" line="812"/>
         <location filename="../VBoxManageDisk.cpp" line="1712"/>
-        <location filename="../VBoxManageDisk.cpp" line="1828"/>
-        <location filename="../VBoxManageDisk.cpp" line="2040"/>
+        <location filename="../VBoxManageDisk.cpp" line="1827"/>
+        <location filename="../VBoxManageDisk.cpp" line="2042"/>
         <source>Invalid option -%c</source>
         <translation>Недопустимая опция -%c</translation>
     </message>
     <message>
         <location filename="../VBoxManageDisk.cpp" line="451"/>
-        <location filename="../VBoxManageDisk.cpp" line="816"/>
+        <location filename="../VBoxManageDisk.cpp" line="814"/>
         <location filename="../VBoxManageDisk.cpp" line="1714"/>
-        <location filename="../VBoxManageDisk.cpp" line="1830"/>
-        <location filename="../VBoxManageDisk.cpp" line="2042"/>
+        <location filename="../VBoxManageDisk.cpp" line="1829"/>
+        <location filename="../VBoxManageDisk.cpp" line="2044"/>
         <source>Invalid option case %i</source>
         <translation>Недопустимый вариант опции %i</translation>
     </message>
     <message>
         <location filename="../VBoxManageDisk.cpp" line="454"/>
-        <location filename="../VBoxManageDisk.cpp" line="819"/>
+        <location filename="../VBoxManageDisk.cpp" line="817"/>
         <location filename="../VBoxManageDisk.cpp" line="1717"/>
-        <location filename="../VBoxManageDisk.cpp" line="1833"/>
-        <location filename="../VBoxManageDisk.cpp" line="2045"/>
+        <location filename="../VBoxManageDisk.cpp" line="1832"/>
+        <location filename="../VBoxManageDisk.cpp" line="2047"/>
         <source>unknown option: %s
 </source>
         <translation>неизвестная опция: %s
@@ -4079,11 +4079,11 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
     </message>
     <message>
         <location filename="../VBoxManageDisk.cpp" line="458"/>
-        <location filename="../VBoxManageDisk.cpp" line="823"/>
+        <location filename="../VBoxManageDisk.cpp" line="821"/>
         <location filename="../VBoxManageDisk.cpp" line="1101"/>
         <location filename="../VBoxManageDisk.cpp" line="1721"/>
-        <location filename="../VBoxManageDisk.cpp" line="1837"/>
-        <location filename="../VBoxManageDisk.cpp" line="2049"/>
+        <location filename="../VBoxManageDisk.cpp" line="1836"/>
+        <location filename="../VBoxManageDisk.cpp" line="2051"/>
         <source>error: %Rrs</source>
         <translation>ошибка: %Rrs</translation>
     </message>
@@ -4127,36 +4127,36 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="726"/>
+        <location filename="../VBoxManageDisk.cpp" line="725"/>
         <source>Invalid medium type &apos;%s&apos;</source>
         <translation>Недопустимый тип носителя &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="733"/>
+        <location filename="../VBoxManageDisk.cpp" line="732"/>
         <source>Invalid autoreset parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр автосброса &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="756"/>
+        <location filename="../VBoxManageDisk.cpp" line="757"/>
         <source>Invalid --property argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --property &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="763"/>
+        <location filename="../VBoxManageDisk.cpp" line="761"/>
         <source>Error: Failed to allocate memory for medium property &apos;%s&apos;
 </source>
         <translation>Ошибка: Не удалось выделить память для свойства носителя &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="831"/>
+        <location filename="../VBoxManageDisk.cpp" line="829"/>
         <location filename="../VBoxManageDisk.cpp" line="1730"/>
         <location filename="../VBoxManageDisk.cpp" line="1845"/>
         <source>Medium name or UUID required</source>
         <translation>Требуется имя или UUID носителя</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="842"/>
+        <location filename="../VBoxManageDisk.cpp" line="840"/>
         <source>No operation specified</source>
         <translation>Не указана операция</translation>
     </message>
@@ -4626,12 +4626,12 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         <translation>базовый</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1870"/>
+        <location filename="../VBoxManageDisk.cpp" line="1872"/>
         <source>Failed to delete medium</source>
         <translation>Не удалось удалить носитель</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1873"/>
+        <location filename="../VBoxManageDisk.cpp" line="1875"/>
         <source>Failed to delete medium. Error code %Rhrc</source>
         <translation>Не удалось удалить носитель. Код ошибки %Rhrc</translation>
     </message>
@@ -4640,133 +4640,133 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         <translation type="vanished">Не удалось удалить носитель. Код ошибки %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1909"/>
+        <location filename="../VBoxManageDisk.cpp" line="1911"/>
         <source>unexpected parameter %s
 </source>
         <translation>неожиданный параметр %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1922"/>
+        <location filename="../VBoxManageDisk.cpp" line="1924"/>
         <source>Missing action</source>
         <translation>Отсутствует действие</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1928"/>
+        <location filename="../VBoxManageDisk.cpp" line="1930"/>
         <source>Invalid action given: %s</source>
         <translation>Указано недопустимое действие: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="1934"/>
+        <location filename="../VBoxManageDisk.cpp" line="1936"/>
         <source>Invalid number of arguments given for action: %s</source>
         <translation>Недопустимое число аргументов, указанное для действия: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2054"/>
+        <location filename="../VBoxManageDisk.cpp" line="2056"/>
         <source>Disk name or UUID required</source>
         <translation>Требуется имя или UUID диска</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2057"/>
+        <location filename="../VBoxManageDisk.cpp" line="2059"/>
         <source>No password specified</source>
         <translation>Не указан пароль</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2061"/>
+        <location filename="../VBoxManageDisk.cpp" line="2063"/>
         <source>A new password must always have a valid identifier set at the same time</source>
         <translation>Новый пароль должен всегда иметь действительный идентификатор заданный в то же время</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2068"/>
+        <location filename="../VBoxManageDisk.cpp" line="2070"/>
         <source>Enter new password:</source>
         <translation>Введите новый пароль:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2077"/>
+        <location filename="../VBoxManageDisk.cpp" line="2079"/>
         <source>Failed to read new password from file</source>
         <translation>Не удалось прочесть новый пароль из файла</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2088"/>
+        <location filename="../VBoxManageDisk.cpp" line="2090"/>
         <source>Enter old password:</source>
         <translation>Введите старый пароль:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2097"/>
+        <location filename="../VBoxManageDisk.cpp" line="2099"/>
         <source>Failed to read old password from file</source>
         <translation>Не удалось прочесть старый пароль из файла</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2110"/>
-        <location filename="../VBoxManageDisk.cpp" line="2169"/>
+        <location filename="../VBoxManageDisk.cpp" line="2112"/>
+        <location filename="../VBoxManageDisk.cpp" line="2171"/>
         <source>Invalid hard disk reference, avoiding crash</source>
         <translation>Недопустимая ссылка на жесткий диск, предотвращение краха</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2121"/>
+        <location filename="../VBoxManageDisk.cpp" line="2123"/>
         <source>Encrypt hard disk operation is not implemented!</source>
         <translation>Операция шифрования жесткого диска не реализована!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2123"/>
+        <location filename="../VBoxManageDisk.cpp" line="2125"/>
         <source>Encrypt hard disk operation for this cipher is not implemented yet!</source>
         <translation>Операция шфирования жесткого диска для этого шифра еще не реализована!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2125"/>
+        <location filename="../VBoxManageDisk.cpp" line="2127"/>
         <source>Failed to encrypt hard disk</source>
         <translation>Не удалось зашифровать жесткий диск</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2127"/>
+        <location filename="../VBoxManageDisk.cpp" line="2129"/>
         <source>Failed to encrypt hard disk!</source>
         <translation>Не удалось зашифровать жесткий диск!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2141"/>
+        <location filename="../VBoxManageDisk.cpp" line="2143"/>
         <source>Invalid number of arguments: %d</source>
         <translation>Неправильное количество аргументов: %d</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2148"/>
+        <location filename="../VBoxManageDisk.cpp" line="2150"/>
         <source>Enter password:</source>
         <translation>Введите пароль:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2157"/>
+        <location filename="../VBoxManageDisk.cpp" line="2159"/>
         <source>Failed to read password from file</source>
         <translation>Не удалось прочесть пароль из файла</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2173"/>
+        <location filename="../VBoxManageDisk.cpp" line="2175"/>
         <source>The given password is correct
 </source>
         <translation>Указанный пароль - корректный
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2251"/>
+        <location filename="../VBoxManageDisk.cpp" line="2253"/>
         <source>No medium specified!</source>
         <translation>Не указан носитель!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2262"/>
+        <location filename="../VBoxManageDisk.cpp" line="2264"/>
         <source>Enter encryption password:</source>
         <translation>Введите пароль для шифрования:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2414"/>
-        <location filename="../VBoxManageDisk.cpp" line="2635"/>
+        <location filename="../VBoxManageDisk.cpp" line="2416"/>
+        <location filename="../VBoxManageDisk.cpp" line="2637"/>
         <source>Error opening &apos;%s&apos; for writing: %Rrc</source>
         <translation>Не удалось открыть &apos;%s&apos; для записи: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2430"/>
+        <location filename="../VBoxManageDisk.cpp" line="2432"/>
         <source>Specified offset (%#RX64) is beyond the end of the medium (%#RX64)</source>
         <translation>Указанная позиция (%#RX64) выходит за границу носителя (%#RX64)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageDisk.cpp" line="2460"/>
+        <location filename="../VBoxManageDisk.cpp" line="2462"/>
         <source>Read(%zu bytes at %#RX64)</source>
         <translation>
             <numerusform>Чтение (%zu байт, позиция %#RX64)</numerusform>
@@ -4775,20 +4775,20 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2489"/>
+        <location filename="../VBoxManageDisk.cpp" line="2491"/>
         <source>**********  &lt;ditto x %RU64&gt;
 </source>
         <translation>**********  &lt;то же самое x %RU64&gt;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2538"/>
-        <location filename="../VBoxManageDisk.cpp" line="2678"/>
+        <location filename="../VBoxManageDisk.cpp" line="2540"/>
+        <location filename="../VBoxManageDisk.cpp" line="2680"/>
         <source>Error writing to &apos;%s&apos;: %Rrc</source>
         <translation>Ошибка при записи в &apos;%s&apos;: %Rrc</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageDisk.cpp" line="2546"/>
+        <location filename="../VBoxManageDisk.cpp" line="2548"/>
         <source>Expected read() at offset %RU64 (%#RX64) to return %#zx bytes, only got %#zx!
 </source>
         <translation>
@@ -4801,8 +4801,8 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageDisk.cpp" line="2562"/>
-        <location filename="../VBoxManageDisk.cpp" line="2699"/>
+        <location filename="../VBoxManageDisk.cpp" line="2564"/>
+        <location filename="../VBoxManageDisk.cpp" line="2701"/>
         <source>Error closing &apos;%s&apos;: %Rrc</source>
         <translation>Ошибка при закрытии &apos;%s&apos;: %Rrc</translation>
     </message>
@@ -4961,6 +4961,8 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
     </message>
     <message>
         <location filename="../VBoxManageGuestCtrl.cpp" line="464"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2388"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2391"/>
         <source>directory</source>
         <translation>директория</translation>
     </message>
@@ -4971,6 +4973,8 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
     </message>
     <message>
         <location filename="../VBoxManageGuestCtrl.cpp" line="466"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2388"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2391"/>
         <source>file</source>
         <translation>файл</translation>
     </message>
@@ -5010,7 +5014,7 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
     </message>
     <message>
         <location filename="../VBoxManageGuestCtrl.cpp" line="584"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3466"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3454"/>
         <source>Out of memory</source>
         <translation>Не хватает памяти</translation>
     </message>
@@ -5259,30 +5263,30 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1711"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1709"/>
         <source>No sources specified!</source>
         <translation>Не указан источник!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1719"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2213"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1717"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2207"/>
         <source>No destination specified!</source>
         <translation>Не указано назначение!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1728"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1726"/>
         <source>RTPathAbs failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTPathAbs завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1741"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1739"/>
         <source>Copying from host to guest ...
 </source>
         <translation>Копирование из хоста в гостевую систему...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1743"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1741"/>
         <source>Copying from guest to host ...
 </source>
         <translation>Копирование из гостевой системы в хост...
@@ -5319,144 +5323,120 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         <translation type="vanished">FsObjQueryInfo завершен с ошибкой на &apos;%s&apos;: %Rhrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1840"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1838"/>
         <source>File copy failed</source>
         <translation>Не удалось скопировать файл</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1906"/>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1904"/>
         <source>Creating %RU32 directories...
 </source>
-        <translation>
-            <numerusform>Создание %RU32 директории...
-</numerusform>
-            <numerusform>Создание %RU32 директорий...
-</numerusform>
-            <numerusform>Создание %RU32 директорий...
-</numerusform>
-        </translation>
+        <translation type="unfinished">Создание %RU32 директории...
+</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1910"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1907"/>
         <source>mkdir was interrupted by Ctrl-C (%u left)
 </source>
         <translation>mkdir прерван через Ctrl-C (%u осталось)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1923"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1920"/>
         <source>Creating directory &quot;%s&quot; ...
 </source>
         <translation>Создание директории &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1934"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2018"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2139"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1931"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2013"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2133"/>
         <source>Out of memory
 </source>
         <translation>Не хватает памяти
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1944"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1941"/>
         <source>No directory to create specified!</source>
         <translation>Не указана директория для создания!</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1992"/>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1989"/>
         <source>Removing %RU32 directory tree(s)...
 </source>
-        <translation>
-            <numerusform>Удаление %RU32 дерева директорий...
-</numerusform>
-            <numerusform>Удаление %RU32 деревьев директорий...
-</numerusform>
-            <numerusform>Удаление %RU32 деревьев директорий...
-</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1995"/>
-        <source>Removing %RU32 directorie(s)...
-</source>
-        <translation>
-            <numerusform>Удаление %RU32 директории...
-</numerusform>
-            <numerusform>Удаление %RU32 директорий...
-</numerusform>
-            <numerusform>Удаление %RU32 директорий...
-</numerusform>
-        </translation>
+        <translation type="unfinished">Удаление %RU32 дерева директорий...
+</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2000"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1991"/>
+        <source>Removing %RU32 directorie(s)...
+</source>
+        <translation type="unfinished">Удаление %RU32 директории...
+</translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1995"/>
         <source>rmdir was interrupted by Ctrl-C (%u left)
 </source>
         <translation>rmdir прерван через Ctrl-C (%u осталось)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2011"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2006"/>
         <source>Removing directory &quot;%s&quot; ...
 </source>
         <translation>Удаление директории &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2030"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2025"/>
         <source>Recursively removing directory &quot;%s&quot; ...
 </source>
         <translation>Рекурсивное удаление директории &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2048"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2043"/>
         <source>Directory deletion failed</source>
         <translation>Не удалось удалить директорию</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2054"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2049"/>
         <source>Out of memory during recursive rmdir
 </source>
         <translation>Не хватает памяти для рекурсивного rmdir
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2072"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2067"/>
         <source>No directory to remove specified!</source>
         <translation>Не указана директория для удаления!</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2112"/>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2107"/>
         <source>Removing %RU32 file(s)...
 </source>
-        <translation>
-            <numerusform>Удаление %RU32 файла...
-</numerusform>
-            <numerusform>Удаление %RU32 файлов...
-</numerusform>
-            <numerusform>Удаление %RU32 файлов...
-</numerusform>
-        </translation>
+        <translation type="unfinished">Удаление %RU32 файла...
+</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2116"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2110"/>
         <source>rm was interrupted by Ctrl-C (%u left)
 </source>
         <translation>rm прерван через Ctrl-C (%u осталось)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2127"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2121"/>
         <source>Removing file &quot;%s&quot; ...
 </source>
         <translation>Удаление файла &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2149"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2143"/>
         <source>No file to remove specified!</source>
         <translation>Не указан файл для удаления!</translation>
     </message>
@@ -5518,59 +5498,59 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1795"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1793"/>
         <source>Source &apos;%s&apos; is a %s
 </source>
         <translation>Источник &apos;%s&apos; - %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="1812"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="1810"/>
         <source>Error looking file system information for source &apos;%s&apos;, vrc=%Rrc</source>
         <translation>Ошибка поиска информации файловой системы для источника &apos;%s&apos;, vrc=%Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2207"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2201"/>
         <source>Failed to initialize, vrc=%Rrc
 </source>
         <translation>Не удалось проинициализировать, vrc=%Rrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2211"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2205"/>
         <source>No source(s) to move specified!</source>
         <translation>Не указан источник(и) для перемещения!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2232"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2226"/>
         <source>Destination does not exist
 </source>
         <translation>Назначение не существует
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2242"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2236"/>
         <source>Destination must be a directory when specifying multiple sources
 </source>
         <translation>Назначение должно быть директорией когда указываются несколько источников
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2246"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2240"/>
         <source>Unable to determine destination type: %Rhrc
 </source>
         <translation>Невозможно определить тип назначения: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2255"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2249"/>
         <source>Renaming %RU32 %s ...
 </source>
         <translation>Переименование %RU32 %s ...
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2256"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2250"/>
         <source>sources</source>
         <translation>
             <numerusform>источника</numerusform>
@@ -5579,378 +5559,386 @@ TTL:       %RU64 сек, сейчас %RU64 сек осталось
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2256"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2250"/>
         <source>source</source>
         <translation>источника</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2271"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2265"/>
         <source>Cannot stat &quot;%s&quot;: No such file or directory
 </source>
         <translation>Невозможно получить информацию &quot;%s&quot;: Нет такого файла или директории
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2288"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2282"/>
         <source>Renaming %s &quot;%s&quot; to &quot;%s&quot; ...
 </source>
         <translation>Переименование %s &quot;%s&quot; в &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2289"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2283"/>
         <source>directory</source>
         <comment>object</comment>
         <translation>директории</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2289"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2283"/>
         <source>file</source>
         <comment>object</comment>
         <translation>файла</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2308"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2302"/>
         <source>Warning: Not all sources were renamed
 </source>
         <translation>Предупреждение: Не все источники переименованы
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2367"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2361"/>
         <source>More than one template specified!
 </source>
         <translation>Указано более одного шаблона!
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2376"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2370"/>
         <source>No template specified!</source>
         <translation>Шаблоны не указаны!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2380"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2374"/>
         <source>Creating temporary files is currently not supported!</source>
         <translation>Создание временных файлов сейчас не поддерживается!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2393"/>
         <source>Creating temporary directory from template &apos;%s&apos; in directory &apos;%s&apos; ...
 </source>
-        <translation>Создание временной директории из шаблона &apos;%s&apos; в директории &apos;%s&apos; ...
+        <translation type="vanished">Создание временной директории из шаблона &apos;%s&apos; в директории &apos;%s&apos; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2396"/>
         <source>Creating temporary directory from template &apos;%s&apos; in default temporary directory ...
 </source>
-        <translation>Создание временной директории из шаблона &apos;%s&apos; во временной директории по умолчанию...
+        <translation type="vanished">Создание временной директории из шаблона &apos;%s&apos; во временной директории по умолчанию...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2399"/>
         <source>Creating temporary file from template &apos;%s&apos; in directory &apos;%s&apos; ...
 </source>
-        <translation>Создание врменного файла из шаблона &apos;%s&apos; в директории &apos;%s&apos; ...
+        <translation type="vanished">Создание врменного файла из шаблона &apos;%s&apos; в директории &apos;%s&apos; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2402"/>
         <source>Creating temporary file from template &apos;%s&apos; in default temporary directory ...
 </source>
-        <translation>Создание временного файла из шаблона &apos;%s&apos; во временной директории по умолчанию...
+        <translation type="vanished">Создание временного файла из шаблона &apos;%s&apos; во временной директории по умолчанию...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2415"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2387"/>
+        <source>Creating temporary %s from template &apos;%s&apos; in directory &apos;%s&apos; ...
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2390"/>
+        <source>Creating temporary %s from template &apos;%s&apos; in default temporary directory ...
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2403"/>
         <source>Directory name: %ls
 </source>
         <translation>Имя директории: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2521"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2509"/>
         <source>No path specified to query information for!</source>
         <translation>Не указан путь для запроса информации!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2538"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2526"/>
         <source>Filesystem</source>
         <translation>Файловая система</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2539"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2527"/>
         <source>Total</source>
         <translation>Всего</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2539"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2527"/>
         <source>Used</source>
         <translation>Использовано</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2539"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2527"/>
         <source>Avail</source>
         <translation>Доступно</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2540"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2528"/>
         <source>Use%</source>
         <translation>% использования</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2542"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2530"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2662"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2650"/>
         <source>Command &quot;%s&quot; not implemented yet!</source>
         <translation>Команда &quot;%s&quot; еще не реализована!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2670"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2658"/>
         <source>Nothing to stat!</source>
         <translation>Нет объекта для запроса информации!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2683"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2671"/>
         <source>Checking for element &quot;%s&quot; ...
 </source>
         <translation>Проверка элемента &quot;%s&quot; ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2693"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2681"/>
         <source>Failed to stat &apos;%s&apos;: No such file
 </source>
         <translation>Не удалось получить информацию для &apos;%s&apos;: Нет такого файла
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2698"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2686"/>
         <source>  File: &apos;%s&apos;
 </source>
         <translation>  Файл: &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2733"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2721"/>
         <source>  Size: %-17RU64 Alloc: %-19RU64 Type: %s
 </source>
         <translation>  Размер: %-17RU64 Выделено: %-19RU64 Тип: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2735"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2723"/>
         <source>Device: %#-17RX32 INode: %-18RU64 Links: %u
 </source>
         <translation>Устройство: %#-17RX32 INode: %-18RU64 Ссылки: %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2746"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2734"/>
         <source>  Mode: %-16s Attrib: %-17s Dev ID: %#RX32
 </source>
         <translation>  Режим: %-16s Аттрибуты: %-17s ID устройства: %#RX32
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2748"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2736"/>
         <source>  Mode: %-16s Attrib: %s
 </source>
         <translation>  Режим: %-16s Аттрибуты: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2750"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2738"/>
         <source> Owner: %4d/%-12ls Group: %4d/%ls
 </source>
         <translation> Владелец: %4d/%-12ls Группа: %4d/%ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2754"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2742"/>
         <source> Birth: %s
 </source>
         <translation> Создан: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2756"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2744"/>
         <source>Change: %s
 </source>
         <translation>Изменен: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2758"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2746"/>
         <source>Modify: %s
 </source>
         <translation>Модифицирован: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2760"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2748"/>
         <source>Access: %s
 </source>
         <translation>Доступ: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2813"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2801"/>
         <source>Current run level is %RU32
 </source>
         <translation>Текущий уровень выполнения %RU32
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2820"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2808"/>
         <source>Waiting for run level %RU32 ...
 </source>
         <translation>Ожидание уровня выполнения %RU32 ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2833"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3784"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2821"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3772"/>
         <source>Waiting failed with %Rrc
 </source>
         <translation>Ожидание завершено с ошибкой %Rrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2839"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2827"/>
         <source>Run level %RU32 reached
 </source>
         <translation>Уровень выполнения %RU32 достигнут
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2848"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2836"/>
         <source>Run level %RU32 not reached within time
 </source>
         <translation>Уровень выполнения %RU32 не достигнут за отведенное время
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2934"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2922"/>
         <source>RTPathAbsCxx failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTPathAbsCxx завершился с ошибкой &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2963"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2951"/>
         <source>Updating Guest Additions ...
 </source>
         <translation>Обновление Дополнений Гостевой ОС...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2979"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2967"/>
         <source>No Guest Additions source found or specified, aborting
 </source>
         <translation>Не найден и не указан источник Дополнений Гостевой ОС, прерывание
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2984"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2972"/>
         <source>Source &quot;%s&quot; does not exist!
 </source>
         <translation>Источник &quot;%s&quot; не существует!
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="2995"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2983"/>
         <source>OS type:</source>
         <translation>Тип ОС:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3000"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="2988"/>
         <source>Additions run level:</source>
         <translation>Уровень выполнения Дополнений:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3012"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3000"/>
         <source>Additions version:</source>
         <translation>Версия Дополнений:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3020"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3008"/>
         <source>Using source: %s
 </source>
         <translation>Используемый источник: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3029"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3017"/>
         <source>Waiting for current Guest Additions inside VM getting ready for updating ...
 </source>
         <translation>Ожидание готовности текущих Дополнений Гостевой ОС внутри ВМ для обновления...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3050"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3038"/>
         <source>Guest Additions %lsr%RU64 currently installed, waiting for Guest Additions installer to start ...
 </source>
         <translation>Сейчас установлены Дополнения Гостевой ОС %lsr%RU64, ожидание запуска инсталлятора Дополнений Гостевой ОС...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3074"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3062"/>
         <source>Guest Additions update failed</source>
         <translation>Не удалось обновить Дополнения Гостевой ОС</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3079"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3067"/>
         <source>Guest Additions update successful.
 </source>
         <translation>Дополнения Гостевой ОС успешно обновлены.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3084"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3072"/>
         <source>Rebooting guest ...
 </source>
         <translation>Перезагрузка гостевой системы...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3092"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3080"/>
         <source>Current installed Guest Additions don&apos;t support automatic rebooting. Please reboot manually.
 </source>
         <translation>Установленные сейчас Дополнения Гостевой ОС не поддерживают автоматичскую перезагрузку. Пожалуйста, перезагрузите вручную.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3104"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3092"/>
         <source>Waiting for new Guest Additions inside VM getting ready ...
 </source>
         <translation>Ожидание готовности новых Дополнений Гостевой ОС внутри ВМ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3112"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3100"/>
         <source>Verifying Guest Additions update ...
 </source>
         <translation>Проверка обновления Дополнений Гостевой ОС...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3131"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3119"/>
         <source>Old Guest Additions: %ls%RU64
 </source>
         <translation>Старые Дополнения Гостевой ОС: %ls%RU64
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3133"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3121"/>
         <source>New Guest Additions: %ls%RU64
 </source>
         <translation>Новые Дополнения Гостевой ОС: %ls%RU64
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3138"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3126"/>
         <source>
 Error updating Guest Additions, please check guest installer log
 </source>
@@ -5959,7 +5947,7 @@ Error updating Guest Additions, please check guest installer log
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3143"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3131"/>
         <source>
 WARNING: Guest Additions were downgraded
 </source>
@@ -5968,62 +5956,62 @@ WARNING: Guest Additions were downgraded
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3150"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3138"/>
         <source>The guest needs to be restarted in order to make use of the updated Guest Additions.
 </source>
         <translation>Гостевую систему надо перезагрузить для использования новых Дополнений Гостевой ОС.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3223"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3211"/>
         <source>Invalid run level specified. Valid values are: system, userland, desktop</source>
         <translation>Указан недопустимый уровень выполнения. Допустимые значения: system, userland, desktop</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3237"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3225"/>
         <source>Missing run level to wait for</source>
         <translation>Отсутствует уровень выполнения для ожидания</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3284"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3272"/>
         <source>Unknown list: &apos;%s&apos;</source>
         <translation>Неизвестный список: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3294"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3282"/>
         <source>Missing list name</source>
         <translation>Отсутствует имя списка</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3315"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3303"/>
         <source>Active guest sessions:
 </source>
         <translation>Активные гостевые сессии:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3334"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3322"/>
         <source>
 	Session #%-3zu ID=%-3RU32 User=%-16ls Status=[%s] Name=%ls</source>
         <translation>
 	Сессия #%-3zu ID=%-3RU32 Пользователь=%-16ls Статус=[%s] Имя=%ls</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3357"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3345"/>
         <source>
 		Process #%-03zu PID=%-6RU32 Status=[%s] Command=%ls</source>
         <translation>
 		Процесс#%-03zu PID=%-6RU32 Статус=[%s] Команда=%ls</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3385"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3373"/>
         <source>
 		File #%-03zu ID=%-6RU32 Status=[%s] Name=%ls</source>
         <translation>
 		Файл #%-03zu ID=%-6RU32 Статус=[%s] Имя=%ls</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3396"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3384"/>
         <source>
 
 Total guest sessions: %zu
@@ -6034,76 +6022,76 @@ Total guest sessions: %zu
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3398"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3386"/>
         <source>Total guest processes: %zu
 </source>
         <translation>Всего гостевых процессов: %zu
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3400"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3388"/>
         <source>Total guest files: %zu
 </source>
         <translation>Всего гостевых файлов: %zu
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3403"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3391"/>
         <source>No active guest sessions found
 </source>
         <translation>Не найдено активных гостевых сессий
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3470"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3458"/>
         <source>Invalid PID value: 0</source>
         <translation>Недопустимое значение PID: 0</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3473"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3461"/>
         <source>Error parsing PID value: %Rrc</source>
         <translation>Ошибка при разборе значения PID: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3483"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3471"/>
         <source>At least one PID must be specified to kill!</source>
         <translation>Нужно указать хотя бы один PID, который надо убить!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3487"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3641"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3475"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3629"/>
         <source>No session ID specified!</source>
         <translation>Не указан ID сессии!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3491"/>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3645"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3479"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3633"/>
         <source>Either session ID or name (pattern) must be specified</source>
         <translation>Нужно указать либо ID сессии либо имя (шаблон)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3554"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3542"/>
         <source>Terminating process (PID %RU32) (session ID %RU32) ...
 </source>
         <translation>Завершение процесса (PID %RU32) (ID сессии %RU32) ...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3562"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3550"/>
         <source>No matching process(es) for session ID %RU32 found
 </source>
         <translation>Не найдено соответствующих процессов для ID сессии %RU32
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3574"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3562"/>
         <source>No matching session(s) found
 </source>
         <translation>Не найдено соответствующих сессий
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3577"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3565"/>
         <source>%RU32 process(es) terminated
 </source>
         <translation>
@@ -6116,45 +6104,45 @@ Total guest sessions: %zu
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3683"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3671"/>
         <source>Closing guest session ID=#%RU32 &quot;%s&quot; ...
 </source>
         <translation>Закрытие гостевой сессии ID=#%RU32 &quot;%s&quot;...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3687"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3675"/>
         <source>Guest session successfully closed
 </source>
         <translation>Гостевая сессия успешно закрыта
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3695"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3683"/>
         <source>No guest session(s) found
 </source>
         <translation>Не найдено гостевых сессий
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3773"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3761"/>
         <source>Waiting for events ...
 </source>
         <translation>Ожидание событий...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3928"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3916"/>
         <source>Unknown sub-command: &apos;%s&apos;</source>
         <translation>Неизвестная подкоманда: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3937"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3925"/>
         <source>Missing sub-command</source>
         <translation>Отсутствует подкоманда</translation>
     </message>
     <message>
-        <location filename="../VBoxManageGuestCtrl.cpp" line="3939"/>
+        <location filename="../VBoxManageGuestCtrl.cpp" line="3927"/>
         <source>Missing VM name and sub-command</source>
         <translation>Отсутствует имя ВМ и подкоманда</translation>
     </message>
@@ -6518,22 +6506,22 @@ Syntax error: %N
         <translation>Неизвестная подкоманда: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageHostonly.cpp" line="420"/>
+        <location filename="../VBoxManageHostonly.cpp" line="419"/>
         <source>The --name parameter must be specified</source>
         <translation>Параметр --name должен быть указан</translation>
     </message>
     <message>
-        <location filename="../VBoxManageHostonly.cpp" line="422"/>
+        <location filename="../VBoxManageHostonly.cpp" line="421"/>
         <source>The --netmask parameter must be specified</source>
         <translation>Параметр --netmask должен быть указан</translation>
     </message>
     <message>
-        <location filename="../VBoxManageHostonly.cpp" line="424"/>
+        <location filename="../VBoxManageHostonly.cpp" line="423"/>
         <source>The --lower-ip parameter must be specified</source>
         <translation>Параметр --lower-ip должен быть указан</translation>
     </message>
     <message>
-        <location filename="../VBoxManageHostonly.cpp" line="426"/>
+        <location filename="../VBoxManageHostonly.cpp" line="425"/>
         <source>The --upper-ip parameter must be specified</source>
         <translation>Параметр --upper-ip должен быть указан</translation>
     </message>
@@ -6683,17 +6671,17 @@ Syntax error: %N
         <location filename="../VBoxManageInfo.cpp" line="426"/>
         <location filename="../VBoxManageInfo.cpp" line="456"/>
         <location filename="../VBoxManageInfo.cpp" line="709"/>
-        <location filename="../VBoxManageInfo.cpp" line="1256"/>
-        <location filename="../VBoxManageInfo.cpp" line="1276"/>
-        <location filename="../VBoxManageInfo.cpp" line="1904"/>
-        <location filename="../VBoxManageInfo.cpp" line="1958"/>
-        <location filename="../VBoxManageInfo.cpp" line="2527"/>
+        <location filename="../VBoxManageInfo.cpp" line="1259"/>
+        <location filename="../VBoxManageInfo.cpp" line="1279"/>
+        <location filename="../VBoxManageInfo.cpp" line="1927"/>
+        <location filename="../VBoxManageInfo.cpp" line="1982"/>
+        <location filename="../VBoxManageInfo.cpp" line="2567"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="407"/>
-        <location filename="../VBoxManageInfo.cpp" line="2853"/>
+        <location filename="../VBoxManageInfo.cpp" line="2889"/>
         <source>not active</source>
         <translation>неактивно</translation>
     </message>
@@ -6729,8 +6717,8 @@ Syntax error: %N
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="702"/>
-        <location filename="../VBoxManageInfo.cpp" line="1502"/>
-        <location filename="../VBoxManageInfo.cpp" line="2246"/>
+        <location filename="../VBoxManageInfo.cpp" line="1509"/>
+        <location filename="../VBoxManageInfo.cpp" line="2272"/>
         <source>Null</source>
         <translation>Пусто</translation>
     </message>
@@ -6741,7 +6729,7 @@ Syntax error: %N
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="704"/>
-        <location filename="../VBoxManageInfo.cpp" line="1392"/>
+        <location filename="../VBoxManageInfo.cpp" line="1398"/>
         <source>Network</source>
         <translation>Сеть</translation>
     </message>
@@ -6793,8 +6781,8 @@ Syntax error: %N
     <message>
         <location filename="../VBoxManageInfo.cpp" line="1026"/>
         <location filename="../VBoxManageInfo.cpp" line="1058"/>
-        <location filename="../VBoxManageInfo.cpp" line="2012"/>
-        <location filename="../VBoxManageInfo.cpp" line="2048"/>
+        <location filename="../VBoxManageInfo.cpp" line="2036"/>
+        <location filename="../VBoxManageInfo.cpp" line="2072"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
@@ -6806,21 +6794,21 @@ Syntax error: %N
     <message>
         <location filename="../VBoxManageInfo.cpp" line="1046"/>
         <location filename="../VBoxManageInfo.cpp" line="1088"/>
-        <location filename="../VBoxManageInfo.cpp" line="1526"/>
-        <location filename="../VBoxManageInfo.cpp" line="2006"/>
-        <location filename="../VBoxManageInfo.cpp" line="2043"/>
-        <location filename="../VBoxManageInfo.cpp" line="2225"/>
-        <location filename="../VBoxManageInfo.cpp" line="2226"/>
-        <location filename="../VBoxManageInfo.cpp" line="2227"/>
-        <location filename="../VBoxManageInfo.cpp" line="2384"/>
-        <location filename="../VBoxManageInfo.cpp" line="2413"/>
-        <location filename="../VBoxManageInfo.cpp" line="2972"/>
+        <location filename="../VBoxManageInfo.cpp" line="1540"/>
+        <location filename="../VBoxManageInfo.cpp" line="2030"/>
+        <location filename="../VBoxManageInfo.cpp" line="2067"/>
+        <location filename="../VBoxManageInfo.cpp" line="2249"/>
+        <location filename="../VBoxManageInfo.cpp" line="2250"/>
+        <location filename="../VBoxManageInfo.cpp" line="2251"/>
+        <location filename="../VBoxManageInfo.cpp" line="2402"/>
+        <location filename="../VBoxManageInfo.cpp" line="2433"/>
+        <location filename="../VBoxManageInfo.cpp" line="3009"/>
         <source>Unknown</source>
         <translation>Неизвестно</translation>
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="1063"/>
-        <location filename="../VBoxManageInfo.cpp" line="2240"/>
+        <location filename="../VBoxManageInfo.cpp" line="2266"/>
         <source>Default</source>
         <translation>По умолчанию</translation>
     </message>
@@ -6838,10 +6826,10 @@ Syntax error: %N
         <location filename="../VBoxManageInfo.cpp" line="95"/>
         <location filename="../VBoxManageInfo.cpp" line="118"/>
         <location filename="../VBoxManageInfo.cpp" line="141"/>
-        <location filename="../VBoxManageInfo.cpp" line="2353"/>
-        <location filename="../VBoxManageInfo.cpp" line="2464"/>
-        <location filename="../VBoxManageInfo.cpp" line="3020"/>
-        <location filename="../VBoxManageInfo.cpp" line="3022"/>
+        <location filename="../VBoxManageInfo.cpp" line="2389"/>
+        <location filename="../VBoxManageInfo.cpp" line="2504"/>
+        <location filename="../VBoxManageInfo.cpp" line="3057"/>
+        <location filename="../VBoxManageInfo.cpp" line="3059"/>
         <source>enabled</source>
         <translation>включено</translation>
     </message>
@@ -6849,12 +6837,12 @@ Syntax error: %N
         <location filename="../VBoxManageInfo.cpp" line="95"/>
         <location filename="../VBoxManageInfo.cpp" line="118"/>
         <location filename="../VBoxManageInfo.cpp" line="141"/>
-        <location filename="../VBoxManageInfo.cpp" line="1360"/>
-        <location filename="../VBoxManageInfo.cpp" line="1414"/>
-        <location filename="../VBoxManageInfo.cpp" line="2353"/>
-        <location filename="../VBoxManageInfo.cpp" line="2465"/>
-        <location filename="../VBoxManageInfo.cpp" line="3020"/>
-        <location filename="../VBoxManageInfo.cpp" line="3022"/>
+        <location filename="../VBoxManageInfo.cpp" line="1366"/>
+        <location filename="../VBoxManageInfo.cpp" line="1420"/>
+        <location filename="../VBoxManageInfo.cpp" line="2389"/>
+        <location filename="../VBoxManageInfo.cpp" line="2505"/>
+        <location filename="../VBoxManageInfo.cpp" line="3057"/>
+        <location filename="../VBoxManageInfo.cpp" line="3059"/>
         <source>disabled</source>
         <translation>выключено</translation>
     </message>
@@ -6867,9 +6855,9 @@ Syntax error: %N
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="893"/>
-        <location filename="../VBoxManageInfo.cpp" line="1640"/>
-        <location filename="../VBoxManageInfo.cpp" line="2687"/>
-        <location filename="../VBoxManageInfo.cpp" line="3123"/>
+        <location filename="../VBoxManageInfo.cpp" line="1651"/>
+        <location filename="../VBoxManageInfo.cpp" line="2727"/>
+        <location filename="../VBoxManageInfo.cpp" line="3160"/>
         <source>&lt;none&gt;</source>
         <translation>&lt;нет&gt;</translation>
     </message>
@@ -6928,287 +6916,287 @@ Syntax error: %N
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1148"/>
+        <location filename="../VBoxManageInfo.cpp" line="1137"/>
         <source>&quot;&lt;inaccessible&gt;&quot; {%s}
 </source>
         <translation>&quot;&lt;недоступно&gt;&quot; {%s}
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1154"/>
+        <location filename="../VBoxManageInfo.cpp" line="1143"/>
         <source>Name:            &lt;inaccessible!&gt;
 </source>
         <translation>Имя:            &lt;недоступно!&gt;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1163"/>
+        <location filename="../VBoxManageInfo.cpp" line="1152"/>
         <source>Config file:     %ls
 </source>
         <translation>Файл конфигурации:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1179"/>
+        <location filename="../VBoxManageInfo.cpp" line="1170"/>
         <source>Access error details:
 </source>
         <translation>Детали ошибки доступа:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1199"/>
+        <location filename="../VBoxManageInfo.cpp" line="1202"/>
         <source>Name:</source>
         <translation>Имя:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1213"/>
+        <location filename="../VBoxManageInfo.cpp" line="1216"/>
         <source>Groups:</source>
         <translation>Группы:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1221"/>
-        <location filename="../VBoxManageInfo.cpp" line="1223"/>
+        <location filename="../VBoxManageInfo.cpp" line="1224"/>
+        <location filename="../VBoxManageInfo.cpp" line="1226"/>
         <source>Guest OS:</source>
         <translation>Гостевая ОС:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1225"/>
+        <location filename="../VBoxManageInfo.cpp" line="1228"/>
         <source>Config file:</source>
         <translation>Файл конфигурации:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1226"/>
+        <location filename="../VBoxManageInfo.cpp" line="1229"/>
         <source>Snapshot folder:</source>
         <translation>Папка снимков:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1227"/>
+        <location filename="../VBoxManageInfo.cpp" line="1230"/>
         <source>Log folder:</source>
         <translation>Папка журналов:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1228"/>
+        <location filename="../VBoxManageInfo.cpp" line="1231"/>
         <source>Hardware UUID:</source>
         <translation>Аппаратный UUID:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1229"/>
+        <location filename="../VBoxManageInfo.cpp" line="1232"/>
         <source>Memory size:</source>
         <translation>Размер памяти:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1230"/>
+        <location filename="../VBoxManageInfo.cpp" line="1233"/>
         <source>Page Fusion:</source>
         <translation>Page Fusion:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1233"/>
+        <location filename="../VBoxManageInfo.cpp" line="1236"/>
         <source>VRAM size:</source>
         <translation>Размер VRAM:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1234"/>
+        <location filename="../VBoxManageInfo.cpp" line="1237"/>
         <source>CPU exec cap:</source>
         <translation>Процент выполнения ЦПУ:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1290"/>
+        <location filename="../VBoxManageInfo.cpp" line="1293"/>
         <source>HPET:</source>
         <translation>HPET:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1235"/>
+        <location filename="../VBoxManageInfo.cpp" line="1238"/>
         <source>CPUProfile:</source>
         <translation>Профиль ЦПУ:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1246"/>
+        <location filename="../VBoxManageInfo.cpp" line="1249"/>
         <source>invalid</source>
         <translation>недействительный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1259"/>
+        <location filename="../VBoxManageInfo.cpp" line="1262"/>
         <source>Chipset:</source>
         <translation>Чипсет:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1279"/>
+        <location filename="../VBoxManageInfo.cpp" line="1282"/>
         <source>Firmware:</source>
         <translation>Прошивка:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1281"/>
+        <location filename="../VBoxManageInfo.cpp" line="1284"/>
         <source>Number of CPUs:</source>
         <translation>Число ЦПУ:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1292"/>
+        <location filename="../VBoxManageInfo.cpp" line="1295"/>
         <source>Long Mode:</source>
         <translation>Длинный режим:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1293"/>
+        <location filename="../VBoxManageInfo.cpp" line="1296"/>
         <source>Triple Fault Reset:</source>
         <translation>Сброс Тройного Отказа:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1296"/>
+        <location filename="../VBoxManageInfo.cpp" line="1299"/>
         <source>Nested VT-x/AMD-V:</source>
         <translation>Вложенные Nested VT-x/AMD-V:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1346"/>
+        <location filename="../VBoxManageInfo.cpp" line="1352"/>
         <source>CPUID Portability Level:</source>
         <translation>Уровень Портативности CPUID:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1299"/>
+        <location filename="../VBoxManageInfo.cpp" line="1302"/>
         <source>CPUID overrides:</source>
         <translation>CPUID замены:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1312"/>
+        <location filename="../VBoxManageInfo.cpp" line="1315"/>
         <source>Leaf no.      EAX      EBX      ECX      EDX
 </source>
         <translation>Лист no.      EAX      EBX      ECX      EDX
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1324"/>
+        <location filename="../VBoxManageInfo.cpp" line="1327"/>
         <source>None
 </source>
         <translation>Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1366"/>
+        <location filename="../VBoxManageInfo.cpp" line="1372"/>
         <source>menu only</source>
         <translation>только меню</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1372"/>
+        <location filename="../VBoxManageInfo.cpp" line="1378"/>
         <source>message and menu</source>
         <translation>сообщения и меню</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1374"/>
+        <location filename="../VBoxManageInfo.cpp" line="1380"/>
         <source>Boot menu mode:</source>
         <translation>Режим загрузочного меню:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1386"/>
+        <location filename="../VBoxManageInfo.cpp" line="1392"/>
         <source>Floppy</source>
         <translation>Флоппи</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1390"/>
+        <location filename="../VBoxManageInfo.cpp" line="1396"/>
         <source>HardDisk</source>
         <translation>Жесткий Диск</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1396"/>
+        <location filename="../VBoxManageInfo.cpp" line="1402"/>
         <source>Shared Folder</source>
         <translation>Общая папка</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1398"/>
+        <location filename="../VBoxManageInfo.cpp" line="1404"/>
         <source>Not Assigned</source>
         <translation>Не назначено</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1399"/>
+        <location filename="../VBoxManageInfo.cpp" line="1405"/>
         <source>Boot Device %u:</source>
         <translation>Загрузочное устройство %u:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1430"/>
+        <location filename="../VBoxManageInfo.cpp" line="1436"/>
         <source>BIOS APIC mode:</source>
         <translation>Режим BIOS APIC:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1432"/>
+        <location filename="../VBoxManageInfo.cpp" line="1438"/>
         <source>Time offset:</source>
         <translation>Часовой пояс:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1432"/>
+        <location filename="../VBoxManageInfo.cpp" line="1438"/>
         <source>ms</source>
         <translation>мс</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1436"/>
+        <location filename="../VBoxManageInfo.cpp" line="1442"/>
         <source>BIOS NVRAM File:</source>
         <translation>Файл BIOS NVRAM:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1444"/>
+        <location filename="../VBoxManageInfo.cpp" line="1451"/>
         <source>RTC:</source>
         <translation>RTC:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1444"/>
+        <location filename="../VBoxManageInfo.cpp" line="1451"/>
         <source>local time</source>
         <translation>локальное время</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1326"/>
+        <location filename="../VBoxManageInfo.cpp" line="1329"/>
         <source>Hardware Virtualization:</source>
         <translation>Аппаратная Виртуализация:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1327"/>
+        <location filename="../VBoxManageInfo.cpp" line="1330"/>
         <source>Nested Paging:</source>
         <translation>Вложенные страницы:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1328"/>
+        <location filename="../VBoxManageInfo.cpp" line="1331"/>
         <source>Large Pages:</source>
         <translation>Большие Страницы:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1330"/>
+        <location filename="../VBoxManageInfo.cpp" line="1333"/>
         <source>VT-x Unrestricted Exec.:</source>
         <translation>VT-x Неограниченное выполнение:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1331"/>
+        <location filename="../VBoxManageInfo.cpp" line="1334"/>
         <source>AMD-V Virt. Vmsave/Vmload:</source>
         <translation>AMD-V Virt. Vmsave/Vmload:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1456"/>
+        <location filename="../VBoxManageInfo.cpp" line="1463"/>
         <source>Paravirt. Provider:</source>
         <translation>Паравиртуальный провайдер:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1461"/>
+        <location filename="../VBoxManageInfo.cpp" line="1468"/>
         <source>Effective Paravirt. Prov.:</source>
         <translation>Эффективный Паравиртуальный провайдер:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1466"/>
+        <location filename="../VBoxManageInfo.cpp" line="1473"/>
         <source>Paravirt. Debug:</source>
         <translation>Паравирутальная отладка:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1489"/>
+        <location filename="../VBoxManageInfo.cpp" line="1496"/>
         <source>%-28s %s (since %s)
 </source>
         <translation>%-28s %s (с %s)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1489"/>
+        <location filename="../VBoxManageInfo.cpp" line="1496"/>
         <source>State:</source>
         <translation>Состояние:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1533"/>
+        <location filename="../VBoxManageInfo.cpp" line="1547"/>
         <source>Graphics Controller:</source>
         <translation>Графический Контроллер:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1536"/>
+        <location filename="../VBoxManageInfo.cpp" line="1550"/>
         <source>Monitor count:</source>
         <translation>Число мониторов:</translation>
     </message>
@@ -7221,231 +7209,231 @@ Syntax error: %N
         <translation type="vanished">2D Видео Ускорение:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1541"/>
+        <location filename="../VBoxManageInfo.cpp" line="1552"/>
         <source>Teleporter Enabled:</source>
         <translation>Телепортер включен:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1542"/>
+        <location filename="../VBoxManageInfo.cpp" line="1553"/>
         <source>Teleporter Port:</source>
         <translation>Порт телепортера:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1543"/>
+        <location filename="../VBoxManageInfo.cpp" line="1554"/>
         <source>Teleporter Address:</source>
         <translation>Адрес телепортера:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1544"/>
+        <location filename="../VBoxManageInfo.cpp" line="1555"/>
         <source>Teleporter Password:</source>
         <translation>Пароль телепортера:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1545"/>
+        <location filename="../VBoxManageInfo.cpp" line="1556"/>
         <source>Tracing Enabled:</source>
         <translation>Трассировка включена:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1546"/>
+        <location filename="../VBoxManageInfo.cpp" line="1557"/>
         <source>Allow Tracing to Access VM:</source>
         <translation>Разрешить трассировке доступ к ВМ:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1547"/>
+        <location filename="../VBoxManageInfo.cpp" line="1558"/>
         <source>Tracing Configuration:</source>
         <translation>Конфигурация трассировки:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1548"/>
+        <location filename="../VBoxManageInfo.cpp" line="1559"/>
         <source>Autostart Enabled:</source>
         <translation>Автостарт включен:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1549"/>
+        <location filename="../VBoxManageInfo.cpp" line="1560"/>
         <source>Autostart Delay:</source>
         <translation>Задержка автостарта:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1550"/>
+        <location filename="../VBoxManageInfo.cpp" line="1561"/>
         <source>Default Frontend:</source>
         <translation>Фронтэнд по умолчанию:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1561"/>
+        <location filename="../VBoxManageInfo.cpp" line="1572"/>
         <source>flat</source>
         <translation>равномерный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1567"/>
+        <location filename="../VBoxManageInfo.cpp" line="1578"/>
         <source>low</source>
         <translation>низкий</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1573"/>
+        <location filename="../VBoxManageInfo.cpp" line="1584"/>
         <source>normal</source>
         <translation>нормальный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1579"/>
+        <location filename="../VBoxManageInfo.cpp" line="1590"/>
         <source>high</source>
         <translation>высокий</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1585"/>
+        <location filename="../VBoxManageInfo.cpp" line="1596"/>
         <source>default</source>
         <translation>по умолчанию</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1588"/>
+        <location filename="../VBoxManageInfo.cpp" line="1599"/>
         <source>VM process priority:</source>
         <translation>Приоритет процесса ВМ:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2909"/>
+        <location filename="../VBoxManageInfo.cpp" line="2946"/>
         <source>Recording status:</source>
         <translation>Статус записи:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2909"/>
+        <location filename="../VBoxManageInfo.cpp" line="2946"/>
         <source>started</source>
         <translation>запущена</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2909"/>
+        <location filename="../VBoxManageInfo.cpp" line="2946"/>
         <source>stopped</source>
         <translation>остановлена</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2913"/>
+        <location filename="../VBoxManageInfo.cpp" line="2950"/>
         <source>Recording enabled:</source>
         <translation>Запись включена:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2918"/>
+        <location filename="../VBoxManageInfo.cpp" line="2955"/>
         <source>Recording screens:</source>
         <translation>Записываемые экраны:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2924"/>
+        <location filename="../VBoxManageInfo.cpp" line="2961"/>
         <source>Screen %u:</source>
         <translation>Экран %u:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2925"/>
+        <location filename="../VBoxManageInfo.cpp" line="2962"/>
         <source> %s
 </source>
         <translation> %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2961"/>
+        <location filename="../VBoxManageInfo.cpp" line="2998"/>
         <source>    Enabled:</source>
         <translation>    Включен:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2963"/>
+        <location filename="../VBoxManageInfo.cpp" line="3000"/>
         <source>    ID:</source>
         <translation>    ID:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2964"/>
+        <location filename="../VBoxManageInfo.cpp" line="3001"/>
         <source>    Record video:</source>
         <translation>    Запись видео:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2967"/>
+        <location filename="../VBoxManageInfo.cpp" line="3004"/>
         <source>    Record audio:</source>
         <translation>    Запись аудио:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2970"/>
+        <location filename="../VBoxManageInfo.cpp" line="3007"/>
         <source>    Destination:</source>
         <translation>    Расположение:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2972"/>
+        <location filename="../VBoxManageInfo.cpp" line="3009"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2975"/>
+        <location filename="../VBoxManageInfo.cpp" line="3012"/>
         <source>    File:</source>
         <translation>    Файл:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2977"/>
+        <location filename="../VBoxManageInfo.cpp" line="3014"/>
         <source>    Options:</source>
         <translation>    Опции:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2981"/>
+        <location filename="../VBoxManageInfo.cpp" line="3018"/>
         <source>    Video dimensions:</source>
         <translation>    Размеры видео:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2982"/>
+        <location filename="../VBoxManageInfo.cpp" line="3019"/>
         <source>    Video rate:</source>
         <translation>    Качество видео:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2983"/>
+        <location filename="../VBoxManageInfo.cpp" line="3020"/>
         <source>    Video FPS:</source>
         <translation>    Частота кадров:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2983"/>
+        <location filename="../VBoxManageInfo.cpp" line="3020"/>
         <source>fps</source>
         <translation>кдр/сек</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3019"/>
+        <location filename="../VBoxManageInfo.cpp" line="3056"/>
         <source>VMMDev Testing</source>
         <translation>Тестирование VMMDev</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3020"/>
-        <location filename="../VBoxManageInfo.cpp" line="3022"/>
+        <location filename="../VBoxManageInfo.cpp" line="3057"/>
+        <location filename="../VBoxManageInfo.cpp" line="3059"/>
         <source>misconfigured</source>
         <translation>неправильно настроен</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3045"/>
+        <location filename="../VBoxManageInfo.cpp" line="3082"/>
         <source>* Snapshots:
 </source>
         <translation>* Снимки:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3054"/>
+        <location filename="../VBoxManageInfo.cpp" line="3091"/>
         <source>* Guest:
 </source>
         <translation>* Гостевая система:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3091"/>
-        <location filename="../VBoxManageInfo.cpp" line="3123"/>
+        <location filename="../VBoxManageInfo.cpp" line="3128"/>
+        <location filename="../VBoxManageInfo.cpp" line="3160"/>
         <source>Guest Facilities:</source>
         <translation>Средства гостевой системы:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1988"/>
-        <location filename="../VBoxManageInfo.cpp" line="1989"/>
-        <location filename="../VBoxManageInfo.cpp" line="2567"/>
-        <location filename="../VBoxManageInfo.cpp" line="2568"/>
+        <location filename="../VBoxManageInfo.cpp" line="2012"/>
+        <location filename="../VBoxManageInfo.cpp" line="2013"/>
+        <location filename="../VBoxManageInfo.cpp" line="2607"/>
+        <location filename="../VBoxManageInfo.cpp" line="2608"/>
         <source>on</source>
         <translation>вкл</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1988"/>
-        <location filename="../VBoxManageInfo.cpp" line="1989"/>
-        <location filename="../VBoxManageInfo.cpp" line="2567"/>
-        <location filename="../VBoxManageInfo.cpp" line="2568"/>
+        <location filename="../VBoxManageInfo.cpp" line="2012"/>
+        <location filename="../VBoxManageInfo.cpp" line="2013"/>
+        <location filename="../VBoxManageInfo.cpp" line="2607"/>
+        <location filename="../VBoxManageInfo.cpp" line="2608"/>
         <source>off</source>
         <translation>выкл</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1659"/>
+        <location filename="../VBoxManageInfo.cpp" line="1670"/>
         <source>NIC %u:</source>
         <translation>NIC %u:</translation>
     </message>
@@ -7480,20 +7468,20 @@ Syntax error: %N
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1668"/>
-        <location filename="../VBoxManageInfo.cpp" line="2090"/>
-        <location filename="../VBoxManageInfo.cpp" line="2196"/>
-        <location filename="../VBoxManageInfo.cpp" line="2574"/>
-        <location filename="../VBoxManageInfo.cpp" line="2606"/>
+        <location filename="../VBoxManageInfo.cpp" line="1679"/>
+        <location filename="../VBoxManageInfo.cpp" line="2114"/>
+        <location filename="../VBoxManageInfo.cpp" line="2220"/>
+        <location filename="../VBoxManageInfo.cpp" line="2614"/>
+        <location filename="../VBoxManageInfo.cpp" line="2646"/>
         <source>%-28s disabled
 </source>
         <translation>%-28s отключен
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1685"/>
-        <location filename="../VBoxManageInfo.cpp" line="1990"/>
-        <location filename="../VBoxManageInfo.cpp" line="1995"/>
+        <location filename="../VBoxManageInfo.cpp" line="1696"/>
+        <location filename="../VBoxManageInfo.cpp" line="2014"/>
+        <location filename="../VBoxManageInfo.cpp" line="2019"/>
         <source>none</source>
         <translation>нет</translation>
     </message>
@@ -7504,326 +7492,325 @@ Syntax error: %N
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1776"/>
         <source>NIC %d Settings:  MTU: %d, Socket (send: %d, receive: %d), TCP Window (send:%d, receive: %d)
 </source>
-        <translation>NIC %d Настройки:  MTU: %d, Сокет (отправлено: %d, принято: %d), Окно TCP  (отправлено:%d, принято: %d)
+        <translation type="vanished">NIC %d Настройки:  MTU: %d, Сокет (отправлено: %d, принято: %d), Окно TCP  (отправлено:%d, принято: %d)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1792"/>
+        <location filename="../VBoxManageInfo.cpp" line="1815"/>
         <source>Bridged Interface &apos;%ls&apos;</source>
         <translation>Интерфейс Сетевого Моста &apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1806"/>
+        <location filename="../VBoxManageInfo.cpp" line="1829"/>
         <source>Internal Network &apos;%s&apos;</source>
         <translation>Внутренняя Сеть &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1820"/>
+        <location filename="../VBoxManageInfo.cpp" line="1843"/>
         <source>Host-only Interface &apos;%ls&apos;</source>
         <translation>Интерфейс Виртуальной Сети &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1835"/>
+        <location filename="../VBoxManageInfo.cpp" line="1858"/>
         <source>Generic &apos;%ls&apos;</source>
         <translation>Общий &apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1864"/>
+        <location filename="../VBoxManageInfo.cpp" line="1887"/>
         <source>NAT Network &apos;%s&apos;</source>
         <translation>Сеть NAT &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1879"/>
+        <location filename="../VBoxManageInfo.cpp" line="1902"/>
         <source>Host Only Network &apos;%s&apos;</source>
         <translation>Виртуальная Сеть &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1895"/>
+        <location filename="../VBoxManageInfo.cpp" line="1918"/>
         <source>Cloud Network &apos;%s&apos;</source>
         <translation>Облачная Сеть &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1918"/>
+        <location filename="../VBoxManageInfo.cpp" line="1941"/>
         <source>deny</source>
         <translation>запретить</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1919"/>
+        <location filename="../VBoxManageInfo.cpp" line="1942"/>
         <source>allow-vms</source>
         <translation>разрешить вм</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1920"/>
+        <location filename="../VBoxManageInfo.cpp" line="1943"/>
         <source>allow-all</source>
         <translation>разрешить всем</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1986"/>
+        <location filename="../VBoxManageInfo.cpp" line="2010"/>
         <source>%-28s MAC: %ls, Attachment: %s, Cable connected: %s, Trace: %s (file: %ls), Type: %s, Reported speed: %d Mbps, Boot priority: %d, Promisc Policy: %s, Bandwidth group: %ls
 </source>
         <translation>%-28s MAC: %ls, Подключение: %s, Кабель подключен: %s, Трассировка: %s (файл: %ls), Тип: %s, Заявленная Скорость: %d Mб/с, Приоритет загрузки: %d, Политка Неразборчивости: %s, Группа Полосы Пропускания: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2016"/>
+        <location filename="../VBoxManageInfo.cpp" line="2040"/>
         <source>PS/2 Mouse</source>
         <translation>PS/2 Мышь</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2020"/>
+        <location filename="../VBoxManageInfo.cpp" line="2044"/>
         <source>USB Mouse</source>
         <translation>USB Мышь</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2024"/>
+        <location filename="../VBoxManageInfo.cpp" line="2048"/>
         <source>USB Tablet</source>
         <translation>USB Планшет</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2028"/>
+        <location filename="../VBoxManageInfo.cpp" line="2052"/>
         <source>USB Tablet and PS/2 Mouse</source>
         <translation>USB Планшет и PS/2 Мышь</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2032"/>
+        <location filename="../VBoxManageInfo.cpp" line="2056"/>
         <source>USB Multi-Touch</source>
         <translation>USB Мультитач</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2038"/>
+        <location filename="../VBoxManageInfo.cpp" line="2062"/>
         <source>Pointing Device:</source>
         <translation>Указательное Устройство:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2052"/>
+        <location filename="../VBoxManageInfo.cpp" line="2076"/>
         <source>PS/2 Keyboard</source>
         <translation>PS/2 Клавиатура</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2056"/>
+        <location filename="../VBoxManageInfo.cpp" line="2080"/>
         <source>USB Keyboard</source>
         <translation>USB Клавиатура</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2060"/>
+        <location filename="../VBoxManageInfo.cpp" line="2084"/>
         <source>USB and PS/2 Keyboard</source>
         <translation>USB и PS/2 Клавиатура</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2066"/>
+        <location filename="../VBoxManageInfo.cpp" line="2090"/>
         <source>Keyboard Device:</source>
         <translation>Клавиатура:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2080"/>
+        <location filename="../VBoxManageInfo.cpp" line="2104"/>
         <source>UART %u:</source>
         <translation>UART %u:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2209"/>
+        <location filename="../VBoxManageInfo.cpp" line="2233"/>
         <source>%-28s I/O base: %#06x, IRQ: %d</source>
         <translation>%-28s База I/O: %#06x, IRQ: %d</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2117"/>
+        <location filename="../VBoxManageInfo.cpp" line="2141"/>
         <source>, disconnected</source>
         <translation>, отсоединен</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2124"/>
+        <location filename="../VBoxManageInfo.cpp" line="2148"/>
         <source>, attached to raw file &apos;%ls&apos;
 </source>
         <translation>, подключен к raw файлу &apos;%ls&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2132"/>
+        <location filename="../VBoxManageInfo.cpp" line="2156"/>
         <source>, attached to tcp (%s) &apos;%ls&apos;</source>
         <translation>, подключен к tcp (%s) &apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2133"/>
-        <location filename="../VBoxManageInfo.cpp" line="2141"/>
+        <location filename="../VBoxManageInfo.cpp" line="2157"/>
+        <location filename="../VBoxManageInfo.cpp" line="2165"/>
         <source>server</source>
         <translation>сервер</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2133"/>
-        <location filename="../VBoxManageInfo.cpp" line="2141"/>
+        <location filename="../VBoxManageInfo.cpp" line="2157"/>
+        <location filename="../VBoxManageInfo.cpp" line="2165"/>
         <source>client</source>
         <translation>клиент</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2140"/>
+        <location filename="../VBoxManageInfo.cpp" line="2164"/>
         <source>, attached to pipe (%s) &apos;%ls&apos;</source>
         <translation>, подключен к pipe (%s) &apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2148"/>
+        <location filename="../VBoxManageInfo.cpp" line="2172"/>
         <source>, attached to device &apos;%ls&apos;</source>
         <translation>, подключен к устройству &apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2186"/>
+        <location filename="../VBoxManageInfo.cpp" line="2210"/>
         <source>LPT %u:</source>
         <translation>LPT %u:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2213"/>
+        <location filename="../VBoxManageInfo.cpp" line="2237"/>
         <source>, attached to device &apos;%ls&apos;
 </source>
         <translation>, подключен к устройству &apos;%ls&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2353"/>
+        <location filename="../VBoxManageInfo.cpp" line="2389"/>
         <source>Audio:</source>
         <translation>Аудио:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2355"/>
+        <location filename="../VBoxManageInfo.cpp" line="2391"/>
         <source> (Driver: %s, Controller: %s, Codec: %s)</source>
         <translation> (Драйвер: %s, Контроллер: %s, Кодек: %s)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2358"/>
+        <location filename="../VBoxManageInfo.cpp" line="2394"/>
         <source>Audio playback:</source>
         <translation>Аудио воспроизведение:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2359"/>
+        <location filename="../VBoxManageInfo.cpp" line="2395"/>
         <source>Audio capture:</source>
         <translation>Аудио захват:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2375"/>
-        <location filename="../VBoxManageInfo.cpp" line="2404"/>
+        <location filename="../VBoxManageInfo.cpp" line="2413"/>
+        <location filename="../VBoxManageInfo.cpp" line="2444"/>
         <source>HostToGuest</source>
         <translation>Хост-&gt;Гость</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2378"/>
-        <location filename="../VBoxManageInfo.cpp" line="2407"/>
+        <location filename="../VBoxManageInfo.cpp" line="2416"/>
+        <location filename="../VBoxManageInfo.cpp" line="2447"/>
         <source>GuestToHost</source>
         <translation>Гость-&gt;Хост</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2381"/>
-        <location filename="../VBoxManageInfo.cpp" line="2410"/>
+        <location filename="../VBoxManageInfo.cpp" line="2419"/>
+        <location filename="../VBoxManageInfo.cpp" line="2450"/>
         <source>Bidirectional</source>
         <translation>Двунаправленный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2387"/>
+        <location filename="../VBoxManageInfo.cpp" line="2425"/>
         <source>Clipboard Mode:</source>
         <translation>Режим буфера обмена:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2389"/>
+        <location filename="../VBoxManageInfo.cpp" line="2427"/>
         <source>Clipboard file transfers:</source>
         <translation>Передача файлов через буфер обмена:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2416"/>
+        <location filename="../VBoxManageInfo.cpp" line="2456"/>
         <source>Drag and drop Mode:</source>
         <translation>Режим Drag and Drop:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2427"/>
+        <location filename="../VBoxManageInfo.cpp" line="2467"/>
         <source>Session name:</source>
         <translation>Имя сессии:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2460"/>
+        <location filename="../VBoxManageInfo.cpp" line="2500"/>
         <source>unknown status</source>
         <translation>неизвестный статус</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2463"/>
+        <location filename="../VBoxManageInfo.cpp" line="2503"/>
         <source>blank</source>
         <translation>пустой</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2468"/>
+        <location filename="../VBoxManageInfo.cpp" line="2508"/>
         <source>Video mode:</source>
         <translation>Видео режим:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2509"/>
+        <location filename="../VBoxManageInfo.cpp" line="2549"/>
         <source>null</source>
         <translation>пусто</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2515"/>
+        <location filename="../VBoxManageInfo.cpp" line="2555"/>
         <source>external</source>
         <translation>внешний</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2521"/>
+        <location filename="../VBoxManageInfo.cpp" line="2561"/>
         <source>guest</source>
         <translation>гостевой</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2566"/>
+        <location filename="../VBoxManageInfo.cpp" line="2606"/>
         <source>%-28s enabled (Address %ls, Ports %ls, MultiConn: %s, ReuseSingleConn: %s, Authentication type: %s)
 </source>
         <translation>%-28s включен (Адрес %ls, Порты %ls, Много Соединений: %s, Одно Соединение : %s, Тип Аутентификации: %s)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2570"/>
+        <location filename="../VBoxManageInfo.cpp" line="2610"/>
         <source>VRDE port:</source>
         <translation>Порт VRDE:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2572"/>
+        <location filename="../VBoxManageInfo.cpp" line="2612"/>
         <source>%-28s enabled (Quality %ls)
 </source>
         <translation>%-28s включен (Качество %ls)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2572"/>
-        <location filename="../VBoxManageInfo.cpp" line="2574"/>
+        <location filename="../VBoxManageInfo.cpp" line="2612"/>
+        <location filename="../VBoxManageInfo.cpp" line="2614"/>
         <source>Video redirection:</source>
         <translation>Видео перенаправление:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2594"/>
+        <location filename="../VBoxManageInfo.cpp" line="2634"/>
         <source>%-28s: %-10lS = &lt;not set&gt;
 </source>
         <translation>%-28s: %-10lS = &lt;не задан&gt;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2594"/>
-        <location filename="../VBoxManageInfo.cpp" line="2596"/>
+        <location filename="../VBoxManageInfo.cpp" line="2634"/>
+        <location filename="../VBoxManageInfo.cpp" line="2636"/>
         <source>VRDE property</source>
         <translation>Свойство VRDE</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2667"/>
+        <location filename="../VBoxManageInfo.cpp" line="2707"/>
         <source>Index:</source>
         <translation>Индекс:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2668"/>
-        <location filename="../VBoxManageInfo.cpp" line="2913"/>
-        <location filename="../VBoxManageInfo.cpp" line="2962"/>
-        <location filename="../VBoxManageInfo.cpp" line="2965"/>
-        <location filename="../VBoxManageInfo.cpp" line="2968"/>
+        <location filename="../VBoxManageInfo.cpp" line="2708"/>
+        <location filename="../VBoxManageInfo.cpp" line="2950"/>
+        <location filename="../VBoxManageInfo.cpp" line="2999"/>
+        <location filename="../VBoxManageInfo.cpp" line="3002"/>
+        <location filename="../VBoxManageInfo.cpp" line="3005"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2668"/>
-        <location filename="../VBoxManageInfo.cpp" line="2913"/>
-        <location filename="../VBoxManageInfo.cpp" line="2962"/>
-        <location filename="../VBoxManageInfo.cpp" line="2965"/>
-        <location filename="../VBoxManageInfo.cpp" line="2968"/>
+        <location filename="../VBoxManageInfo.cpp" line="2708"/>
+        <location filename="../VBoxManageInfo.cpp" line="2950"/>
+        <location filename="../VBoxManageInfo.cpp" line="2999"/>
+        <location filename="../VBoxManageInfo.cpp" line="3002"/>
+        <location filename="../VBoxManageInfo.cpp" line="3005"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
@@ -7853,7 +7840,7 @@ Syntax error: %N
         <translation>Продукт:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2682"/>
+        <location filename="../VBoxManageInfo.cpp" line="2722"/>
         <source>Masked Interfaces:</source>
         <translation>Скрытые Интерфейсы:</translation>
     </message>
@@ -7868,7 +7855,7 @@ Syntax error: %N
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2719"/>
+        <location filename="../VBoxManageInfo.cpp" line="2759"/>
         <source>
 Attached physical PCI devices:
 
@@ -7879,35 +7866,35 @@ Attached physical PCI devices:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2738"/>
+        <location filename="../VBoxManageInfo.cpp" line="2778"/>
         <source>   Host device %ls at %s attached as %s
 </source>
         <translation>   Хост устройство %ls в %s, подключенное как %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2767"/>
+        <location filename="../VBoxManageInfo.cpp" line="2805"/>
         <source>Shared folders:</source>
         <translation>Общие Папки:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2777"/>
+        <location filename="../VBoxManageInfo.cpp" line="2814"/>
         <source>global mapping</source>
         <translation>глобальное отображение</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2789"/>
+        <location filename="../VBoxManageInfo.cpp" line="2825"/>
         <source>machine mapping</source>
         <translation>машинное отображение</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2801"/>
+        <location filename="../VBoxManageInfo.cpp" line="2837"/>
         <source>transient mapping</source>
         <translation>временное отображение</translation>
     </message>
     <message>
         <location filename="../VBoxManageInfo.cpp" line="719"/>
-        <location filename="../VBoxManageInfo.cpp" line="2808"/>
+        <location filename="../VBoxManageInfo.cpp" line="2844"/>
         <source>&lt;none&gt;
 </source>
         <translation>&lt;нет&gt;
@@ -7919,234 +7906,242 @@ Attached physical PCI devices:
         <translation>, политика ссылок: %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1209"/>
+        <location filename="../VBoxManageInfo.cpp" line="1212"/>
         <source>Cipher:</source>
         <translation>Шифр:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1210"/>
+        <location filename="../VBoxManageInfo.cpp" line="1213"/>
         <source>Password ID:</source>
         <translation>ID пароля:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1214"/>
+        <location filename="../VBoxManageInfo.cpp" line="1217"/>
         <source>Platform Architecture:</source>
         <translation>Архитектура платформы:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1442"/>
+        <location filename="../VBoxManageInfo.cpp" line="1449"/>
         <source>UEFI Secure Boot:</source>
         <translation>Безопасная загрузка UEFI:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1600"/>
-        <location filename="../VBoxManageInfo.cpp" line="1640"/>
+        <location filename="../VBoxManageInfo.cpp" line="1611"/>
+        <location filename="../VBoxManageInfo.cpp" line="1651"/>
         <source>Storage Controllers:</source>
         <translation>Контроллеры носителей:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1630"/>
+        <location filename="../VBoxManageInfo.cpp" line="1641"/>
         <source>#%u: &apos;%ls&apos;, Type: %s, Instance: %u, Ports: %u (max %u), %s
 </source>
         <translation>#%u: &apos;%ls&apos;, Тип: %s, Экземпляр: %u, Порты: %u (макс. %u), %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1632"/>
+        <location filename="../VBoxManageInfo.cpp" line="1643"/>
         <source>Bootable</source>
         <translation>Загрузочный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1632"/>
+        <location filename="../VBoxManageInfo.cpp" line="1643"/>
         <source>Not bootable</source>
         <translation>Незагрузочный</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1753"/>
+        <location filename="../VBoxManageInfo.cpp" line="1764"/>
         <source>NIC %d Rule(%d):   name = %s, protocol = %s, host ip = %s, host port = %s, guest ip = %s, guest port = %s
 </source>
         <translation>NIC %d Правило(%d):   имя = %s, протокол = %s, хост ip = %s, хост порт = %s, гостевой ip = %s, гостевой порт = %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2109"/>
+        <location filename="../VBoxManageInfo.cpp" line="1796"/>
+        <source>NIC %d Settings:
+	MTU: %d, Socket (send: %d, receive: %d), TCP Window (send:%d, receive: %d),
+	LocalhostReachable: %d, ForwardBroadcast: %d, EnableTFTP: %d
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageInfo.cpp" line="2133"/>
         <source>%-28s I/O address: %#06x, IRQ: %d</source>
         <translation>%-28s I/O адрес: %#06x, IRQ: %d</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2661"/>
+        <location filename="../VBoxManageInfo.cpp" line="2701"/>
         <source>USB Device Filters:
 </source>
         <translation>Фильтры USB устройств:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2668"/>
+        <location filename="../VBoxManageInfo.cpp" line="2708"/>
         <source>  Active:</source>
         <translation>  Активно:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2669"/>
+        <location filename="../VBoxManageInfo.cpp" line="2709"/>
         <source>  Name:</source>
         <translation>  Имя:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2670"/>
+        <location filename="../VBoxManageInfo.cpp" line="2710"/>
         <source>  VendorId:</source>
         <translation>  ID поставщика:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2671"/>
+        <location filename="../VBoxManageInfo.cpp" line="2711"/>
         <source>  ProductId:</source>
         <translation>  ID продукта:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2672"/>
+        <location filename="../VBoxManageInfo.cpp" line="2712"/>
         <source>  Revision:</source>
         <translation>  Ревизия:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2673"/>
+        <location filename="../VBoxManageInfo.cpp" line="2713"/>
         <source>  Manufacturer:</source>
         <translation>  Производитель:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2674"/>
+        <location filename="../VBoxManageInfo.cpp" line="2714"/>
         <source>  Product:</source>
         <translation>  Продукт:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2675"/>
+        <location filename="../VBoxManageInfo.cpp" line="2715"/>
         <source>  Remote:</source>
         <translation>  Удаленное:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2676"/>
+        <location filename="../VBoxManageInfo.cpp" line="2716"/>
         <source>  Serial Number:</source>
         <translation>  Серийный номер:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2687"/>
+        <location filename="../VBoxManageInfo.cpp" line="2727"/>
         <source>USB Device Filters:</source>
         <translation>Фильтры USB устройств:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2695"/>
+        <location filename="../VBoxManageInfo.cpp" line="2735"/>
         <source>Available remote USB devices:</source>
         <translation>Доступные удаленные USB устройства:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2703"/>
+        <location filename="../VBoxManageInfo.cpp" line="2743"/>
         <source>Currently attached USB devices:</source>
         <translation>Сейчас подключенные USB устройства:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2754"/>
+        <location filename="../VBoxManageInfo.cpp" line="2794"/>
         <source>Bandwidth groups:</source>
         <translation>Группы полосы пропускания:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2853"/>
+        <location filename="../VBoxManageInfo.cpp" line="2889"/>
         <source>VRDE Connection:</source>
         <translation>VRDE Соединение:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2853"/>
+        <location filename="../VBoxManageInfo.cpp" line="2889"/>
         <source>active</source>
         <translation>активное</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2854"/>
+        <location filename="../VBoxManageInfo.cpp" line="2890"/>
         <source>Clients so far:</source>
         <translation>Клиенты на данный момент:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2861"/>
+        <location filename="../VBoxManageInfo.cpp" line="2897"/>
         <source>Start time:</source>
         <translation>Время старта:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2864"/>
+        <location filename="../VBoxManageInfo.cpp" line="2900"/>
         <source>Last started:</source>
         <translation>Последний раз начато:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2866"/>
+        <location filename="../VBoxManageInfo.cpp" line="2902"/>
         <source>Last ended:</source>
         <translation>Последний раз закончено:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2876"/>
+        <location filename="../VBoxManageInfo.cpp" line="2912"/>
         <source>Sent:</source>
         <translation>Отправлено:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2876"/>
-        <location filename="../VBoxManageInfo.cpp" line="2878"/>
-        <location filename="../VBoxManageInfo.cpp" line="2880"/>
-        <location filename="../VBoxManageInfo.cpp" line="2882"/>
+        <location filename="../VBoxManageInfo.cpp" line="2912"/>
+        <location filename="../VBoxManageInfo.cpp" line="2914"/>
+        <location filename="../VBoxManageInfo.cpp" line="2916"/>
+        <location filename="../VBoxManageInfo.cpp" line="2918"/>
         <source>Bytes</source>
         <translation>Байт</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2877"/>
+        <location filename="../VBoxManageInfo.cpp" line="2913"/>
         <source>Average speed:</source>
         <translation>Средняя скорость:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2877"/>
-        <location filename="../VBoxManageInfo.cpp" line="2881"/>
+        <location filename="../VBoxManageInfo.cpp" line="2913"/>
+        <location filename="../VBoxManageInfo.cpp" line="2917"/>
         <source>B/s</source>
         <translation>Б/с</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2878"/>
+        <location filename="../VBoxManageInfo.cpp" line="2914"/>
         <source>Sent total:</source>
         <translation>Всего отправлено:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2880"/>
+        <location filename="../VBoxManageInfo.cpp" line="2916"/>
         <source>Received:</source>
         <translation>Получено:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2881"/>
+        <location filename="../VBoxManageInfo.cpp" line="2917"/>
         <source>Speed:</source>
         <translation>Скорость:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2882"/>
+        <location filename="../VBoxManageInfo.cpp" line="2918"/>
         <source>Received total:</source>
         <translation>Всего получено:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2886"/>
+        <location filename="../VBoxManageInfo.cpp" line="2922"/>
         <source>User name:</source>
         <translation>Имя пользователя:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2887"/>
+        <location filename="../VBoxManageInfo.cpp" line="2923"/>
         <source>Domain:</source>
         <translation>Домен:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2888"/>
+        <location filename="../VBoxManageInfo.cpp" line="2924"/>
         <source>Client name:</source>
         <translation>Имя клиента:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2889"/>
+        <location filename="../VBoxManageInfo.cpp" line="2925"/>
         <source>Client IP:</source>
         <translation>IP клиента:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2890"/>
+        <location filename="../VBoxManageInfo.cpp" line="2926"/>
         <source>Client version:</source>
         <translation>Версия клиента:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="1205"/>
-        <location filename="../VBoxManageInfo.cpp" line="2891"/>
+        <location filename="../VBoxManageInfo.cpp" line="1208"/>
+        <location filename="../VBoxManageInfo.cpp" line="2927"/>
         <source>Encryption:</source>
         <translation>Шифрование:</translation>
     </message>
@@ -8175,7 +8170,7 @@ Attached physical PCI devices:
         <translation type="vanished">Битрейт захвата:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="2982"/>
+        <location filename="../VBoxManageInfo.cpp" line="3019"/>
         <source>kbps</source>
         <translation>кб/с</translation>
     </message>
@@ -8188,7 +8183,7 @@ Attached physical PCI devices:
         <translation type="vanished">Опции захвата:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3001"/>
+        <location filename="../VBoxManageInfo.cpp" line="3038"/>
         <source>Description:
 %ls
 </source>
@@ -8197,49 +8192,49 @@ Attached physical PCI devices:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3057"/>
+        <location filename="../VBoxManageInfo.cpp" line="3094"/>
         <source>MB</source>
         <translation>МБ</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3057"/>
+        <location filename="../VBoxManageInfo.cpp" line="3094"/>
         <source>Configured memory balloon:</source>
         <translation>Настроенный balloon памяти:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3065"/>
+        <location filename="../VBoxManageInfo.cpp" line="3102"/>
         <source>OS type:</source>
         <translation>Тип ОС:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3070"/>
+        <location filename="../VBoxManageInfo.cpp" line="3107"/>
         <source>Additions run level:</source>
         <translation>Уровень выполнения Дополнений:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3082"/>
+        <location filename="../VBoxManageInfo.cpp" line="3119"/>
         <source>Additions version:</source>
         <translation>Версия Дополнений:</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3111"/>
+        <location filename="../VBoxManageInfo.cpp" line="3148"/>
         <source>Facility &quot;%ls&quot;: %s (last update: %s)
 </source>
         <translation>Средство &quot;%ls&quot;: %s (последнее обновление: %s)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3196"/>
+        <location filename="../VBoxManageInfo.cpp" line="3233"/>
         <source>Invalid parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3206"/>
+        <location filename="../VBoxManageInfo.cpp" line="3243"/>
         <source>VM name or UUID required</source>
         <translation>Требуется имя ВМ или UUID</translation>
     </message>
     <message>
-        <location filename="../VBoxManageInfo.cpp" line="3217"/>
+        <location filename="../VBoxManageInfo.cpp" line="3254"/>
         <source>Option --log is exclusive</source>
         <translation>Опция --log эксклюзивная</translation>
     </message>
@@ -8678,9 +8673,9 @@ Commands:
         <location filename="../VBoxInternalManage.cpp" line="1397"/>
         <location filename="../VBoxInternalManage.cpp" line="1406"/>
         <location filename="../VBoxInternalManage.cpp" line="1467"/>
-        <location filename="../VBoxInternalManage.cpp" line="1630"/>
-        <location filename="../VBoxInternalManage.cpp" line="1639"/>
-        <location filename="../VBoxInternalManage.cpp" line="1764"/>
+        <location filename="../VBoxInternalManage.cpp" line="1629"/>
+        <location filename="../VBoxInternalManage.cpp" line="1638"/>
+        <location filename="../VBoxInternalManage.cpp" line="1763"/>
         <source>Missing argument to &apos;%s&apos;</source>
         <translation>Отсутствует аргумент к &apos;%s&apos;</translation>
     </message>
@@ -8689,8 +8684,8 @@ Commands:
         <location filename="../VBoxInternalManage.cpp" line="1240"/>
         <location filename="../VBoxInternalManage.cpp" line="1413"/>
         <location filename="../VBoxInternalManage.cpp" line="1486"/>
-        <location filename="../VBoxInternalManage.cpp" line="1654"/>
-        <location filename="../VBoxInternalManage.cpp" line="1775"/>
+        <location filename="../VBoxInternalManage.cpp" line="1653"/>
+        <location filename="../VBoxInternalManage.cpp" line="1774"/>
         <source>Invalid parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
@@ -9058,8 +9053,8 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
     </message>
     <message>
         <location filename="../VBoxInternalManage.cpp" line="1540"/>
-        <location filename="../VBoxInternalManage.cpp" line="1683"/>
-        <location filename="../VBoxInternalManage.cpp" line="1803"/>
+        <location filename="../VBoxInternalManage.cpp" line="1682"/>
+        <location filename="../VBoxInternalManage.cpp" line="1802"/>
         <source>No file format specified and autodetect failed - please specify format: %Rrc</source>
         <translation>Не указан формат файла, также автодетект не прошел - пожалуйста, укажите формат: %Rrc</translation>
     </message>
@@ -9070,7 +9065,7 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
     </message>
     <message>
         <location filename="../VBoxInternalManage.cpp" line="1558"/>
-        <location filename="../VBoxInternalManage.cpp" line="1702"/>
+        <location filename="../VBoxInternalManage.cpp" line="1701"/>
         <source>Cannot open the source image: %Rrc</source>
         <translation>Невозможно открыть образ источника: %Rrc</translation>
     </message>
@@ -9093,33 +9088,33 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
         <translation>Невозможно скопировать данные образа: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1602"/>
+        <location filename="../VBoxInternalManage.cpp" line="1601"/>
         <source>Out of memory allocating read buffer</source>
         <translation>Не хватает памяти под буфер чтения</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1659"/>
-        <location filename="../VBoxInternalManage.cpp" line="1780"/>
+        <location filename="../VBoxInternalManage.cpp" line="1658"/>
+        <location filename="../VBoxInternalManage.cpp" line="1779"/>
         <source>Mandatory input image parameter missing</source>
         <translation>Отсутствует обязательный параметр входной образ</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1661"/>
+        <location filename="../VBoxInternalManage.cpp" line="1660"/>
         <source>Mandatory output image parameter missing</source>
         <translation>Отсутствует обязательный параметр выходной образ</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1694"/>
+        <location filename="../VBoxInternalManage.cpp" line="1693"/>
         <source>Cannot create the source virtual disk container: %Rrc</source>
         <translation>Невозможно создать контейнер исходного виртуального диска: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1713"/>
+        <location filename="../VBoxInternalManage.cpp" line="1712"/>
         <source>Cannot create the destination virtual disk container: %Rrc</source>
         <translation>Невозможно создать контейнер виртуального диска назначения: %Rrc</translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxInternalManage.cpp" line="1718"/>
+        <location filename="../VBoxInternalManage.cpp" line="1717"/>
         <source>Converting image &quot;%s&quot; with size %RU64 bytes (%RU64MB)...
 </source>
         <translation>
@@ -9132,52 +9127,52 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
         </translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1727"/>
+        <location filename="../VBoxInternalManage.cpp" line="1726"/>
         <source>Cannot copy the image: %Rrc</source>
         <translation>Невозможно скопировать образ: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1855"/>
-        <location filename="../VBoxInternalManage.cpp" line="1990"/>
+        <location filename="../VBoxInternalManage.cpp" line="1854"/>
+        <location filename="../VBoxInternalManage.cpp" line="1989"/>
         <source>Missing VM name/UUID</source>
         <translation>Отсутствует имя ВМ/UUID</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1955"/>
+        <location filename="../VBoxInternalManage.cpp" line="1954"/>
         <source>One or more of the requested features are not implemented! Feel free to do this.</source>
         <translation>Один или несколько запрошенных функций не реализованы! Не стесняйтесь сделать их.</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1971"/>
+        <location filename="../VBoxInternalManage.cpp" line="1970"/>
         <source>password to hash required</source>
         <translation>требуется пароль для хеша</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="1977"/>
+        <location filename="../VBoxInternalManage.cpp" line="1976"/>
         <source>Password hash: %s
 </source>
         <translation>Хеш пароля: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="2020"/>
+        <location filename="../VBoxInternalManage.cpp" line="2019"/>
         <source>Invalid update interval specified</source>
         <translation>Указан недопустимый интервал обновления</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="2022"/>
+        <location filename="../VBoxInternalManage.cpp" line="2021"/>
         <source>argc=%d interval=%u
 </source>
         <translation>argc=%d интервал=%u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="2073"/>
+        <location filename="../VBoxInternalManage.cpp" line="2072"/>
         <source>Command missing</source>
         <translation>Отсутствует команда</translation>
     </message>
     <message>
-        <location filename="../VBoxInternalManage.cpp" line="2113"/>
+        <location filename="../VBoxInternalManage.cpp" line="2112"/>
         <source>Invalid command &apos;%s&apos;</source>
         <translation>Недопустимая команда &apos;%s&apos;</translation>
     </message>
@@ -9188,8 +9183,8 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
         <location filename="../VBoxManageList.cpp" line="64"/>
         <location filename="../VBoxManageList.cpp" line="78"/>
         <location filename="../VBoxManageList.cpp" line="105"/>
-        <location filename="../VBoxManageList.cpp" line="1073"/>
-        <location filename="../VBoxManageList.cpp" line="1084"/>
+        <location filename="../VBoxManageList.cpp" line="1076"/>
+        <location filename="../VBoxManageList.cpp" line="1087"/>
         <source>Unknown</source>
         <translation>Неизвестно</translation>
     </message>
@@ -9246,7 +9241,7 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
         <location filename="../VBoxManageList.cpp" line="167"/>
         <location filename="../VBoxManageList.cpp" line="226"/>
         <location filename="../VBoxManageList.cpp" line="272"/>
-        <location filename="../VBoxManageList.cpp" line="1595"/>
+        <location filename="../VBoxManageList.cpp" line="1598"/>
         <source>Name:            %ls
 </source>
         <translation>Имя:            %ls
@@ -9318,13 +9313,13 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
     </message>
     <message>
         <location filename="../VBoxManageList.cpp" line="195"/>
-        <location filename="../VBoxManageList.cpp" line="1320"/>
+        <location filename="../VBoxManageList.cpp" line="1323"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
         <location filename="../VBoxManageList.cpp" line="195"/>
-        <location filename="../VBoxManageList.cpp" line="1320"/>
+        <location filename="../VBoxManageList.cpp" line="1323"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -9480,21 +9475,21 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
     </message>
     <message>
         <location filename="../VBoxManageList.cpp" line="348"/>
-        <location filename="../VBoxManageList.cpp" line="682"/>
-        <location filename="../VBoxManageList.cpp" line="1041"/>
-        <location filename="../VBoxManageList.cpp" line="1137"/>
-        <location filename="../VBoxManageList.cpp" line="2059"/>
-        <location filename="../VBoxManageList.cpp" line="2064"/>
+        <location filename="../VBoxManageList.cpp" line="684"/>
+        <location filename="../VBoxManageList.cpp" line="1043"/>
+        <location filename="../VBoxManageList.cpp" line="1140"/>
+        <location filename="../VBoxManageList.cpp" line="2062"/>
+        <location filename="../VBoxManageList.cpp" line="2067"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
         <location filename="../VBoxManageList.cpp" line="348"/>
-        <location filename="../VBoxManageList.cpp" line="682"/>
-        <location filename="../VBoxManageList.cpp" line="1041"/>
-        <location filename="../VBoxManageList.cpp" line="1137"/>
-        <location filename="../VBoxManageList.cpp" line="2059"/>
-        <location filename="../VBoxManageList.cpp" line="2064"/>
+        <location filename="../VBoxManageList.cpp" line="684"/>
+        <location filename="../VBoxManageList.cpp" line="1043"/>
+        <location filename="../VBoxManageList.cpp" line="1140"/>
+        <location filename="../VBoxManageList.cpp" line="2062"/>
+        <location filename="../VBoxManageList.cpp" line="2067"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
@@ -9560,7 +9555,7 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="435"/>
+        <location filename="../VBoxManageList.cpp" line="437"/>
         <source>Supported hard disk backends:
 
 </source>
@@ -9569,49 +9564,49 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="454"/>
+        <location filename="../VBoxManageList.cpp" line="456"/>
         <source>Backend %u: id=&apos;%ls&apos; description=&apos;%ls&apos; capabilities=%#06x extensions=&apos;</source>
         <translation>Бэкенд %u: id=&apos;%ls&apos; описание=&apos;%ls&apos; возможности=%#06x расширения=&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="483"/>
+        <location filename="../VBoxManageList.cpp" line="485"/>
         <source> properties=(</source>
         <translation> свойства=(</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="488"/>
+        <location filename="../VBoxManageList.cpp" line="490"/>
         <source>
   name=&apos;%ls&apos; desc=&apos;%ls&apos; type=</source>
         <translation>
   имя=&apos;%ls&apos; описание=&apos;%ls&apos; тип=</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="492"/>
+        <location filename="../VBoxManageList.cpp" line="494"/>
         <source>int</source>
         <translation>int</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="493"/>
+        <location filename="../VBoxManageList.cpp" line="495"/>
         <source>byte</source>
         <translation>byte</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="494"/>
+        <location filename="../VBoxManageList.cpp" line="496"/>
         <source>string</source>
         <translation>string</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="499"/>
+        <location filename="../VBoxManageList.cpp" line="501"/>
         <source> flags=%#04x</source>
         <translation> флаги=%#04x</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="500"/>
+        <location filename="../VBoxManageList.cpp" line="502"/>
         <source> default=&apos;%ls&apos;</source>
         <translation> по умолчанию=&apos;%ls&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="526"/>
+        <location filename="../VBoxManageList.cpp" line="528"/>
         <source>Host USB Devices:
 
 </source>
@@ -9620,8 +9615,8 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="530"/>
-        <location filename="../VBoxManageList.cpp" line="668"/>
+        <location filename="../VBoxManageList.cpp" line="532"/>
+        <location filename="../VBoxManageList.cpp" line="670"/>
         <source>&lt;none&gt;
 
 </source>
@@ -9630,7 +9625,7 @@ instead.  See &apos;VBoxManage help createmedium&apos; for details.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="554"/>
+        <location filename="../VBoxManageList.cpp" line="556"/>
         <source>UUID:               %s
 VendorId:           %#06x (%04X)
 ProductId:          %#06x (%04X)
@@ -9645,104 +9640,104 @@ ID Продукта:        %#06x (%04X)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="570"/>
+        <location filename="../VBoxManageList.cpp" line="572"/>
         <source>Low</source>
         <translation>Низкая</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="573"/>
+        <location filename="../VBoxManageList.cpp" line="575"/>
         <source>Full</source>
         <translation>Полная</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="576"/>
+        <location filename="../VBoxManageList.cpp" line="578"/>
         <source>High</source>
         <translation>Высокая</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="579"/>
+        <location filename="../VBoxManageList.cpp" line="581"/>
         <source>Super</source>
         <translation>Супер</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="582"/>
+        <location filename="../VBoxManageList.cpp" line="584"/>
         <source>SuperPlus</source>
         <translation>СуперПлюс</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="589"/>
+        <location filename="../VBoxManageList.cpp" line="591"/>
         <source>USB version/speed:  %u/%s
 </source>
         <translation>Версия/скорость USB:  %u/%s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="598"/>
+        <location filename="../VBoxManageList.cpp" line="600"/>
         <source>Manufacturer:       %ls
 </source>
         <translation>Производитель:       %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="602"/>
+        <location filename="../VBoxManageList.cpp" line="604"/>
         <source>Product:            %ls
 </source>
         <translation>Продукт:            %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="605"/>
+        <location filename="../VBoxManageList.cpp" line="607"/>
         <source>SerialNumber:       %ls
 </source>
         <translation>Серийный номер:       %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="608"/>
+        <location filename="../VBoxManageList.cpp" line="610"/>
         <source>Address:            %ls
 </source>
         <translation>Адрес:            %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="611"/>
+        <location filename="../VBoxManageList.cpp" line="613"/>
         <source>Port path:          %ls
 </source>
         <translation>Путь к порту:          %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="620"/>
+        <location filename="../VBoxManageList.cpp" line="622"/>
         <source>Not supported</source>
         <translation>Не поддерживается</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="623"/>
+        <location filename="../VBoxManageList.cpp" line="625"/>
         <source>Unavailable</source>
         <translation>Недоступен</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="626"/>
+        <location filename="../VBoxManageList.cpp" line="628"/>
         <source>Busy</source>
         <translation>Занят</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="629"/>
+        <location filename="../VBoxManageList.cpp" line="631"/>
         <source>Available</source>
         <translation>Доступен</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="632"/>
+        <location filename="../VBoxManageList.cpp" line="634"/>
         <source>Held</source>
         <translation>Удерживается</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="635"/>
+        <location filename="../VBoxManageList.cpp" line="637"/>
         <source>Captured</source>
         <translation>Захвачен</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="641"/>
+        <location filename="../VBoxManageList.cpp" line="643"/>
         <source>Current State:      %s
 
 </source>
@@ -9751,7 +9746,7 @@ ID Продукта:        %#06x (%04X)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="658"/>
+        <location filename="../VBoxManageList.cpp" line="660"/>
         <source>Global USB Device Filters:
 
 </source>
@@ -9760,85 +9755,85 @@ ID Продукта:        %#06x (%04X)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="678"/>
+        <location filename="../VBoxManageList.cpp" line="680"/>
         <source>Index:            %zu
 </source>
         <translation>Индекс:            %zu
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="682"/>
+        <location filename="../VBoxManageList.cpp" line="684"/>
         <source>Active:           %s
 </source>
         <translation>Активно:           %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="686"/>
+        <location filename="../VBoxManageList.cpp" line="688"/>
         <source>&lt;invalid&gt;</source>
         <translation>&lt;недействительно&gt;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="690"/>
+        <location filename="../VBoxManageList.cpp" line="692"/>
         <source>Ignore</source>
         <translation>Игнорировать</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="693"/>
+        <location filename="../VBoxManageList.cpp" line="695"/>
         <source>Hold</source>
         <translation>Удерживать</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="698"/>
+        <location filename="../VBoxManageList.cpp" line="700"/>
         <source>Action:           %s
 </source>
         <translation>Действие:           %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="702"/>
+        <location filename="../VBoxManageList.cpp" line="704"/>
         <source>Name:             %ls
 </source>
         <translation>Имя:             %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="704"/>
+        <location filename="../VBoxManageList.cpp" line="706"/>
         <source>VendorId:         %ls
 </source>
         <translation>ID Поставщика:         %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="706"/>
+        <location filename="../VBoxManageList.cpp" line="708"/>
         <source>ProductId:        %ls
 </source>
         <translation>ID Продукта:        %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="708"/>
+        <location filename="../VBoxManageList.cpp" line="710"/>
         <source>Revision:         %ls
 </source>
         <translation>Ревизия:         %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="710"/>
+        <location filename="../VBoxManageList.cpp" line="712"/>
         <source>Manufacturer:     %ls
 </source>
         <translation>Производитель:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="712"/>
+        <location filename="../VBoxManageList.cpp" line="714"/>
         <source>Product:          %ls
 </source>
         <translation>Продукт:          %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1473"/>
+        <location filename="../VBoxManageList.cpp" line="1476"/>
         <source>Pack no.%2zu:   %ls
 Version:        %ls
 Revision:       %u
@@ -9861,14 +9856,14 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2171"/>
+        <location filename="../VBoxManageList.cpp" line="2174"/>
         <source>CPU Architecture: %s
 </source>
         <translation>Архитектура ЦПУ: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2719"/>
+        <location filename="../VBoxManageList.cpp" line="2721"/>
         <source>Invalid platform architecture specified</source>
         <translation>Указана недопустимая архитектура платформы</translation>
     </message>
@@ -9881,14 +9876,14 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1009"/>
+        <location filename="../VBoxManageList.cpp" line="1011"/>
         <source>API version:                     %ls
 </source>
         <translation>Версия API:                     %ls
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1012"/>
+        <location filename="../VBoxManageList.cpp" line="1014"/>
         <source>Minimum guest RAM size:          %u Megabytes
 </source>
         <translation>
@@ -9901,7 +9896,7 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1014"/>
+        <location filename="../VBoxManageList.cpp" line="1016"/>
         <source>Maximum guest RAM size:          %u Megabytes
 </source>
         <translation>
@@ -9914,7 +9909,7 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1016"/>
+        <location filename="../VBoxManageList.cpp" line="1018"/>
         <source>Minimum video RAM size:          %u Megabytes
 </source>
         <translation>
@@ -9927,7 +9922,7 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1018"/>
+        <location filename="../VBoxManageList.cpp" line="1020"/>
         <source>Maximum video RAM size:          %u Megabytes
 </source>
         <translation>
@@ -9940,28 +9935,28 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1020"/>
+        <location filename="../VBoxManageList.cpp" line="1022"/>
         <source>Maximum guest monitor count:     %u
 </source>
         <translation>Максимально гостевых мониторов:     %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1022"/>
+        <location filename="../VBoxManageList.cpp" line="1024"/>
         <source>Minimum guest CPU count:         %u
 </source>
         <translation>Минимально гостевых ЦПУ:         %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1024"/>
+        <location filename="../VBoxManageList.cpp" line="1026"/>
         <source>Maximum guest CPU count:         %u
 </source>
         <translation>Максимально гостевых ЦПУ:         %u
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1026"/>
+        <location filename="../VBoxManageList.cpp" line="1028"/>
         <source>Virtual disk limit (info):       %lld Bytes
 </source>
         <translation>
@@ -10136,7 +10131,7 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="941"/>
+        <location filename="../VBoxManageList.cpp" line="943"/>
         <source>Maximum virtio-scsi Port count:         %u
 </source>
         <translation>Максимально virtio-scsi портов:         %u
@@ -10173,7 +10168,7 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1030"/>
+        <location filename="../VBoxManageList.cpp" line="1032"/>
         <source>Free disk space warning at:      %u Bytes
 </source>
         <translation>
@@ -10186,14 +10181,14 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1032"/>
+        <location filename="../VBoxManageList.cpp" line="1034"/>
         <source>Free disk space warning at:      %u %%
 </source>
         <translation>Дать предупреждение когда на диске осталось свободно:      %u %%
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1034"/>
+        <location filename="../VBoxManageList.cpp" line="1036"/>
         <source>Free disk space error at:        %u Bytes
 </source>
         <translation>
@@ -10206,146 +10201,146 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1036"/>
+        <location filename="../VBoxManageList.cpp" line="1038"/>
         <source>Free disk space error at:        %u %%
 </source>
         <translation>Дать ошибку когда на диске осталось свободно:        %u %%
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1039"/>
+        <location filename="../VBoxManageList.cpp" line="1041"/>
         <source>Default machine folder:          %ls
 </source>
         <translation>Папка машины по умолчанию:          %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1041"/>
+        <location filename="../VBoxManageList.cpp" line="1043"/>
         <source>Raw-mode Supported:              %s
 </source>
         <translation>Raw-режим поддерживается:              %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1043"/>
+        <location filename="../VBoxManageList.cpp" line="1045"/>
         <source>Exclusive HW virtualization use: %s
 </source>
         <translation>Эксклюзивное использование аппаратной виртуализации: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1043"/>
-        <location filename="../VBoxManageList.cpp" line="2123"/>
-        <location filename="../VBoxManageList.cpp" line="2127"/>
+        <location filename="../VBoxManageList.cpp" line="1045"/>
+        <location filename="../VBoxManageList.cpp" line="2126"/>
+        <location filename="../VBoxManageList.cpp" line="2130"/>
         <source>on</source>
         <translation>вкл</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1043"/>
-        <location filename="../VBoxManageList.cpp" line="2123"/>
-        <location filename="../VBoxManageList.cpp" line="2127"/>
+        <location filename="../VBoxManageList.cpp" line="1045"/>
+        <location filename="../VBoxManageList.cpp" line="2126"/>
+        <location filename="../VBoxManageList.cpp" line="2130"/>
         <source>off</source>
         <translation>выкл</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1045"/>
+        <location filename="../VBoxManageList.cpp" line="1047"/>
         <source>Default hard disk format:        %ls
 </source>
         <translation>Формат жесткого диска по умолчанию:        %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1047"/>
+        <location filename="../VBoxManageList.cpp" line="1049"/>
         <source>VRDE auth library:               %ls
 </source>
         <translation>Библиотека аутентификации VRDE:               %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1049"/>
+        <location filename="../VBoxManageList.cpp" line="1051"/>
         <source>Webservice auth. library:        %ls
 </source>
         <translation>Библиотека аутентификации вебсервиса:        %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1051"/>
+        <location filename="../VBoxManageList.cpp" line="1053"/>
         <source>Remote desktop ExtPack:          %ls
 </source>
         <translation>Пакет расширения удаленного рабочего стола:          %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1055"/>
+        <location filename="../VBoxManageList.cpp" line="1057"/>
         <source>Log history count:               %u
 </source>
         <translation>Размер истории в журнале:               %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1057"/>
+        <location filename="../VBoxManageList.cpp" line="1059"/>
         <source>Default frontend:                %ls
 </source>
         <translation>Фронтэнд по умолчанию:                %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1063"/>
+        <location filename="../VBoxManageList.cpp" line="1065"/>
         <source>Null</source>
         <translation>Пусто</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1075"/>
+        <location filename="../VBoxManageList.cpp" line="1078"/>
         <source>Default audio driver:            %s
 </source>
         <translation>Аудио драйвер по умолчанию:            %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1077"/>
+        <location filename="../VBoxManageList.cpp" line="1080"/>
         <source>Autostart database path:         %ls
 </source>
         <translation>Путь базы данных автостарта:         %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1079"/>
+        <location filename="../VBoxManageList.cpp" line="1082"/>
         <source>Default Guest Additions ISO:     %ls
 </source>
         <translation>ISO Дополнений Гостевой ОС по умолчанию:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1081"/>
+        <location filename="../VBoxManageList.cpp" line="1084"/>
         <source>Logging Level:                   %ls
 </source>
         <translation>Уровень журнала:                   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1087"/>
+        <location filename="../VBoxManageList.cpp" line="1090"/>
         <source>System</source>
         <translation>Система</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1088"/>
+        <location filename="../VBoxManageList.cpp" line="1091"/>
         <source>NoProxy</source>
         <translation>Без Прокси</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1089"/>
+        <location filename="../VBoxManageList.cpp" line="1092"/>
         <source>Manual</source>
         <translation>Вручную</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1094"/>
+        <location filename="../VBoxManageList.cpp" line="1097"/>
         <source>Proxy Mode:                      %s
 </source>
         <translation>Режим Прокси:                      %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1096"/>
+        <location filename="../VBoxManageList.cpp" line="1099"/>
         <source>Proxy URL:                       %ls
 </source>
         <translation>URL Прокси:                       %ls
@@ -10400,7 +10395,7 @@ VRDE модуль:     %ls
         <translation type="vanished">С бетами: новые минорные, корректирующие, мажорные и бета релизы</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1168"/>
+        <location filename="../VBoxManageList.cpp" line="1171"/>
         <source>Unset</source>
         <translation>Не задано</translation>
     </message>
@@ -10411,28 +10406,28 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1175"/>
+        <location filename="../VBoxManageList.cpp" line="1178"/>
         <source>Last check date:                 %ls
 </source>
         <translation>Последняя дата проверки: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1099"/>
+        <location filename="../VBoxManageList.cpp" line="1102"/>
         <source>User language:                   %ls
 </source>
         <translation>Пользовательский язык:                   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="714"/>
+        <location filename="../VBoxManageList.cpp" line="716"/>
         <source>Serial Number:    %ls
 </source>
         <translation>Серийный номер:    %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="716"/>
+        <location filename="../VBoxManageList.cpp" line="718"/>
         <source>Port:             %ls
 
 </source>
@@ -10441,126 +10436,126 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="799"/>
+        <location filename="../VBoxManageList.cpp" line="801"/>
         <source>Maximum %s Network Adapter count:   %u
 </source>
         <translation>Максимально сетевых адаптеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="801"/>
+        <location filename="../VBoxManageList.cpp" line="803"/>
         <source>Maximum %s IDE Controllers:   %u
 </source>
         <translation>Максимально IDE контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="803"/>
+        <location filename="../VBoxManageList.cpp" line="805"/>
         <source>Maximum %s SATA Controllers:  %u
 </source>
         <translation>Максимально SATA контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="805"/>
+        <location filename="../VBoxManageList.cpp" line="807"/>
         <source>Maximum %s SCSI Controllers:  %u
 </source>
         <translation>Максимально SCSI контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="807"/>
+        <location filename="../VBoxManageList.cpp" line="809"/>
         <source>Maximum %s SAS Controllers:   %u
 </source>
         <translation>Максимально SAS контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="809"/>
+        <location filename="../VBoxManageList.cpp" line="811"/>
         <source>Maximum %s NVMe Controllers:  %u
 </source>
         <translation>Максимально NVMe контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="811"/>
+        <location filename="../VBoxManageList.cpp" line="813"/>
         <source>Maximum %s virtio-scsi Controllers:  %u
 </source>
         <translation>Максимально virtio-scsi контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="813"/>
+        <location filename="../VBoxManageList.cpp" line="815"/>
         <source>Maximum %s Floppy Controllers:%u
 </source>
         <translation>Максимально Floppy контроллеров типа %s:   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="845"/>
+        <location filename="../VBoxManageList.cpp" line="847"/>
         <source>Description:      %ls
 </source>
         <translation>Описание:           %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="846"/>
+        <location filename="../VBoxManageList.cpp" line="848"/>
         <source>Family ID:        %ls
 </source>
         <translation>ID семейства:       %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="847"/>
+        <location filename="../VBoxManageList.cpp" line="849"/>
         <source>Family Desc:      %ls
 </source>
         <translation>Описание семейства: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="849"/>
+        <location filename="../VBoxManageList.cpp" line="851"/>
         <source>OS Subtype:       %ls
 </source>
         <translation>Подтип гостевой ОС: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="850"/>
+        <location filename="../VBoxManageList.cpp" line="852"/>
         <source>Architecture:     %s
 </source>
         <translation>Архитектура:        %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="851"/>
+        <location filename="../VBoxManageList.cpp" line="853"/>
         <source>64 bit:           %RTbool
 </source>
         <translation>64 бит:             %RTbool
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="857"/>
+        <location filename="../VBoxManageList.cpp" line="859"/>
         <source>Family:           %ls / %ls (%ls)
 </source>
         <translation>Семейство:          %ls / %ls (%ls)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="860"/>
+        <location filename="../VBoxManageList.cpp" line="862"/>
         <source>Family:           %ls (%ls)
 </source>
         <translation>Семейство:          %ls (%ls)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="861"/>
+        <location filename="../VBoxManageList.cpp" line="863"/>
         <source>Architecture:     %s%s
 </source>
         <translation>Архитектура:        %s%s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="882"/>
+        <location filename="../VBoxManageList.cpp" line="884"/>
         <source>Supported guest OS types%s:
 
 </source>
@@ -10569,178 +10564,178 @@ VRDE модуль:     %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="931"/>
+        <location filename="../VBoxManageList.cpp" line="933"/>
         <source>Maximum Serial Port count:              %u
 </source>
         <translation>Максимально последовательных портов:       %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="933"/>
+        <location filename="../VBoxManageList.cpp" line="935"/>
         <source>Maximum Parallel Port count:            %u
 </source>
         <translation>Максимально параллельных портов:           %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="935"/>
+        <location filename="../VBoxManageList.cpp" line="937"/>
         <source>Maximum Boot Position:                  %u
 </source>
         <translation>Максимальная загрузочная позиция:          %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="937"/>
+        <location filename="../VBoxManageList.cpp" line="939"/>
         <source>Maximum Floppy Port count:              %u
 </source>
         <translation>Максимально Floppy портов:                 %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="939"/>
+        <location filename="../VBoxManageList.cpp" line="941"/>
         <source>Maximum Floppy Devices per Port:        %u
 </source>
         <translation>Максимально Floppy устройств на порт:      %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="943"/>
+        <location filename="../VBoxManageList.cpp" line="945"/>
         <source>Maximum virtio-scsi Devices per Port:   %u
 </source>
         <translation>Максимально virtio-scsi устройств на порт: %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="945"/>
+        <location filename="../VBoxManageList.cpp" line="947"/>
         <source>Maximum IDE Port count:                 %u
 </source>
         <translation>Максимально IDE портов:                    %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="947"/>
+        <location filename="../VBoxManageList.cpp" line="949"/>
         <source>Maximum IDE Devices per port:           %u
 </source>
         <translation>Максимально IDE устройств на порт:         %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="949"/>
+        <location filename="../VBoxManageList.cpp" line="951"/>
         <source>Maximum SATA Port count:                %u
 </source>
         <translation>Максимально SATA портов:                   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="951"/>
+        <location filename="../VBoxManageList.cpp" line="953"/>
         <source>Maximum SATA Device per port:          %u
 </source>
         <translation>Максимально SATA устройств на порт:        %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="953"/>
+        <location filename="../VBoxManageList.cpp" line="955"/>
         <source>Maximum SCSI Port count:                %u
 </source>
         <translation>Максимально SCSI портов:                   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="955"/>
+        <location filename="../VBoxManageList.cpp" line="957"/>
         <source>Maximum SCSI Devices per port:          %u
 </source>
         <translation>Максимально SCSI устройств на порт:        %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="957"/>
+        <location filename="../VBoxManageList.cpp" line="959"/>
         <source>Maximum SAS Port count:                 %u
 </source>
         <translation>Максимально SAS портов:                    %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="959"/>
+        <location filename="../VBoxManageList.cpp" line="961"/>
         <source>Maximum SAS Devices per Port:           %u
 </source>
         <translation>Максимально SAS устройств на порт:         %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="961"/>
+        <location filename="../VBoxManageList.cpp" line="963"/>
         <source>Maximum NVMe Port count:                %u
 </source>
         <translation>Максимально NVMe портов:                   %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="963"/>
+        <location filename="../VBoxManageList.cpp" line="965"/>
         <source>Maximum NVMe Devices per Port:          %u
 </source>
         <translation>Максимально NVMe устройств на порт:        %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="968"/>
+        <location filename="../VBoxManageList.cpp" line="970"/>
         <source>Supported chipsets:                     </source>
         <translation>Поддерживаемые чипсеты:                     </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="981"/>
+        <location filename="../VBoxManageList.cpp" line="983"/>
         <source>%s chipset properties:
 </source>
         <translation>параметры чипсета %s:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1053"/>
+        <location filename="../VBoxManageList.cpp" line="1055"/>
         <source>VM encryption ExtPack:           %ls
 </source>
         <translation>Пакет расширения шифрования ВМ:                      %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1062"/>
+        <location filename="../VBoxManageList.cpp" line="1064"/>
         <source>Default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1125"/>
+        <location filename="../VBoxManageList.cpp" line="1128"/>
         <source>%s platform properties:
 </source>
         <translation>параметры платформы %s:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1137"/>
+        <location filename="../VBoxManageList.cpp" line="1140"/>
         <source>Enabled:                      %s
 </source>
         <translation>Включено:                %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1140"/>
+        <location filename="../VBoxManageList.cpp" line="1143"/>
         <source>Check count:                  %u
 </source>
         <translation>Количество проверок:     %u
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1143"/>
+        <location filename="../VBoxManageList.cpp" line="1146"/>
         <source>Check frequency:              never
 </source>
         <translation>Частота проверки:        никогда
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1145"/>
+        <location filename="../VBoxManageList.cpp" line="1148"/>
         <source>Check frequency:              every day
 </source>
         <translation>Частота проверки:        каждый день
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1147"/>
+        <location filename="../VBoxManageList.cpp" line="1150"/>
         <source>Check frequency:              every %u days
 </source>
         <translation>
@@ -10753,292 +10748,292 @@ VRDE модуль:     %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1156"/>
+        <location filename="../VBoxManageList.cpp" line="1159"/>
         <source>Stable: Maintenance and minor releases within the same major release</source>
         <translation>Стабильные: Корректирующие и минорные релизы внутри того же мажорного релиза</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1159"/>
+        <location filename="../VBoxManageList.cpp" line="1162"/>
         <source>All releases: All stable releases, including major versions</source>
         <translation>Все релизы: Все стабильные релизы, включая мажорные версии</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1162"/>
+        <location filename="../VBoxManageList.cpp" line="1165"/>
         <source>With Betas: All stable and major releases, including beta versions</source>
         <translation>С бета-версиями: Все стабильные и мажорные релизы, включая бета-версии</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1165"/>
+        <location filename="../VBoxManageList.cpp" line="1168"/>
         <source>With Testing: All stable, major and beta releases, including testing versions</source>
         <translation>С тест-версиями: Все стабильные, мажорные и бета-релизы, включая тестовые версии</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1171"/>
+        <location filename="../VBoxManageList.cpp" line="1174"/>
         <source>Channel:                         %s
 </source>
         <translation>Канал:                   %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1173"/>
+        <location filename="../VBoxManageList.cpp" line="1176"/>
         <source>Repository:                      %ls
 </source>
         <translation>Репозиторий:             %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1203"/>
+        <location filename="../VBoxManageList.cpp" line="1206"/>
         <source>    minLeaseTime:     default
 </source>
         <translation>    мин. время аренды:     по умолчанию
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1205"/>
+        <location filename="../VBoxManageList.cpp" line="1208"/>
         <source>    minLeaseTime:     %u sec
 </source>
         <translation>    мин. время аренды:     %u сек
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1210"/>
+        <location filename="../VBoxManageList.cpp" line="1213"/>
         <source>    defaultLeaseTime: default
 </source>
         <translation>    время аренды по умолчанию: по умолчанию
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1212"/>
+        <location filename="../VBoxManageList.cpp" line="1215"/>
         <source>    defaultLeaseTime: %u sec
 </source>
         <translation>    время аренды по умолчанию: %u сек
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1217"/>
+        <location filename="../VBoxManageList.cpp" line="1220"/>
         <source>    maxLeaseTime:     default
 </source>
         <translation>    макс. время аренды:     по умолчанию
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1219"/>
+        <location filename="../VBoxManageList.cpp" line="1222"/>
         <source>    maxLeaseTime:     %u sec
 </source>
         <translation>    макс. время аренды:     %u сек
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1225"/>
+        <location filename="../VBoxManageList.cpp" line="1228"/>
         <source>    Forced options:   %Rhrc
 </source>
         <translation>    Форсированные опции:   %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1227"/>
+        <location filename="../VBoxManageList.cpp" line="1230"/>
         <source>    Forced options:   None
 </source>
         <translation>    Форсированные опции:   Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1230"/>
+        <location filename="../VBoxManageList.cpp" line="1233"/>
         <source>    Forced options:   </source>
         <translation>    Форсированные опции:   </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1238"/>
+        <location filename="../VBoxManageList.cpp" line="1241"/>
         <source>    Suppressed opt.s: %Rhrc
 </source>
         <translation>    Подавленные опции: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1240"/>
+        <location filename="../VBoxManageList.cpp" line="1243"/>
         <source>    Suppressed opts.: None
 </source>
         <translation>    Подавленные опции: Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1243"/>
+        <location filename="../VBoxManageList.cpp" line="1246"/>
         <source>    Suppressed opts.: </source>
         <translation>    Подавленные опции: </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1255"/>
+        <location filename="../VBoxManageList.cpp" line="1258"/>
         <source>    DHCP options:     %Rhrc
 </source>
         <translation>    DHCP опции:     %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1258"/>
+        <location filename="../VBoxManageList.cpp" line="1261"/>
         <source>    DHCP options:     Return count mismatch: %zu, %zu, %zu
 </source>
         <translation>    DHCP опции:     Число возвращенных не соответствует: %zu, %zu, %zu
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1263"/>
+        <location filename="../VBoxManageList.cpp" line="1266"/>
         <source>    DHCP options:     None
 </source>
         <translation>    DHCP опции:     Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1270"/>
+        <location filename="../VBoxManageList.cpp" line="1273"/>
         <source>      %3d/legacy: %ls
 </source>
         <translation>      %3d/устаревшие: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1304"/>
+        <location filename="../VBoxManageList.cpp" line="1307"/>
         <source>NetworkName:    %ls
 </source>
         <translation>Имя сети:    %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1310"/>
+        <location filename="../VBoxManageList.cpp" line="1313"/>
         <source>LowerIPAddress: %ls
 </source>
         <translation>Нижний IP адрес: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1313"/>
+        <location filename="../VBoxManageList.cpp" line="1316"/>
         <source>UpperIPAddress: %ls
 </source>
         <translation>Верхний IP адрес: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1316"/>
+        <location filename="../VBoxManageList.cpp" line="1319"/>
         <source>NetworkMask:    %ls
 </source>
         <translation>Сетевая маска:    %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1320"/>
+        <location filename="../VBoxManageList.cpp" line="1323"/>
         <source>Enabled:        %s
 </source>
         <translation>Включено:        %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1323"/>
+        <location filename="../VBoxManageList.cpp" line="1326"/>
         <source>Global Configuration:
 </source>
         <translation>Глобальная конфигурация:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1338"/>
+        <location filename="../VBoxManageList.cpp" line="1341"/>
         <source>Groups:               %Rrc
 </source>
         <translation>Группы:               %Rrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1340"/>
+        <location filename="../VBoxManageList.cpp" line="1343"/>
         <source>Groups:               None
 </source>
         <translation>Группы:               Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1346"/>
+        <location filename="../VBoxManageList.cpp" line="1349"/>
         <source>Group:                %ls
 </source>
         <translation>Группа:                %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1351"/>
+        <location filename="../VBoxManageList.cpp" line="1354"/>
         <source>    Conditions:       %Rhrc
 </source>
         <translation>    Условия:       %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1353"/>
+        <location filename="../VBoxManageList.cpp" line="1356"/>
         <source>    Conditions:       None
 </source>
         <translation>    Условия:       Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1363"/>
+        <location filename="../VBoxManageList.cpp" line="1366"/>
         <source>    Conditions:       %s %s %ls
 </source>
         <translation>    Условия:       %s %s %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1364"/>
+        <location filename="../VBoxManageList.cpp" line="1367"/>
         <source>include</source>
         <translation>включая</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1364"/>
+        <location filename="../VBoxManageList.cpp" line="1367"/>
         <source>exclude</source>
         <translation>исключая</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1386"/>
+        <location filename="../VBoxManageList.cpp" line="1389"/>
         <source>Individual Configs:   %Rrc
 </source>
         <translation>Индивидуальные конфигурации:   %Rrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1388"/>
+        <location filename="../VBoxManageList.cpp" line="1391"/>
         <source>Individual Configs:   None
 </source>
         <translation>Индивидуальные конфигурации:   Нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1399"/>
+        <location filename="../VBoxManageList.cpp" line="1402"/>
         <source>Individual Config:    MAC %ls
 </source>
         <translation>Индивидуальная конфигурация:    MAC %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1409"/>
+        <location filename="../VBoxManageList.cpp" line="1412"/>
         <source>Individual Config:    VM NIC: %ls slot %u, MAC %ls
 </source>
         <translation>Индивидуальная конфигурация:    ВМ NIC: %ls слот %u, MAC %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1412"/>
+        <location filename="../VBoxManageList.cpp" line="1415"/>
         <source>Individual Config:    VM NIC: %ls slot %u, MAC %Rhrc
 </source>
         <translation>Индивидуальная конфигурация:    ВМ NIC: %ls слот %u, MAC %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1417"/>
+        <location filename="../VBoxManageList.cpp" line="1420"/>
         <source>    Fixed Address:    %ls
 </source>
         <translation>    Фиксированный адрес:    %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1419"/>
+        <location filename="../VBoxManageList.cpp" line="1422"/>
         <source>    Fixed Address:    dynamic
 </source>
         <translation>    Фиксированный адрес:    динамический
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1445"/>
+        <location filename="../VBoxManageList.cpp" line="1448"/>
         <source>Extension Packs: %u
 </source>
         <translation>Пакеты расширений: %u
@@ -11065,14 +11060,14 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1531"/>
+        <location filename="../VBoxManageList.cpp" line="1534"/>
         <source>Video Input Devices: %u
 </source>
         <translation>Устройства ввода видео: %u
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1560"/>
+        <location filename="../VBoxManageList.cpp" line="1563"/>
         <source>Supported %d screen shot formats:
 </source>
         <translation>
@@ -11085,7 +11080,7 @@ VRDE модуль:   %ls
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1589"/>
+        <location filename="../VBoxManageList.cpp" line="1592"/>
         <source>Supported %d cloud providers:
 </source>
         <translation>
@@ -11098,103 +11093,103 @@ VRDE модуль:   %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1597"/>
+        <location filename="../VBoxManageList.cpp" line="1600"/>
         <source>Short Name:      %ls
 </source>
         <translation>Краткое имя:      %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1633"/>
+        <location filename="../VBoxManageList.cpp" line="1636"/>
         <source>Name:          %ls
 </source>
         <translation>Имя:            %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1636"/>
+        <location filename="../VBoxManageList.cpp" line="1639"/>
         <source>Provider GUID: %ls
 </source>
         <translation>GUID провайдера: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1652"/>
+        <location filename="../VBoxManageList.cpp" line="1655"/>
         <source>Property:      </source>
         <translation>Свойство:      </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1691"/>
+        <location filename="../VBoxManageList.cpp" line="1694"/>
         <source>CPU Profile #%02zu:
 </source>
         <translation>Профиль ЦПУ #%02zu:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1692"/>
+        <location filename="../VBoxManageList.cpp" line="1695"/>
         <source>  Architecture: %s
 </source>
         <translation>  Архитектура: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1693"/>
+        <location filename="../VBoxManageList.cpp" line="1696"/>
         <source>  Name:         %ls
 </source>
         <translation>  Имя:         %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1695"/>
+        <location filename="../VBoxManageList.cpp" line="1698"/>
         <source>  Full Name:    %ls
 </source>
         <translation>  Полное имя:    %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1945"/>
+        <location filename="../VBoxManageList.cpp" line="1948"/>
         <source>%sDrive:       %ls
 </source>
         <translation>%sДиск:       %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1947"/>
+        <location filename="../VBoxManageList.cpp" line="1950"/>
         <source>%sDrive:       %Rhrc
 </source>
         <translation>%sДиск:       %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1952"/>
+        <location filename="../VBoxManageList.cpp" line="1955"/>
         <source>Model:       %Rhrc
 </source>
         <translation>Модель:       %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1954"/>
+        <location filename="../VBoxManageList.cpp" line="1957"/>
         <source>Model:       &quot;%ls&quot;
 </source>
         <translation>Модель:       &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1956"/>
+        <location filename="../VBoxManageList.cpp" line="1959"/>
         <source>Model:       unknown/inaccessible
 </source>
         <translation>Модель:       неизвестно/недоступно
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1966"/>
+        <location filename="../VBoxManageList.cpp" line="1969"/>
         <source>Further disk and partitioning information is not available for drive &quot;%ls&quot;. (E_ACCESSDENIED)
 </source>
         <translation>Дальнейшая информация о диске и его разделах недоступна для диска &quot;%ls&quot;. (E_ACCESSDENIED)
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1979"/>
+        <location filename="../VBoxManageList.cpp" line="1982"/>
         <source>Size:        %llu bytes (%Rhcb)
 </source>
         <translation>
@@ -11207,21 +11202,21 @@ VRDE модуль:   %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1981"/>
+        <location filename="../VBoxManageList.cpp" line="1984"/>
         <source>Size:        %Rhcb
 </source>
         <translation>Размер:        %Rhcb
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1984"/>
+        <location filename="../VBoxManageList.cpp" line="1987"/>
         <source>Size:        %Rhrc
 </source>
         <translation>Размер:        %Rhrc
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../VBoxManageList.cpp" line="1991"/>
+        <location filename="../VBoxManageList.cpp" line="1994"/>
         <source>Sector Size: %u bytes
 </source>
         <translation>
@@ -11234,42 +11229,42 @@ VRDE модуль:   %ls
         </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="1994"/>
+        <location filename="../VBoxManageList.cpp" line="1997"/>
         <source>Sector Size: %Rhrc
 </source>
         <translation>Размер сектора: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2001"/>
+        <location filename="../VBoxManageList.cpp" line="2004"/>
         <source>Scheme:      %s
 </source>
         <translation>Схема:      %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2004"/>
+        <location filename="../VBoxManageList.cpp" line="2007"/>
         <source>Scheme:      %Rhrc
 </source>
         <translation>Схема:      %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2012"/>
+        <location filename="../VBoxManageList.cpp" line="2015"/>
         <source>Partitions:  %Rhrc
 </source>
         <translation>Разделы:  %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2016"/>
+        <location filename="../VBoxManageList.cpp" line="2019"/>
         <source>Partitions:  None (or not able to grok them).
 </source>
         <translation>Разделы:  Нет (или невозможно разобраться в них).
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2020"/>
+        <location filename="../VBoxManageList.cpp" line="2023"/>
         <source>Partitions:                              First         Last
 ##  Type      Byte Size     Byte Offset  Cyl/Head/Sec  Cyl/Head/Sec Active
 </source>
@@ -11278,7 +11273,7 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2023"/>
+        <location filename="../VBoxManageList.cpp" line="2026"/>
         <source>Partitions:                   First         Last
 ##  Type  Size      Start     Cyl/Head/Sec  Cyl/Head/Sec Active
 </source>
@@ -11287,7 +11282,7 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2082"/>
+        <location filename="../VBoxManageList.cpp" line="2085"/>
         <source>Partitions:
 ## %-*s Uuid                                           Byte Size         Byte Offset Active Name
 </source>
@@ -11296,13 +11291,13 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2085"/>
-        <location filename="../VBoxManageList.cpp" line="2090"/>
+        <location filename="../VBoxManageList.cpp" line="2088"/>
+        <location filename="../VBoxManageList.cpp" line="2093"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2087"/>
+        <location filename="../VBoxManageList.cpp" line="2090"/>
         <source>Partitions:
 ##  %-*s  Uuid                                   Size      Start   Active Name
 </source>
@@ -11335,8 +11330,8 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2427"/>
-        <location filename="../VBoxManageList.cpp" line="2449"/>
+        <location filename="../VBoxManageList.cpp" line="2430"/>
+        <location filename="../VBoxManageList.cpp" line="2452"/>
         <source>Name:         %ls
 
 </source>
@@ -11345,7 +11340,7 @@ VRDE модуль:   %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2495"/>
+        <location filename="../VBoxManageList.cpp" line="2498"/>
         <source>Host CPUIDs:
 
 Leaf no.  EAX      EBX      ECX      EDX
@@ -11356,7 +11351,7 @@ Leaf no.  EAX      EBX      ECX      EDX
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2541"/>
+        <location filename="../VBoxManageList.cpp" line="2544"/>
         <source>base</source>
         <translation>базовый</translation>
     </message>
@@ -11403,12 +11398,12 @@ Leaf no.  EAX      EBX      ECX      EDX
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2781"/>
+        <location filename="../VBoxManageList.cpp" line="2783"/>
         <source>Unknown subcommand &quot;%s&quot;.</source>
         <translation>Неизвестная подкоманда &quot;%s&quot;.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageList.cpp" line="2792"/>
+        <location filename="../VBoxManageList.cpp" line="2794"/>
         <source>Missing subcommand for &quot;list&quot; command.
 </source>
         <translation>Отсутствует подкоманда для команды &quot;list&quot;.
@@ -11462,20 +11457,20 @@ Object     Metric
     <message>
         <location filename="../VBoxManageMetrics.cpp" line="250"/>
         <location filename="../VBoxManageMetrics.cpp" line="259"/>
-        <location filename="../VBoxManageMetrics.cpp" line="422"/>
-        <location filename="../VBoxManageMetrics.cpp" line="431"/>
+        <location filename="../VBoxManageMetrics.cpp" line="421"/>
+        <location filename="../VBoxManageMetrics.cpp" line="430"/>
         <source>Missing argument to &apos;%s&apos;</source>
         <translation>Отсутствует аргумент к &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../VBoxManageMetrics.cpp" line="253"/>
-        <location filename="../VBoxManageMetrics.cpp" line="425"/>
+        <location filename="../VBoxManageMetrics.cpp" line="424"/>
         <source>Invalid value for &apos;period&apos; parameter: &apos;%s&apos;</source>
         <translation>Недопустимое значение для параметра &apos;period&apos;: &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../VBoxManageMetrics.cpp" line="262"/>
-        <location filename="../VBoxManageMetrics.cpp" line="434"/>
+        <location filename="../VBoxManageMetrics.cpp" line="433"/>
         <source>Invalid value for &apos;samples&apos; parameter: &apos;%s&apos;</source>
         <translation>Недопустимое значение для параметра &apos;samples&apos;: &apos;%s&apos;</translation>
     </message>
@@ -11489,7 +11484,7 @@ Object     Metric
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMetrics.cpp" line="493"/>
+        <location filename="../VBoxManageMetrics.cpp" line="494"/>
         <source>The background process holding collected metrics will shutdown
 in few seconds, discarding all collected data and parameters.</source>
         <translation>Фоновый процесс, удерживающий собранные метрики завершится в
@@ -11497,19 +11492,19 @@ in few seconds, discarding all collected data and parameters.</source>
 параметры.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMetrics.cpp" line="502"/>
+        <location filename="../VBoxManageMetrics.cpp" line="503"/>
         <source>Time stamp   Object     Metric               Value
 </source>
         <translation>Время        Объект     Метрика              Значение
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMetrics.cpp" line="649"/>
+        <location filename="../VBoxManageMetrics.cpp" line="650"/>
         <source>Subcommand missing</source>
         <translation>Отсутствует подкоманда</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMetrics.cpp" line="668"/>
+        <location filename="../VBoxManageMetrics.cpp" line="669"/>
         <source>Invalid subcommand &apos;%s&apos;</source>
         <translation>Недопустимая подкоманда &apos;%s&apos;</translation>
     </message>
@@ -11517,51 +11512,51 @@ in few seconds, discarding all collected data and parameters.</source>
 <context>
     <name>Misc</name>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1276"/>
-        <location filename="../VBoxManageMisc.cpp" line="1305"/>
-        <location filename="../VBoxManageMisc.cpp" line="1340"/>
-        <location filename="../VBoxManageMisc.cpp" line="1466"/>
+        <location filename="../VBoxManageMisc.cpp" line="1277"/>
+        <location filename="../VBoxManageMisc.cpp" line="1306"/>
+        <location filename="../VBoxManageMisc.cpp" line="1341"/>
+        <location filename="../VBoxManageMisc.cpp" line="1467"/>
         <source>Incorrect number of parameters</source>
         <translation>Некорректное количество параметров</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1315"/>
+        <location filename="../VBoxManageMisc.cpp" line="1316"/>
         <source>Cannot convert filename &quot;%s&quot; to absolute path: %Rrc</source>
         <translation>Невозможно преобразовать имя файла &quot;%s&quot; в абсолютный путь: %Rrc</translation>
     </message>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="101"/>
         <location filename="../VBoxManageMisc.cpp" line="205"/>
-        <location filename="../VBoxManageMisc.cpp" line="512"/>
-        <location filename="../VBoxManageMisc.cpp" line="686"/>
-        <location filename="../VBoxManageMisc.cpp" line="1594"/>
+        <location filename="../VBoxManageMisc.cpp" line="513"/>
+        <location filename="../VBoxManageMisc.cpp" line="687"/>
+        <location filename="../VBoxManageMisc.cpp" line="1595"/>
         <source>Invalid parameter &apos;%s&apos;</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="108"/>
         <location filename="../VBoxManageMisc.cpp" line="212"/>
-        <location filename="../VBoxManageMisc.cpp" line="862"/>
-        <location filename="../VBoxManageMisc.cpp" line="1019"/>
-        <location filename="../VBoxManageMisc.cpp" line="1179"/>
+        <location filename="../VBoxManageMisc.cpp" line="863"/>
+        <location filename="../VBoxManageMisc.cpp" line="1020"/>
+        <location filename="../VBoxManageMisc.cpp" line="1180"/>
         <source>Invalid option -%c</source>
         <translation>Недопустимая опция -%c</translation>
     </message>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="109"/>
         <location filename="../VBoxManageMisc.cpp" line="213"/>
-        <location filename="../VBoxManageMisc.cpp" line="864"/>
-        <location filename="../VBoxManageMisc.cpp" line="1021"/>
-        <location filename="../VBoxManageMisc.cpp" line="1181"/>
+        <location filename="../VBoxManageMisc.cpp" line="865"/>
+        <location filename="../VBoxManageMisc.cpp" line="1022"/>
+        <location filename="../VBoxManageMisc.cpp" line="1182"/>
         <source>Invalid option case %i</source>
         <translation>Недопустимый вариант опции %i</translation>
     </message>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="112"/>
         <location filename="../VBoxManageMisc.cpp" line="216"/>
-        <location filename="../VBoxManageMisc.cpp" line="867"/>
-        <location filename="../VBoxManageMisc.cpp" line="1024"/>
-        <location filename="../VBoxManageMisc.cpp" line="1184"/>
+        <location filename="../VBoxManageMisc.cpp" line="868"/>
+        <location filename="../VBoxManageMisc.cpp" line="1025"/>
+        <location filename="../VBoxManageMisc.cpp" line="1185"/>
         <source>unknown option: %s
 </source>
         <translation>Неизвестная опция: %s
@@ -11570,9 +11565,9 @@ in few seconds, discarding all collected data and parameters.</source>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="115"/>
         <location filename="../VBoxManageMisc.cpp" line="219"/>
-        <location filename="../VBoxManageMisc.cpp" line="871"/>
-        <location filename="../VBoxManageMisc.cpp" line="1028"/>
-        <location filename="../VBoxManageMisc.cpp" line="1188"/>
+        <location filename="../VBoxManageMisc.cpp" line="872"/>
+        <location filename="../VBoxManageMisc.cpp" line="1029"/>
+        <location filename="../VBoxManageMisc.cpp" line="1189"/>
         <source>error: %Rrs</source>
         <translation>ошибка: %Rrs</translation>
     </message>
@@ -11593,8 +11588,8 @@ in few seconds, discarding all collected data and parameters.</source>
     </message>
     <message>
         <location filename="../VBoxManageMisc.cpp" line="225"/>
-        <location filename="../VBoxManageMisc.cpp" line="526"/>
-        <location filename="../VBoxManageMisc.cpp" line="696"/>
+        <location filename="../VBoxManageMisc.cpp" line="527"/>
+        <location filename="../VBoxManageMisc.cpp" line="697"/>
         <source>VM name required</source>
         <translation>Требуется имя ВМ</translation>
     </message>
@@ -11604,22 +11599,22 @@ in few seconds, discarding all collected data and parameters.</source>
         <translation>Не удалось удалить машину</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="360"/>
+        <location filename="../VBoxManageMisc.cpp" line="361"/>
         <source>Invalid --platform-architecture argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --platform-architecture &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="370"/>
+        <location filename="../VBoxManageMisc.cpp" line="371"/>
         <source>Parameter --name is required</source>
         <translation>Требуется параметр --name</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="381"/>
+        <location filename="../VBoxManageMisc.cpp" line="382"/>
         <source>Unknown or invalid guest OS type given.</source>
         <translation>Указан неизвестный или недопустимый тип гостевой ОС.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="456"/>
+        <location filename="../VBoxManageMisc.cpp" line="457"/>
         <source>Virtual machine &apos;%ls&apos; is created%s.
 UUID: %s
 Settings file: &apos;%ls&apos;
@@ -11630,7 +11625,7 @@ UUID: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="459"/>
+        <location filename="../VBoxManageMisc.cpp" line="460"/>
         <source> and registered</source>
         <translation> и зарегистрирована</translation>
     </message>
@@ -11639,60 +11634,60 @@ UUID: %s
         <translation type="vanished">RTPathAbs(%s,,) завершен с ошибкой rc=%Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="550"/>
+        <location filename="../VBoxManageMisc.cpp" line="551"/>
         <source>Move VM failed</source>
         <translation>Не удалось переместить ВМ</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="555"/>
+        <location filename="../VBoxManageMisc.cpp" line="556"/>
         <source>Machine has been successfully moved into %s
 </source>
         <translation>Машина успешно перемещена в %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="556"/>
+        <location filename="../VBoxManageMisc.cpp" line="557"/>
         <source>the same location</source>
         <translation>то же место</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="666"/>
+        <location filename="../VBoxManageMisc.cpp" line="667"/>
         <source>Invalid clone mode &apos;%s&apos;
 </source>
         <translation>Недопустимый режим клонирования &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="671"/>
+        <location filename="../VBoxManageMisc.cpp" line="672"/>
         <source>Invalid clone options &apos;%s&apos;
 </source>
         <translation>Недопустимые опции клонирования &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="724"/>
+        <location filename="../VBoxManageMisc.cpp" line="725"/>
         <source>%s Clone</source>
         <translation>Клон %s</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="762"/>
+        <location filename="../VBoxManageMisc.cpp" line="763"/>
         <source>Clone VM failed</source>
         <translation>Не удалось клонировать ВМ</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="769"/>
+        <location filename="../VBoxManageMisc.cpp" line="770"/>
         <source>Machine has been successfully cloned as &quot;%ls&quot;
 </source>
         <translation>Машина успешно клонирована как &quot;%ls&quot;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="843"/>
+        <location filename="../VBoxManageMisc.cpp" line="844"/>
         <source>Parameter to option --putenv must not contain any newline character</source>
         <translation>Параметр к опции --putenv не должен содержать переводов строки</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="877"/>
+        <location filename="../VBoxManageMisc.cpp" line="878"/>
         <source>at least one VM name or uuid required</source>
         <translation>Требуется хотя бы одно имя ВМ или uuid</translation>
     </message>
@@ -11709,60 +11704,60 @@ UUID: %s
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1360"/>
-        <location filename="../VBoxManageMisc.cpp" line="1396"/>
+        <location filename="../VBoxManageMisc.cpp" line="1361"/>
+        <location filename="../VBoxManageMisc.cpp" line="1397"/>
         <source>Key: %ls, Value: %ls
 </source>
         <translation>Ключ: %ls, Значение: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1369"/>
-        <location filename="../VBoxManageMisc.cpp" line="1405"/>
+        <location filename="../VBoxManageMisc.cpp" line="1370"/>
+        <location filename="../VBoxManageMisc.cpp" line="1406"/>
         <source>Value: %ls
 </source>
         <translation>Значение: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1371"/>
-        <location filename="../VBoxManageMisc.cpp" line="1407"/>
+        <location filename="../VBoxManageMisc.cpp" line="1372"/>
+        <location filename="../VBoxManageMisc.cpp" line="1408"/>
         <source>No value set!
 </source>
         <translation>Не задано какое-либо значение!
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1419"/>
-        <location filename="../VBoxManageMisc.cpp" line="1975"/>
+        <location filename="../VBoxManageMisc.cpp" line="1420"/>
+        <location filename="../VBoxManageMisc.cpp" line="1995"/>
         <source>Not enough parameters</source>
         <translation>Недостаточно параметров</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1432"/>
-        <location filename="../VBoxManageMisc.cpp" line="1454"/>
+        <location filename="../VBoxManageMisc.cpp" line="1433"/>
+        <location filename="../VBoxManageMisc.cpp" line="1455"/>
         <source>Too many parameters</source>
         <translation>Слишком много параметров</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1491"/>
+        <location filename="../VBoxManageMisc.cpp" line="1492"/>
         <source>Invalid hwvirtexclusive argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к hwvirtexclusive &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1498"/>
+        <location filename="../VBoxManageMisc.cpp" line="1499"/>
         <source>Warning: &apos;vrdpauthlibrary&apos; is deprecated. Use &apos;vrdeauthlibrary&apos;.
 </source>
         <translation>Предупреждение: &apos;vrdpauthlibrary&apos; устарел. Используйте &apos;vrdeauthlibrary&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1528"/>
+        <location filename="../VBoxManageMisc.cpp" line="1529"/>
         <source>Error parsing Log history count &apos;%s&apos;</source>
         <translation>Ошибка при разборе размера истории журнала &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1563"/>
+        <location filename="../VBoxManageMisc.cpp" line="1564"/>
         <source>Unknown proxy mode: &apos;%s&apos;</source>
         <translation>Неизвестный режим прокси: &apos;%s&apos;</translation>
     </message>
@@ -11771,173 +11766,178 @@ UUID: %s
         <translation type="vanished">Имя машины дано более одного раза: сначала &apos;%s&apos;, затем &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="501"/>
-        <location filename="../VBoxManageMisc.cpp" line="2054"/>
+        <location filename="../VBoxManageMisc.cpp" line="502"/>
+        <location filename="../VBoxManageMisc.cpp" line="2073"/>
         <source>RTPathAbs(%s,,) failed with vrc=%Rrc</source>
         <translation>RTPathAbs(%s,,) завершен с ошибкой vrc=%Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1026"/>
-        <location filename="../VBoxManageMisc.cpp" line="1186"/>
+        <location filename="../VBoxManageMisc.cpp" line="1027"/>
+        <location filename="../VBoxManageMisc.cpp" line="1187"/>
         <source>%s: %Rrs</source>
         <translation>%s: %Rrs</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1033"/>
-        <location filename="../VBoxManageMisc.cpp" line="1193"/>
+        <location filename="../VBoxManageMisc.cpp" line="1034"/>
+        <location filename="../VBoxManageMisc.cpp" line="1194"/>
         <source>VM name or UUID required</source>
         <translation>Требуется имя ВМ или UUID</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1036"/>
-        <location filename="../VBoxManageMisc.cpp" line="1196"/>
+        <location filename="../VBoxManageMisc.cpp" line="1037"/>
+        <location filename="../VBoxManageMisc.cpp" line="1197"/>
         <source>No password specified</source>
         <translation>Не указан пароль</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1040"/>
+        <location filename="../VBoxManageMisc.cpp" line="1041"/>
         <source>A new password must always have a valid identifier set at the same time</source>
         <translation>Новый пароль должен всегда иметь действительный идентификатор заданный в то же время</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1113"/>
-        <location filename="../VBoxManageMisc.cpp" line="1236"/>
+        <location filename="../VBoxManageMisc.cpp" line="1114"/>
+        <location filename="../VBoxManageMisc.cpp" line="1237"/>
         <source>Invalid number of arguments: %d</source>
         <translation>Неправильное количество аргументов: %d</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1199"/>
+        <location filename="../VBoxManageMisc.cpp" line="1200"/>
         <source>No password identifier specified</source>
         <translation>Не указан идентификатор пароля</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1252"/>
+        <location filename="../VBoxManageMisc.cpp" line="1253"/>
         <source>subcommand required</source>
         <translation>необходима подкоманда</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1267"/>
+        <location filename="../VBoxManageMisc.cpp" line="1268"/>
         <source>unknown subcommand</source>
         <translation>неизвестная подкоманда</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1657"/>
-        <location filename="../VBoxManageMisc.cpp" line="1769"/>
-        <location filename="../VBoxManageMisc.cpp" line="1899"/>
+        <location filename="../VBoxManageMisc.cpp" line="1658"/>
+        <location filename="../VBoxManageMisc.cpp" line="1781"/>
+        <location filename="../VBoxManageMisc.cpp" line="1919"/>
         <source>Machine name given more than once: first &apos;%s&apos;, then &apos;%s&apos;</source>
         <translation>Имя машины указано более одного раза: сначала &apos;%s&apos;, затем &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1667"/>
-        <location filename="../VBoxManageMisc.cpp" line="1779"/>
-        <location filename="../VBoxManageMisc.cpp" line="1909"/>
+        <location filename="../VBoxManageMisc.cpp" line="1668"/>
+        <location filename="../VBoxManageMisc.cpp" line="1791"/>
+        <location filename="../VBoxManageMisc.cpp" line="1929"/>
         <source>No machine was specified</source>
         <translation>Не указана машина</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1670"/>
-        <location filename="../VBoxManageMisc.cpp" line="1781"/>
+        <location filename="../VBoxManageMisc.cpp" line="1671"/>
+        <location filename="../VBoxManageMisc.cpp" line="1793"/>
         <source>No shared folder name (--name) was given</source>
         <translation>Не указано имя общей папки (--name)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1672"/>
+        <location filename="../VBoxManageMisc.cpp" line="1673"/>
         <source>Invalid shared folder name &apos;%s&apos;: contains space</source>
         <translation>Недопустимое имя общей папки &apos;%s&apos;: содержит пробелы</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1674"/>
+        <location filename="../VBoxManageMisc.cpp" line="1675"/>
         <source>Invalid shared folder name &apos;%s&apos;: contains tabs</source>
         <translation>Недопустимое имя общей папки &apos;%s&apos;: содержит табуляцию</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1676"/>
+        <location filename="../VBoxManageMisc.cpp" line="1677"/>
         <source>Invalid shared folder name &apos;%s&apos;: contains newline</source>
         <translation>Недопустимое имя общей папки &apos;%s&apos;: содержит переводы строк</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1679"/>
+        <location filename="../VBoxManageMisc.cpp" line="1680"/>
         <source>No host path (--hostpath) was given</source>
         <translation>Не указан путь хоста (--hostpath)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1683"/>
+        <location filename="../VBoxManageMisc.cpp" line="1684"/>
         <source>RTAbsPath failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTAbsPath завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1706"/>
+        <location filename="../VBoxManageMisc.cpp" line="1693"/>
+        <source>Invalid option: global and transient both specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageMisc.cpp" line="1717"/>
         <source>Machine &apos;%s&apos; is not currently running.</source>
         <translation>Машина &apos;%s&apos; сейчас не запущена.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1802"/>
+        <location filename="../VBoxManageMisc.cpp" line="1821"/>
         <source>Machine &apos;%s&apos; is not currently running.
 </source>
         <translation>Машина &apos;%s&apos; сейчас не запущена.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1895"/>
+        <location filename="../VBoxManageMisc.cpp" line="1915"/>
         <source>Invalid --symlink-policy argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --symlink-policy &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1911"/>
+        <location filename="../VBoxManageMisc.cpp" line="1931"/>
         <source>No shared folder name (--name) was supplied.</source>
         <translation>Не указано имя общей папки (--name).</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1914"/>
+        <location filename="../VBoxManageMisc.cpp" line="1934"/>
         <source>No shared folder attributes specified.</source>
         <translation>Не указаны атрибуты общей папки.</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1936"/>
+        <location filename="../VBoxManageMisc.cpp" line="1956"/>
         <source>Machine &apos;%s&apos; has no shared folders configured.
 </source>
         <translation>Нет настроенных общих папок машины &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="1961"/>
+        <location filename="../VBoxManageMisc.cpp" line="1981"/>
         <source>Could not find a shared folder named &apos;%s&apos;.
 </source>
         <translation>Невозможно найти общую папку с именем &apos;%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2040"/>
-        <location filename="../VBoxManageMisc.cpp" line="2125"/>
+        <location filename="../VBoxManageMisc.cpp" line="2059"/>
+        <location filename="../VBoxManageMisc.cpp" line="2144"/>
         <source>Too many extension pack names given to &quot;extpack uninstall&quot;</source>
         <translation>Слишком много имен пакетов расширений указано для &quot;extpack uninstall&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2049"/>
+        <location filename="../VBoxManageMisc.cpp" line="2068"/>
         <source>No extension pack name was given to &quot;extpack install&quot;</source>
         <translation>Не указано имя пакета расширения для &quot;extpack install&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2078"/>
+        <location filename="../VBoxManageMisc.cpp" line="2097"/>
         <source>License accepted.
 </source>
         <translation>Лицензия принята.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2082"/>
+        <location filename="../VBoxManageMisc.cpp" line="2101"/>
         <source>Do you agree to these license terms and conditions (y/n)? </source>
         <translation>Вы согласны с этими определениями и условиями лицензии (y/n)? </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2087"/>
+        <location filename="../VBoxManageMisc.cpp" line="2106"/>
         <source>Installation of &quot;%ls&quot; aborted.
 </source>
         <translation>Установка &quot;%ls&quot; прервана.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2091"/>
+        <location filename="../VBoxManageMisc.cpp" line="2110"/>
         <source>License accepted. For batch installation add
 --accept-license=%s
 to the VBoxManage command line.
@@ -11950,66 +11950,66 @@ to the VBoxManage command line.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2099"/>
+        <location filename="../VBoxManageMisc.cpp" line="2118"/>
         <source>Failed to install &quot;%s&quot;</source>
         <translation>Не удалось установить &quot;%s&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2101"/>
+        <location filename="../VBoxManageMisc.cpp" line="2120"/>
         <source>Successfully installed &quot;%ls&quot;.
 </source>
         <translation>Успешно установлено &quot;%ls&quot;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2134"/>
+        <location filename="../VBoxManageMisc.cpp" line="2153"/>
         <source>No extension pack name was given to &quot;extpack uninstall&quot;</source>
         <translation>Не указано имя пакета расширения для &quot;extpack uninstall&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2140"/>
+        <location filename="../VBoxManageMisc.cpp" line="2159"/>
         <source>Failed to uninstall &quot;%s&quot;</source>
         <translation>Не удалось удалить &quot;%s&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2142"/>
+        <location filename="../VBoxManageMisc.cpp" line="2161"/>
         <source>Successfully uninstalled &quot;%s&quot;.
 </source>
         <translation>Успешно удалено &quot;%s&quot;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2150"/>
+        <location filename="../VBoxManageMisc.cpp" line="2169"/>
         <source>Successfully performed extension pack cleanup
 </source>
         <translation>Успешно произведена очистка пакета расширения
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2192"/>
-        <location filename="../VBoxManageMisc.cpp" line="2361"/>
-        <location filename="../VBoxManageMisc.cpp" line="2414"/>
-        <location filename="../VBoxManageMisc.cpp" line="2427"/>
-        <location filename="../VBoxManageMisc.cpp" line="2462"/>
-        <location filename="../VBoxManageMisc.cpp" line="2473"/>
-        <location filename="../VBoxManageMisc.cpp" line="2480"/>
+        <location filename="../VBoxManageMisc.cpp" line="2211"/>
+        <location filename="../VBoxManageMisc.cpp" line="2380"/>
+        <location filename="../VBoxManageMisc.cpp" line="2433"/>
+        <location filename="../VBoxManageMisc.cpp" line="2446"/>
+        <location filename="../VBoxManageMisc.cpp" line="2481"/>
+        <location filename="../VBoxManageMisc.cpp" line="2492"/>
+        <location filename="../VBoxManageMisc.cpp" line="2499"/>
         <source>RTPathAbs failed on &apos;%s&apos;: %Rrc</source>
         <translation>RTPathAbs завершился с ошибкой на &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2208"/>
+        <location filename="../VBoxManageMisc.cpp" line="2227"/>
         <source>No ISO specified</source>
         <translation>Не указан ISO</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2256"/>
+        <location filename="../VBoxManageMisc.cpp" line="2275"/>
         <source>Detected &apos;%s&apos; to be:
 </source>
         <translation>Обнаруженный &apos;%s&apos;:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2257"/>
+        <location filename="../VBoxManageMisc.cpp" line="2276"/>
         <source>    OS TypeId    = %ls
     OS Version   = %ls
     OS Flavor    = %ls
@@ -12024,139 +12024,139 @@ to the VBoxManage command line.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2270"/>
+        <location filename="../VBoxManageMisc.cpp" line="2289"/>
         <source>    Unattended installation supported = yes
 </source>
         <translation>    Unattended установка поддерживается = да
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2272"/>
+        <location filename="../VBoxManageMisc.cpp" line="2291"/>
         <source>    Unattended installation supported = no
 </source>
         <translation>    Unattended установка поддерживается = нет
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2353"/>
+        <location filename="../VBoxManageMisc.cpp" line="2372"/>
         <source>VM name/UUID given more than once!</source>
         <translation>Имя ВМ/UUID указаны несколько раз!</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2509"/>
+        <location filename="../VBoxManageMisc.cpp" line="2528"/>
         <source>Missing VM name/UUID</source>
         <translation>Отсутствует имя ВМ/UUID</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2561"/>
+        <location filename="../VBoxManageMisc.cpp" line="2580"/>
         <source>Machine &apos;%ls&apos; is currently running</source>
         <translation>Машина &apos;%ls&apos; сейчас работает</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2567"/>
+        <location filename="../VBoxManageMisc.cpp" line="2586"/>
         <source>%s unattended installation of %s in machine &apos;%ls&apos; (%ls).
 </source>
         <translation>%s unattended установка %s в машину &apos;%ls&apos; (%ls).
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2568"/>
+        <location filename="../VBoxManageMisc.cpp" line="2587"/>
         <source>Preparing</source>
         <translation>Подготовка</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2568"/>
+        <location filename="../VBoxManageMisc.cpp" line="2587"/>
         <source>Starting</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2581"/>
+        <location filename="../VBoxManageMisc.cpp" line="2600"/>
         <source>Using values:
 </source>
         <translation>Используемые значения:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2588"/>
-        <location filename="../VBoxManageMisc.cpp" line="2596"/>
-        <location filename="../VBoxManageMisc.cpp" line="2650"/>
+        <location filename="../VBoxManageMisc.cpp" line="2607"/>
+        <location filename="../VBoxManageMisc.cpp" line="2615"/>
+        <location filename="../VBoxManageMisc.cpp" line="2669"/>
         <source>  %32s = failed: %Rhrc
 </source>
         <translation>  %32s = завершено с ошибкой: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2653"/>
+        <location filename="../VBoxManageMisc.cpp" line="2672"/>
         <source>  %32 = failed: %Rhrc
 </source>
         <translation>  %32 = завершено с ошибкой: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2669"/>
+        <location filename="../VBoxManageMisc.cpp" line="2688"/>
         <source>VM &apos;%ls&apos; (%ls) is ready to be started (e.g. VBoxManage startvm).
 </source>
         <translation>ВМ &apos;%ls&apos; (%ls) готова к запуску (например, VBoxManage startvm).
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2688"/>
+        <location filename="../VBoxManageMisc.cpp" line="2707"/>
         <source>Waiting for VM &apos;%ls&apos; to power on...
 </source>
         <translation>Ожидание запуска ВМ &apos;%ls&apos;...
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2703"/>
+        <location filename="../VBoxManageMisc.cpp" line="2722"/>
         <source>VM &apos;%ls&apos; (%ls) has been successfully started.
 </source>
         <translation>ВМ &apos;%ls&apos; (%ls) успешно запущена.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2835"/>
-        <location filename="../VBoxManageMisc.cpp" line="2885"/>
-        <location filename="../VBoxManageMisc.cpp" line="2945"/>
-        <location filename="../VBoxManageMisc.cpp" line="3043"/>
+        <location filename="../VBoxManageMisc.cpp" line="2854"/>
+        <location filename="../VBoxManageMisc.cpp" line="2904"/>
+        <location filename="../VBoxManageMisc.cpp" line="2964"/>
+        <location filename="../VBoxManageMisc.cpp" line="3062"/>
         <source>Parameter --provider is required</source>
         <translation>Требуется параметр --provider</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2837"/>
-        <location filename="../VBoxManageMisc.cpp" line="2887"/>
-        <location filename="../VBoxManageMisc.cpp" line="2947"/>
-        <location filename="../VBoxManageMisc.cpp" line="3045"/>
+        <location filename="../VBoxManageMisc.cpp" line="2856"/>
+        <location filename="../VBoxManageMisc.cpp" line="2906"/>
+        <location filename="../VBoxManageMisc.cpp" line="2966"/>
+        <location filename="../VBoxManageMisc.cpp" line="3064"/>
         <source>Parameter --profile is required</source>
         <translation>Требуется параметр --profile</translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2866"/>
+        <location filename="../VBoxManageMisc.cpp" line="2885"/>
         <source>Provider %ls: profile &apos;%ls&apos; was updated.
 </source>
         <translation>Провайдер %ls: профиль &apos;%ls&apos; обновлен.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2908"/>
+        <location filename="../VBoxManageMisc.cpp" line="2927"/>
         <source>Provider GUID: %ls
 </source>
         <translation>GUID провайдера: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="2924"/>
+        <location filename="../VBoxManageMisc.cpp" line="2943"/>
         <source>Property:      </source>
         <translation>Свойство:      </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="3029"/>
+        <location filename="../VBoxManageMisc.cpp" line="3048"/>
         <source>Provider %ls: profile &apos;%ls&apos; was added.
 </source>
         <translation>Провайдер %ls: профиль &apos;%ls&apos; добавлен.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageMisc.cpp" line="3072"/>
+        <location filename="../VBoxManageMisc.cpp" line="3091"/>
         <source>Provider %ls: profile &apos;%ls&apos; was deleted.
 </source>
         <translation>Провайдер %ls: профиль &apos;%ls&apos; удален.
@@ -12166,50 +12166,50 @@ to the VBoxManage command line.
 <context>
     <name>ModifyVM</name>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="542"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="559"/>
         <source>Warning: &apos;--vrdp%s&apos; is deprecated. Use &apos;--vrde%s&apos;.
 </source>
         <translation>Предупреждение: &apos;--vrdp%s&apos; устарел. Используйте &apos;--vrde%s&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="652"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="669"/>
         <source>Invalid %s number %u</source>
         <translation>Недопустимый номер %s %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="836"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="2203"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="889"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2259"/>
         <source>Not enough parameters</source>
         <translation>Недостаточно параметров</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="906"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="955"/>
         <source>Cannot open file &quot;%s&quot;: %Rrc</source>
         <translation>Невозможно открыть файл &quot;%s&quot;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="914"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="963"/>
         <source>Cannot get size of file &quot;%s&quot;: %Rrc</source>
         <translation>Невозможно получить размер файла &quot;%s&quot;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="920"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="969"/>
         <source>File &quot;%s&quot; is bigger than 256KByte</source>
         <translation>Файл &quot;%s&quot; больше 256 КБайт</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="928"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="977"/>
         <source>Cannot read contents of file &quot;%s&quot;: %Rrc</source>
         <translation>Невозможно прочесть содержимое файла &quot;%s&quot;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="979"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1028"/>
         <source>Invalid --firmware argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --firmware &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1020"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1069"/>
         <source>Invalid --paravirtprovider argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --paravirtprovider &apos;%s&apos;</translation>
     </message>
@@ -12218,277 +12218,288 @@ to the VBoxManage command line.
         <translation type="vanished">Отсутствует или недопустимый аргумент к &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="811"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="2103"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="2501"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="2580"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="2623"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="3066"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="828"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2159"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2589"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2668"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2711"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3150"/>
         <source>Missing or invalid argument to &apos;%s&apos;</source>
         <translation>Отсутствует или недопустимый аргумент к &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1094"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1146"/>
         <source>Invalid --graphicscontroller argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --graphicscontroller &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1159"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1167"/>
+        <source>Warning: &apos;--accelerate-2d-video&apos; is deprecated and will be removed in a future version
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageModifyVM.cpp" line="1211"/>
         <source>Invalid --biosbootmenu argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --biosbootmenu &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1183"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1235"/>
         <source>Invalid --biosapic argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --biosapic &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1236"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1288"/>
         <source>Invalid boot device &apos;%s&apos;</source>
         <translation>Недопустимое загрузочное устройство &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1316"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1368"/>
         <source>Invalid --idecontroller argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --idecontroller &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1346"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1398"/>
         <source>Invalid --usb argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --usb &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1421"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1473"/>
         <source>Invalid --scsitype argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --scsitype &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1476"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="1484"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1528"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1536"/>
         <source>Invalid host DVD drive name &quot;%s&quot;</source>
         <translation>Недопустимое имя DVD дисковода хоста &quot;%s&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1550"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1602"/>
         <source>Invalid host floppy drive name &quot;%s&quot;</source>
         <translation>Недопустимое имя флоппи дисковода хоста &quot;%s&quot;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1630"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1682"/>
         <source>Invalid --nicproperty%d argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --nicproperty%d &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1637"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1689"/>
         <source>Error: Failed to allocate memory for --nicproperty%d &apos;%s&apos;
 </source>
         <translation>Ошибка: Не удалось выделить память для --nicproperty%d &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1711"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1767"/>
         <source>Invalid NIC type &apos;%s&apos; specified for NIC %u</source>
         <translation>Недопустимый тип NIC &apos;%s&apos;, указанный для NIC %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1746"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1802"/>
         <source>Invalid boot priority &apos;%u&apos; specfied for NIC %u</source>
         <translation>Недопустимы приоритет загрузки &apos;%u&apos; указанный для NIC %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1768"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1824"/>
         <source>Unknown promiscuous mode policy &apos;%s&apos;</source>
         <translation>Неизвестная политика неразборчивого режима &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="1903"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="1959"/>
         <source>Invalid type &apos;%s&apos; specfied for NIC %u</source>
         <translation>Недопустимый тип &apos;%s&apos;, указанный для NIC %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2187"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2243"/>
         <source>Invalid proto &apos;%s&apos; specfied for NIC %u</source>
         <translation>Недопустимый протокол &apos;%s&apos;, указанный для NIC %u</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2411"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2499"/>
         <source>Invalid type &apos;%s&apos; specfied for pointing device</source>
         <translation>Недопустимый тип &apos;%s&apos;, указанный для указательного устройства</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2456"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2544"/>
         <source>Invalid type &apos;%s&apos; specfied for keyboard</source>
         <translation>Недопустимый тип &apos;%s&apos;, указанный для клавиатуры</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2559"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2647"/>
         <source>Invalid argument to &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2587"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2675"/>
         <source>Error parsing UART I/O base &apos;%s&apos;</source>
         <translation>Ошибка при разборе базового адреса I/O UART &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2630"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2718"/>
         <source>Error parsing LPT I/O base &apos;%s&apos;</source>
         <translation>Ошибка при разборе базового адреса I/O LPT &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2661"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2749"/>
         <source>Invalid --audiocontroller argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --audiocontroller &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2685"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2773"/>
         <source>Invalid --audiocodec argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --audiocodec &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2697"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2785"/>
         <source>Warning: --audio is deprecated and will be removed soon. Use --audio-driver instead!
 </source>
         <translation>Предупреждение: --audio устарел и скоро будет удалён. Используйте --audio-driver!
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2738"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2822"/>
         <source>Invalid %s argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент %s: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3684"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3768"/>
         <source>Invalid --guest-debug-provider &apos;%s&apos; (valid: none, native, gdb, kd)</source>
         <translation>Недопустимый аргумент к --guest-debug-provider &apos;%s&apos; (допустимые: none, native, gdb, kd)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3711"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3795"/>
         <source>Invalid --guest-debug-io-provider &apos;%s&apos; (valid: none, tcp, udp, ipc)</source>
         <translation>Недопустимый аргумент к --guest-debug-io-provider &apos;%s&apos; (допустимые: none, tcp, udp, ipc)</translation>
+    </message>
+    <message>
+        <location filename="../VBoxManageModifyVM.cpp" line="3846"/>
+        <source>Invalid platform architecture returned for VM</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Invalid --audio argument &apos;%s&apos;</source>
         <translation type="vanished">Недопустимый аргумент к --audio &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2800"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2884"/>
         <source>Invalid --clipboard-mode argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --clipboard-mode &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2820"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2904"/>
         <source>Invalid --clipboard-file-transfers argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --clipboard-file-transfers &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2845"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2929"/>
         <source>Invalid --draganddrop argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --draganddrop &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2899"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2983"/>
         <source>Invalid --vrdeproperty argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --vrdeproperty &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2907"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="2991"/>
         <source>Error: Failed to allocate memory for VRDE property &apos;%s&apos;
 </source>
         <translation>Ошибка: Не удалось выделить память под свойство VRDE &apos;%s&apos;
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="2969"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3053"/>
         <source>Invalid --vrdeauthtype argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --vrdeauthtype &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3087"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3171"/>
         <source>Invalid --usbrename parameters, nothing renamed</source>
         <translation>Недопустимые параметры к --usbrename, ничего не переименовано</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3285"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3369"/>
         <source>*** I/O APIC must be enabled for ICH9, enabling. ***
 </source>
         <translation>*** I/O APIC должен быть включен для ICH9, включение. ***
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3296"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3380"/>
         <source>Invalid --chipset argument &apos;%s&apos; (valid: piix3,ich9,armv8virtual)</source>
         <translation>Недопустимый аргумент к --chipset &apos;%s&apos; (допустимые: piix3,ich9,armv8virtual)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3315"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3399"/>
         <source>Invalid --iommu argument &apos;%s&apos; (valid: none,amd,automatic)</source>
         <translation>Недопустимый аргумент к --iommu &apos;%s&apos; (допустимые: none,amd,automatic)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3324"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3408"/>
         <source>Warning: On Intel hosts, &apos;automatic&apos; will not enable an IOMMU since the Intel IOMMU device is not supported yet.
 </source>
         <translation>Предупреждение: На хостах Intel, &apos;automatic&apos; не включает IOMMU, так как Intel IOMMU устройства еще не поддерживаются.
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3329"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3413"/>
         <source>Invalid --iommu argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --iommu &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3354"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3438"/>
         <source>Invalid --tpm-type argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --tpm-type &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3411"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3495"/>
         <source>Invalid list of screens specified
 </source>
         <translation>Указан недопустимый список экранов
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3433"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3517"/>
         <source>Cannot convert filename &quot;%s&quot; to absolute path
 </source>
         <translation>Невозможно преобразовать имя файла &quot;%s&quot; в абсолютный путь
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3463"/>
-        <location filename="../VBoxManageModifyVM.cpp" line="3472"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3547"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3556"/>
         <source>Error parsing video resolution &apos;%s&apos; (expected &lt;width&gt;x&lt;height&gt;)</source>
         <translation>Ошибка разбора видео разрешения &apos;%s&apos; (ожидается &lt;ширина&gt;x&lt;высота&gt;)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3547"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3631"/>
         <source>Invalid --autostop-type argument &apos;%s&apos; (valid: disabled, savestate, poweroff, acpishutdown)</source>
         <translation>Недопустимый аргумент к --autostop-type &apos;%s&apos; (допустимые: disabled, savestate, poweroff, acpishutdown)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3567"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3651"/>
         <source>Invalid --pciattach argument &apos;%s&apos; (valid: &apos;HB:HD.HF@GB:GD.GF&apos; or just &apos;HB:HD.HF&apos;)</source>
         <translation>Недопустимый аргумент к --pciattach &apos;%s&apos; (допустимые: &apos;HB:HD.HF@GB:GD.GF&apos; или просто &apos;HB:HD.HF&apos;)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3585"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3669"/>
         <source>Invalid --pcidetach argument &apos;%s&apos; (valid: &apos;HB:HD.HF&apos;)</source>
         <translation>Недопустимый аргумент к --pcidetach &apos;%s&apos; (допустимый: &apos;HB:HD.HF&apos;)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3619"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3703"/>
         <source>Invalid --vm-process-priority &apos;%s&apos;</source>
         <translation>Недопустимый --vm-process-priority &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3634"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3718"/>
         <source>Invalid --vm-execution-engine &apos;%s&apos;</source>
         <translation>Недопустимый --vm-execution-engine &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageModifyVM.cpp" line="3663"/>
+        <location filename="../VBoxManageModifyVM.cpp" line="3747"/>
         <source>--testing-cfg-dword index %u is out of range: 0 thru 9</source>
         <translation>Индекс --testing-cfg-dword %u вне границ диапазона: 0 - 9</translation>
     </message>
@@ -13365,7 +13376,7 @@ You can download this version here: %ls
 <context>
     <name>Usb</name>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="535"/>
+        <location filename="../VBoxManageUSB.cpp" line="536"/>
         <source>Not enough parameters</source>
         <translation>Недостаточно параметров</translation>
     </message>
@@ -13374,7 +13385,7 @@ You can download this version here: %ls
         <translation type="vanished">Недопустимый параметр &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="210"/>
+        <location filename="../VBoxManageUSB.cpp" line="211"/>
         <source>Invalid index &apos;%s&apos;</source>
         <translation>Недопустимый индекс &apos;%s&apos;</translation>
     </message>
@@ -13383,7 +13394,7 @@ You can download this version here: %ls
         <translation type="vanished">Отсутствует аргумент к &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="262"/>
+        <location filename="../VBoxManageUSB.cpp" line="263"/>
         <source>Invalid --active argument &apos;%s&apos;</source>
         <translation>Недопустимый аргумент к --active &apos;%s&apos;</translation>
     </message>
@@ -13392,7 +13403,7 @@ You can download this version here: %ls
         <translation type="vanished">Не удалось преобразовать значение --maskedinterfaces &apos;%s&apos; в число, vrc=%Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="297"/>
+        <location filename="../VBoxManageUSB.cpp" line="298"/>
         <source>Invalid USB filter action &apos;%s&apos;</source>
         <translation>Недопустимое действие USB фильтра &apos;%s&apos;</translation>
     </message>
@@ -13405,33 +13416,33 @@ You can download this version here: %ls
         <translation type="vanished">Не предоставлены обязательные опции</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="306"/>
-        <location filename="../VBoxManageUSB.cpp" line="348"/>
+        <location filename="../VBoxManageUSB.cpp" line="307"/>
+        <location filename="../VBoxManageUSB.cpp" line="349"/>
         <source>Missing required option: --target</source>
         <translation>Отсутствует требуемая опция: --target</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="311"/>
+        <location filename="../VBoxManageUSB.cpp" line="312"/>
         <source>Missing required option: --name</source>
         <translation>Отсутствует требуемая опция: --name</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="314"/>
+        <location filename="../VBoxManageUSB.cpp" line="315"/>
         <source>Missing required option: --action</source>
         <translation>Отсутствует требуемая опция: --action</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="317"/>
+        <location filename="../VBoxManageUSB.cpp" line="318"/>
         <source>Option --remote applies to VM filters only (--target=&lt;uuid|vmname&gt;)</source>
         <translation>Опция --remote применима только к фильтрам VM (--target=&lt;uuid|vmname&gt;)</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="545"/>
+        <location filename="../VBoxManageUSB.cpp" line="546"/>
         <source>Invalid number of parameters</source>
         <translation>Недопустимое количество параметров</translation>
     </message>
     <message>
-        <location filename="../VBoxManageUSB.cpp" line="560"/>
+        <location filename="../VBoxManageUSB.cpp" line="561"/>
         <source>Parameter &quot;%s&quot; is invalid</source>
         <translation>Недопустимый параметр &apos;%s&apos;</translation>
     </message>
@@ -13467,117 +13478,117 @@ You can download this version here: %ls
 <context>
     <name>VBoxManage</name>
     <message>
-        <location filename="../VBoxManage.cpp" line="342"/>
-        <location filename="../VBoxManage.cpp" line="515"/>
+        <location filename="../VBoxManage.cpp" line="345"/>
+        <location filename="../VBoxManage.cpp" line="518"/>
         <source>Progress object failure: %Rhrc
 </source>
         <translation>Отказ объекта прогресса: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="359"/>
+        <location filename="../VBoxManage.cpp" line="362"/>
         <source>Failed to get progress description: %Rhrc
 </source>
         <translation>Не удалось получить описание прогресса: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="428"/>
+        <location filename="../VBoxManage.cpp" line="431"/>
         <source>(%u/%u) %ls %02u%% =&gt; %02u%% (%d s remaining)
 </source>
         <translation>(%u/%u) %ls %02u%% =&gt; %02u%% (%d сек осталось)
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="431"/>
+        <location filename="../VBoxManage.cpp" line="434"/>
         <source>%02u%%: %ls
 </source>
         <translation>%02u%%: %ls
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="501"/>
+        <location filename="../VBoxManage.cpp" line="504"/>
         <source>CANCELED
 </source>
         <translation>ОТМЕНЕНО
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="505"/>
+        <location filename="../VBoxManage.cpp" line="508"/>
         <source>Progress state: %Rhrc
 </source>
         <translation>Состояние прогресса: %Rhrc
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="692"/>
+        <location filename="../VBoxManage.cpp" line="695"/>
         <source>Password expected</source>
         <translation>Ожидается пароль</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="700"/>
+        <location filename="../VBoxManage.cpp" line="703"/>
         <source>No password file specified</source>
         <translation>Не указан файл с паролем</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="707"/>
+        <location filename="../VBoxManage.cpp" line="710"/>
         <source>Only one response file allowed</source>
         <translation>Разрешается только один файл ответов</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="715"/>
+        <location filename="../VBoxManage.cpp" line="718"/>
         <source>Error reading response file &apos;%s&apos;: %Rrc</source>
         <translation>Ошибка чтения файла ответов &apos;%s&apos;: %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="720"/>
+        <location filename="../VBoxManage.cpp" line="723"/>
         <source>Invalid response file (&apos;%s&apos;) encoding: %Rrc</source>
         <translation>Недопустимая кодировка файла ответов (&apos;%s&apos;): %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="728"/>
+        <location filename="../VBoxManage.cpp" line="731"/>
         <source>Failed to parse response file &apos;%s&apos; (bourne shell style): %Rrc</source>
         <translation>Не удалось разобрать файл ответов &apos;%s&apos; (стиль bourne shell): %Rrc</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="734"/>
+        <location filename="../VBoxManage.cpp" line="737"/>
         <source>out of memory</source>
         <translation>не хватает памяти</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="775"/>
+        <location filename="../VBoxManage.cpp" line="778"/>
         <source>commands:
 </source>
         <translation>команды:
 </translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="782"/>
+        <location filename="../VBoxManage.cpp" line="785"/>
         <source>Invalid command &apos;%s&apos;</source>
         <translation>Недопустимая команда &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="801"/>
+        <location filename="../VBoxManage.cpp" line="816"/>
         <source>Failed to initialize COM because the global settings directory &apos;%s&apos; is not accessible!</source>
         <translation>Не удалось инициализировать COM, потому что директория глобальных настроек &apos;%s&apos; недоступна!</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="804"/>
+        <location filename="../VBoxManage.cpp" line="819"/>
         <source>Failed to initialize COM! (hrc=%Rhrc)</source>
         <translation>Не удалось инициализировать COM! (hrc=%Rhrc)</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="887"/>
+        <location filename="../VBoxManage.cpp" line="902"/>
         <source>Failed to create a session object!</source>
         <translation>Не удалось создать объект сессии!</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="897"/>
+        <location filename="../VBoxManage.cpp" line="912"/>
         <source>Failed to create the VirtualBox object!</source>
         <translation>Не удалось создать объект VirtualBox!</translation>
     </message>
     <message>
-        <location filename="../VBoxManage.cpp" line="901"/>
+        <location filename="../VBoxManage.cpp" line="916"/>
         <source>Most likely, the VirtualBox COM server is not running or failed to start.</source>
         <translation>Наиболее вероятно, что COM сервер VirtualBox не запущен или не смог запуститься.</translation>
     </message>
