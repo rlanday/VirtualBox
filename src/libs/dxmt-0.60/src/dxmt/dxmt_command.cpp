@@ -3,8 +3,14 @@
 #include "dxmt_context.hpp"
 #include "dxmt_format.hpp"
 
+#ifndef VBOX
 extern "C" unsigned char dxmt_command_metallib[];
 extern "C" unsigned int dxmt_command_metallib_len;
+#else
+# include "dxmt_command.h"
+# define dxmt_command_metallib g_abdxmt_command_metallib
+# define dxmt_command_metallib_len g_cbdxmt_command_metallib
+#endif
 
 #define CREATE_PIPELINE(name)                                                                                          \
   auto name##_function = library.newFunction(#name);           \
