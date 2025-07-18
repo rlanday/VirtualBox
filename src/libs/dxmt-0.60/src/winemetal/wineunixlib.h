@@ -1,7 +1,12 @@
 /**
  * ntdll private definitions
  */
+#ifndef VBOX
 #include "winternl.h"
+#else
+/* Hack to get the right wineunixlib.h header from nativemetal included (clang will always search the current path first). */
+#include "../nativemetal/wineunixlib.h"
+#endif
 
 #ifndef __WINE_WINE_UNIXLIB_H
 #define __WINE_WINE_UNIXLIB_H
